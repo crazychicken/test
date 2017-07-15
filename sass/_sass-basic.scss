@@ -1,0 +1,76 @@
+// @import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+$var : blue !default; // nhan bien o tren cung co !defailt;
+$var : green;
+
+body {
+	background: $var;
+}
+
+@mixin border($border) {
+	@content; // mixin content
+}
+@mixin border($border) {
+	border: {
+		width: $border;
+		style: solid;
+	} // nested properties
+}
+
+.btn1 {
+	.btn2 {
+		color: $var;
+		// nesting type
+	}
+}
+
+.btn {
+	& { // parents selector
+		font-size: 12px;
+		@include border(20px);
+	} 
+}
+
+.btn-extend {
+	@extend .btn;
+	background: green;
+}
+
+$name: 'tuds'; // interporation
+.#{$name} {
+	@include border(20px)
+	width: 200px - 10px;
+} // oparators (+ - * /)
+
+// each interator
+@each $name in 'ty', 'teo', 'toan' {
+	.#{$name} {
+		height: 100px;
+		width: 100px;
+	}
+}
+
+// for loop
+@for $i from 1 through 3 {
+	h#{$i} {
+		width: 12px + $i;
+	}
+}
+// whlie loop
+$i: 1;
+@while $i < 6 {
+	h#{$i} {
+		height: 12px + $i;
+	}
+	$i: $i + 1;
+} 
+
+
+
+
+
+
+
+
+
+
+
