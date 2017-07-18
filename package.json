@@ -1,13 +1,28 @@
 {
-  "name": "test",
-  "version": "1.0.0",
-  "description": "test",
-  "main": "index.js",
+  "name": "tuds-project",
+  "version": "1.0.1",
+  "description": "The t-scroll JavaScript library lets you apply more than 45 pretty cool animations to any elements when they appear in the viewport.",
+  "main": ".gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel ./theme/js/t-scroll.js --minified --no-comments --out-file ./theme/js/t-scroll.min.js --presets=es2015"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crazychicken/test.git"
+  },
+  "keywords": [
+    "HTML5",
+    "CSS3",
+    "JAVASCRIPT",
+    "ES6",
+    "html/css"
+  ],
+  "author": "tuds - crazychicken",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crazychicken/test/issues"
+  },
+  "homepage": "https://github.com/crazychicken/test#readme",
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
     "browser-sync": "^2.18.12",

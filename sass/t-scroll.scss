@@ -1,0 +1,37 @@
+// @import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+body {
+	@import 'button';
+}
+
+.btn {
+	width: 200px;
+	height: 50px;
+}
+.btn-red {
+	@extend .btn;
+	background: red;
+}
+.btn-blue {
+	@extend .btn;
+	background: blue;
+}
+ul {
+	li {
+		a {
+			&, &:hover, &:active, &:focus {
+				color: red;
+			}
+		}
+	}
+}
+
+$var2: 2px;
+$var1: 2px;
+
+.btn {
+	font-size: $var2 - $var1;
+	height: $var2 + $var1;
+	line-height: $var2*2;
+	line-height: $var2/$var1+px;
+}
