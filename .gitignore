@@ -1,4 +1,11 @@
 node_modules
 sass/theme
 
+public/**/*.css
+public/**/*.js
+public/**/*.html
+public/theme/images
+!public/theme/css/t-scroll.css
+!public/theme/js/t-scroll.min.js
+
 
