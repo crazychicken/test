@@ -1,0 +1,83 @@
+Giá như Git cho người hay nghịch ngu thật đơn giản!
+
+Git, thật không quá xa lạ với dân code, mà nếu lỡ lạ quá thì cũng ráng làm quen, giống như tán gái vậy đó, trước lạ sau thì bỏ tiền ra cua là sẽ quen, còn với Git thì chúng ta bỏ thời gian ra là quay tay ngay, à nhầm quen tay.
+
+Ở đây tôi không định nghĩa git là gì, cũng như các khái niệm dài như phim Hàn Quốc ... Trong bài này chúng ta chỉ tìm hiểu việc lỡ chơi ngu rồi thì sẽ là thế nào với git.
+
+
+1. Lỡ chơi ngu chỉnh - sửa, thêm - xoá code ngoài ý muốn.
+
+- Vừa chỉnh code chưa add
+	- git clean -df // hạn chế xoá trắng tin như mới
+	- git checkout - - . 
+
+- Ngứa tay add rồi nhưng chưa commit
+	- git clean -df // hạn chế xoá trắng tin như mới
+	- git reset HEAD
+
+- Lỡ commit rồi nhưng moá hên quá chưa push
+	- git reset HEAD~1
+
+- Commit rồi lỡ tay push luôn :(
+	- git revert HEAD~1..HEAD
+
+
+2. Lỡ bị ngu commit, comment sai chính tả hay lỡ như có những từ ngữ không liên quan mịa gì đến việc vừa mới làm.
+
+- Lỡ commit mà chưa push muốn sửa lại commit
+	- git commit  - -amend 
+	or
+	- git commit - -amend -m “sửa lại commit”
+
+- Lỡ tay push cmn luôn rồi :(
+	- git commit - -amend -m “new commit”
+	- git push <remote> <branch>  - -force
+	EX:  git push origin master - -force
+	Or
+	- git commit - -amend -m “new commit”
+	- git push <remote> <branch>  -f
+	EX: git push origin master -f
+	* Lưu ý ở branch master thì nó bắt pull về trước nhé.
+
+
+3. Lỡ chơi ngu đặt tên nhánh tùm lum, muốn chỉnh sửa lại
+
+- Lỡ tạo nhưng chưa push:
+	- git branch -m <old-branch-name> <new-branch-name>
+
+- Lỡ đặt nhầm tên mà push lên luôn cmnr
+	- git branch -m <old-branch-name> <new-branch-name> (đầu tiên đổi lại tên branch cũ)
+	- git push origin <:old-branch-name> <new-branch-name> (kế tiếp xoá và push nhánh mới lên luôn)
+
+4. Lỡ dạy dộ xoá branch rồi.
+	- git branch -D <branch-name> (xoá)
+	- git push origin :branch-name (xoá nhánh trên repo git, github …)
+
+	Cứu cánh của bạn là:
+	- git reflog
+	- git branch <branch-name> <id> (Ex: 5a336b3) là số id phía trước mỗi thao tác git để có thể cho bạn lấy lại được code
+
+5. Đang code nhánh này, mà bị hành chuyển qua nhánh khác sửa lỗi để làm.
+	- git stash save // có thể save được nhiều stash khác nhau
+	- git stash list // liệt kê hết đóng code đã stash
+
+	Nếu quên thì có thể xem lại code của từng stash theo kiểu
+	- git stash show stash@{0}
+	- git stash list -p // 1 nùi tắt cả các stash - nếu muốn chảy máu mắt
+
+	Biết được cái nào rồi, thì lấy lại mà code tiếp
+	- git stash apply stash@{0}
+	* Lấy thằng cần lấy, nếu lấy nhiều thằng vào luôn nó cũng chấp nhận, dư code của mấy stash của các nhánh khác mò mẫm mài đi xoá thì rán chịu.
+
+	Trong nhà nhiều rác quá phải dọn bớt stash cho đõ vướn:
+	- git stash apply stash@{0}
+	* Nên lấy lại code trước khi xoá bất cứ cái gì, cũng như có thể bạn sẽ có rất nhiều stash của nhiều nhánh, để tránh tình huống anh là một thằng Ngọc Thụ Lâm Phong nhưng phải ngồi code lại chết mịa vì lỗi lầm ngu vl, nên lấy lại commit, push các kiểu không còn vướn bận gì rồi hãy xoá.
+
+	- git stash drop stash@{0}
+	- git stash drop clear // xoá hết liều ăn nhiều
+
+
+
+	
+
+

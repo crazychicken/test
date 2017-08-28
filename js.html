@@ -1,0 +1,93 @@
+<!-- Bài tập chuong trình tính điểm trung bình có học sinh -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style type="text/css">
+	.container {
+		margin: 0 auto;
+		width: 500px;
+		background: #ddd;
+		border-radius: 10px;
+		height: 300px;
+		display: block;
+		padding: 30px;
+	}
+</style>
+<body>
+	
+	<div class="container">
+		<p>
+			<input type="text" class="point" value="">
+			<span>+</span>
+			<input type="text" class="point" value="">
+			<span>/ 2 = </span>
+			<span id="show-result"></span>
+			<button id="result">Event result</button>
+		</p>
+		<p id="alert"></p>
+		
+		<select name="" id="select-ex">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+		<span id="show-value"></span>
+	</div>
+	
+</body>
+<script type="text/javascript">
+
+	var point = document.getElementsByClassName('point');
+	var event = document.getElementById('result');
+	var show_result = document.getElementById('show-result');
+	var alert = document.getElementById('alert');
+
+	event.onclick = function() {
+		var y = [];
+		for(var i = 0; i < point.length; i++) {
+			var x = point[i].value;
+
+			if (x === "") {
+				alert.textContent = ('No empty input');
+				return;
+			}
+
+			if ( isNaN( Number(x) ) ) {
+				alert.textContent = ('Please give me the number');
+				return;
+			}
+
+			alert.textContent = '';
+
+			y.push(Number(x));
+		}
+
+		show_result.textContent = (y[0] + y[1]) / 2;
+		
+	};
+
+	var select_ex = document.getElementById('select-ex');
+	var show_value= document.getElementById('show-value');
+	select_ex.onchange = function() {
+		var s = select_ex.selectedIndex;
+		show_value.textContent = select_ex.options[s].text;
+	}
+
+	var a = 9.678;
+	// console.log(a.toFixed()) // Làm tròn lên
+	var b = a.toPrecision();
+	console.log(b) // Làm tròn lên
+
+
+
+</script>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .container {
+      width: 800px;
+      margin: 0 auto;
+      height: 500px;
+      border-radius: 6px;
+      background: #f7f7f7;
+      padding: 15px;
+    }
+    #convertHtml,
+    #settext {
+      float: left;
+      width: 100%;
+      margin: 10px 0;
+    }
+    .btn {
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 10px 25px;
+      border-radius: 6px;
+      clear: both;
+      float: left;
+    }
+    #showText {
+      margin-top: 20px;
+      float: left;
+      background: #eeddff;
+      height: 50px;
+      width: 100%;
+      border-radius: 6px;
+    }
+    /*// code */
+    .amp-pre {
+      font-size: 0.85rem;
+      background: #f7f7f9;
+      padding: 10px 15px;
+      line-height: 1.2em;
+    }
+    .amp-tag {
+      color: #2f6f9f;
+      font-weight: bold;
+    }
+    .amp-atr {
+      color: #4f9fcf;
+    }
+    .amp-cn {
+      color: #d44950;
+    }
+    .amp-cm {
+      color: #888888;
+    }
+  </style>
+</head>
+<body>
+</pre>
+
+  <div class="container">
+    <h1>Cover class, id, text of html code, pre</h1>
+    <textarea name="" id="convertHtml" cols="100" rows="10"></textarea>
+    <button class="btn" id="submit">
+      Submit
+    </button>
+    
+    <textarea name="" id="settext" cols="100" rows="10"></textarea>
+    <div id="showText"></div>
+  </div>
+  <script type="text/javascript">
+    // Conver type hilte.me change select >> pastie
+    var getText = document.getElementById('convertHtml');
+    var subMit = document.getElementById('submit');
+    var showText = document.getElementById('showText');
+    var setText = document.getElementById('settext');
+
+    subMit.onclick = function(){
+      var dataText = getText.value;
+      var convertHtml = dataText.replace(/</g, ' &lt;');
+      convertHtml = convertHtml.replace(/"/g, '&quot;');
+      convertHtml = convertHtml.replace(/>/g, ' &gt;');
+      convertHtml = convertHtml.replace(/=/g, '= ');
+      convertHtml = convertHtml.split(" ");
+      for (var i = 0; i<convertHtml.length; i++) {
+        if ( convertHtml[i].includes("=") === true ) {
+          convertHtml[i] = ' <span class="amp-atr">' + convertHtml[i] + '</span><span class="amp-cn">'
+        }
+        if (convertHtml[i].slice(convertHtml[i].length - 6, convertHtml[i].length) === "&quot;") {
+          convertHtml[i] = convertHtml[i] + '</span>';
+        }
+        if (convertHtml[i].slice(0,4) === "&lt;") {
+          convertHtml[i] = '<span class="amp-tag">' + convertHtml[i] + '</span>'
+        }
+        if ( convertHtml[i].includes("&gt;") === true ) {
+          convertHtml[i] = '<span class="amp-tag">'+convertHtml[i]+'</span>';
+        }
+      }
+      convertHtml = convertHtml.toString();
+      convertHtml = convertHtml.replace(/\,\</g, '\<');
+      convertHtml = convertHtml.replace(/\>\,/g, '\>');
+      convertHtml = convertHtml.replace(/\,/g, '\ ');
+      setText.value = '<pre class="amp-pre">'+convertHtml+'</pre>';
+      showText.innerHTML = '<pre class="amp-pre">'+convertHtml+'</pre>';
+    }
+  </script>
+</body>
+</html>
