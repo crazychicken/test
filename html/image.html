@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.min.css">
+	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.min.js"></script>
+	<style type="text/css">
+		body {
+			background: #ddffee;
+		}
+	</style>
+</head>
+<body>
+	<!-- <img class="resize-image" src="elite-625x400.jpg" />
+	<script>
+		var resizeImage = function(src,width,height) {
+			var orig_src = new Image(),
+			resize_canvas = document.createElement('canvas');
+			orig_src.src = src;
+			resize_canvas.width = width;
+			resize_canvas.height = height;
+			resize_canvas.getContext('2d').drawImage(orig_src, 0, 0, width, height);
+			$(".resize-image").attr('src', resize_canvas.toDataURL("image/png"));
+		}
+		$(function(){
+			resizeImage('elite-625x400.jpg',200,100); // Image path, width, height
+		});
+	</script> -->
+
+	<div class="demo"></div>
+	<script>
+	$('.demo').croppie({
+	    url: 'elite-625x400.jpg',
+	});
+	</script>
+	<!-- or even simpler -->
+	<img class="my-image" src="elite-625x400.jpg" />
+	<script>
+	$('.my-image').croppie();
+	</script>
+
+	
+</body>
+</html>

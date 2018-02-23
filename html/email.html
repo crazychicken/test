@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+			box-sizing: content-box;
+		}
+		body {
+			margin: 0;
+			font-family: Arial,sans-serif;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+		}
+		.container {
+			width: 620px;
+			background: #f7f8f9;
+			box-shadow: rgba(0,0,0,0.75);
+			margin: 0 auto;
+			border-radius: 4px;
+			padding: 20px;
+		}
+		.label-title {
+			width: 100%;
+			display: inline-block;
+		}
+		.in-type {
+			padding: 8px 10px;
+			outline: none;
+			width: auto;
+			max-width: 96%;
+		}
+		.tag-group {
+			position: relative;
+			background: #fff;
+			border: 1px solid #ddd;
+			padding: 8px 10px;
+			width: 70%;
+			margin: 10px 0;
+			font-size: 0;
+		}
+		.label {
+			font-size: 14px;
+			position: relative;
+			padding: 5px;
+			background: #ffeedd;
+			display: inline-block;
+			font-size: 0.8rem;
+			border-radius: 4px;
+		}
+		.remove {
+			color: red;
+			padding: 5px 3px;
+			cursor: pointer;
+		}
+		.error {
+			width: 97%;
+			background: #eeddff;
+			margin-top: 10px;
+		}
+		.error .remove {
+			position: absolute;
+			right: 5px;
+			top: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<!-- <label class="label-title">Give me email</label> -->
+		<div class="tag-group" id="validation-email">
+			<!-- <span class="tag label label-info">
+				demo <i class="remove">×</i>
+			</span>
+			<span class="tag label label-info">
+				demo1 <i class="remove">×</i>
+			</span> -->
+			<input class="in-type" type="text" size="1" value="1231, email@gmail.com, asdad  ,  222@gmail.com,  123">
+			<!-- <input class="in-type" type="text" size="1" value=""> -->
+			<!-- <span class="tag label label-info error">Định dạng email không đúng...!<i class="remove">×</i></span> -->
+			<button id="btn">get Result</button>
+		</div>
+		<!-- <label class="label-title">Give me phone number</label>
+		<div class="tag-group">
+			<span class="tag label label-info">
+				0123456
+				<i class="remove">×</i>
+			</span>
+			<input class="in-type" id="validation-phone" type="tel" value="0123456">
+		</div> -->
+	</div>
+	<script>
+		var gEmail = document.getElementById('validation-email');
+		var gRemove = document.getElementsByClassName('remove')
+		var focusIn = document.getElementsByClassName('in-type')
+		var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+		// Function getId
+		function getId(pr_element) {
+			var el = document.getElementById(pr_element);
+			return el;
+		}
+		// Function getClass
+		function getClass(pr_element) {
+			var el = document.getElementsByClassName(pr_element);
+			var data = [];
+			for (var i = 0; i < el.length; i++ ) {
+				data.push(el[i])
+			}
+			return data;
+		}
+
+		// var data;
+		// function getValue() {
+		// 	var id = getId('validation-email');
+		// 	var inp = id.querySelectorAll('input')[0];
+		// 	return inp.value;
+		// }
+		// data = getValue();
+
+		// Function get value input -> output email và not_email
+		function checkValue(fn_data) {
+			var id = getId('validation-email');
+			var inp = id.querySelectorAll('input')[0];
+			var data_text = [];
+			if ( fn_data.includes(',') === true ) {
+				data_text = fn_data.split(',');
+			} else {
+				data_text.push(data);
+			}
+			// console.log(data_text);
+			var data_email = [];
+			var data_not_email = [];
+			data_text.forEach(function(e){
+				e = e.trim();
+				if ( e.match(mailFormat) ) {
+					var newItem = addTags(e);
+					id.insertBefore(newItem, inp);
+					data_email.push(e);
+					// Remove email true, keep value error
+					inp.value = inp.value.replace(e+',', '');
+					inp.value = inp.value.replace(e, '');
+					// Clear information
+					if ( id.querySelectorAll(".error").length != 0 ) {
+						id.querySelectorAll(".error")[0].remove();
+					}
+				} else {
+					// Keep value error
+					data_not_email.push(e);
+					if ( id.querySelectorAll(".error").length === 0 ) {
+						var newItem = addTags('Định dạng email không đúng...!');
+						newItem.classList += ' error';
+						id.insertBefore(newItem, inp.nextSibling);
+						// Set size default if do not email
+						inp.setAttribute('size', inp.value.length + 1);
+						// console.log(this);
+					}
+				}
+			});
+
+			// Clear value input
+			// console.log(data_email);
+			data_not_email = data_not_email.toString();
+			// Call back value error
+			inp.setAttribute('value', data_not_email);
+			// console.log(data_email);
+			data = data_email;
+			return data;
+		}
+		// checkValue(data);
+		// console.log(data);
+		function getValue() {
+			// var data = [];
+			var id = getId('validation-email');
+			var inp = id.querySelectorAll('input')[0];
+			// get default email value input
+			// console.log(inp.value);
+			if ( inp.value != '' ) {
+				data = checkValue(inp.value);
+				removeTags();
+			}
+			inp.onkeydown = function(e) {
+				inp.setAttribute('size', inp.value.length + 1);
+				// getValue(vl);
+				// https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+				if ( e.keyCode == 9 || e.keyCode === 13 || e.keyCode === 188 ) { // 9 tab, delete 8, enter 13, , 188
+					e.preventDefault();
+					if ( inp.value != '' ) {
+						// get email value input after tab, enter, keycode ,
+						data = data.concat(checkValue(inp.value));
+					}
+				}
+				removeTags();
+			}			
+			return data;
+		}
+		getValue();
+
+
+		// remove element
+		function removeTags(data) {
+			var id = getId('validation-email');
+			var inp = id.querySelectorAll('input')[0];
+			// console.log(data);
+			var rmClass = getClass('remove');
+			rmClass.forEach( function(e){
+				e.onclick = function() {
+					e.parentElement.remove();
+				}
+			})
+		}
+		// removeTags();
+
+		// function getEmails() {
+		// 	var data = [];
+		// 	var btn_id = getId('btn');
+		// 	btn.onclick = function() {
+		// 		var id = getId('validation-email');
+		// 		var getMail = id.querySelectorAll('.tag');
+		// 		getMail.forEach( function(e) {
+		// 			if ( e.className.match('error') === null ) {
+		// 				// console.log(e);
+		// 				var text = e.textContent;
+		// 				text = text.slice(0, text.length - 1);
+		// 				data.push(text);
+		// 			}
+		// 			e.remove();
+		// 		});
+		// 		callBack(data)
+		// 		// console.log(data);
+		// 	}
+		// 	// console.log(data);
+		// 	return data;
+		// }
+		// getEmails();
+		// console.log(a);
+
+		function callBack(pr) {
+			console.log(pr)
+		}
+
+		// function add Tags
+		function addTags(pr_value) {
+			// create element i remove tag
+			var createElRemove = document.createElement('i');
+			createElRemove.classList += 'remove';
+			var createTextRemove = document.createTextNode('×');
+			createElRemove.appendChild(createTextRemove);
+
+			// create tag
+			var createEl = document.createElement('span');
+			createEl.classList += 'tag label label-info';
+			var createText = document.createTextNode(pr_value);
+
+			createEl.appendChild(createText);
+			createEl.appendChild(createElRemove);
+			return createEl;
+		}
+
+		// var result = [];
+		// Foucus Input
+		function focusInput(pr_elment) {
+			var el = document.querySelectorAll(pr_elment);
+			for (var i = 0; i < el.length; i++) {
+				el[i].onclick = function(){
+					this.querySelectorAll('input')[0].focus();
+				}
+			}
+		}
+		focusInput('.tag-group');
+		// https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+
+		// function clear all Tags
+		// function clearAllTags(pr_group, pr_element) {
+		// 	var pr_group = document.querySelectorAll('#validation-email');
+		// 	for (var i = 0; i < pr_group.length; i++) {
+		// 		var rm = pr_group[i].querySelectorAll(pr_element);
+		// 		for (var i = 0; i < rm.length; i++) {
+		// 			rm[i].remove();
+		// 		}
+		// 	}
+		// }
+	</script>
+</body>
+</html>

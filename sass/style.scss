@@ -1,5 +1,5 @@
-// @import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
-
+@import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import '../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker';
 body {
 	@import 'button';
 }
@@ -26,12 +26,12 @@ ul {
 	}
 }
 
-$var2: 2px;
-$var1: 2px;
+// $var2: 2px;
+// $var1: 2px;
 
-.btn {
-	font-size: $var2 - $var1;
-	height: $var2 + $var1;
-	line-height: $var2*2;
-	line-height: $var2/$var1+px;
-}
+// .btn {
+// 	font-size: $var2 - $var1;
+// 	height: $var2 + $var1;
+// 	line-height: $var2*2;
+// 	line-height: $var2/$var1+px;
+// }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript</title>
+  </head>
+  <body>
+    <div class="validation">
+      <input type="text" class="input" value="text,    text,    text3">
+    </div>
+    <h1>Hello</h1>
+    <script>
+      
+      function getId(pr_id) {
+        return document.getElementById(pr_id);
+      }
+      function getC(pr_cn) {
+        var a = document.getElementsByClassName(pr_cn)
+        return a = [].slice.call(a); // return Array.isArray()
+      }
+
+      var data = [];
+      // console.log(data);
+      var getClass = getC('validation');
+
+      getClass.forEach( function(getValidation) {
+        var inp = getValidation.getElementsByClassName('input')[0];
+        inp.onkeydown = function(e) {
+          var b = this;
+          if ( e.keyCode == 13 ) {
+            e.preventDefault();
+            var a = checkValue(this.value);
+
+            if (this.value != '') {
+              data = data.concat(a);
+              data = data.filter( function(e, index){
+                return data.indexOf(e) === index;
+              });
+              this.value = '';
+            }
+            console.log(a);
+            console.log(data);
+
+            // check trung content
+            var item = b.parentElement.getElementsByClassName('item');
+            if ( item != undefined ) {
+              item = [].slice.call(item);
+              item.forEach( function(e){
+                // console.log(e.textContent)
+                var text = e.textContent;
+                text = text.slice(0, text.length-1);
+                data.filter( function(el, index){
+                  if (text == el) {
+                    e.remove();
+                  }
+                });
+              });
+            }
+
+            data.filter( function(e, index) {
+              if ( data.indexOf(e) === index ) { 
+                addTags(e, b)
+              }
+            });
+
+            var item = b.parentElement.getElementsByClassName('rm');
+            if ( item != undefined ) {
+              item = [].slice.call(item);
+              item.forEach( function(e){
+                // console.log(e)
+                e.onclick = function(){
+                  var text = e.parentElement.textContent;
+                  text = text.slice(0, text.length-1);
+                  data = data.filter( function(el, index){
+                    if (text == el) {
+                      e.parentElement.remove();
+                    }
+                    return el != text;
+                  });
+                  console.log(data)
+                }
+              });
+            }
+
+          }
+        }
+      });
+
+      function checkValue(pr_vl) {
+        var data = [];
+        if ( pr_vl.includes(',') ) {
+          data = pr_vl.split(',');
+        } else {
+          data.push(pr_vl);
+        }
+        var dataTrim = data.map( function(e){
+          return e.trim();
+        });
+        var result = dataTrim.filter( function(e, index) {
+          return dataTrim.indexOf(e) == index;
+        });
+        // console.log(data);
+        return result;
+      }
+
+      function addTags(fn_data, pr_element) {
+        var tag = document.createElement('p');
+        tag.setAttribute('class', 'item');
+        var text = document.createTextNode(fn_data);
+
+        var tag_rm = document.createElement('button');
+        tag_rm.setAttribute('class', ' rm');
+        var text_rm = document.createTextNode('×');
+        tag_rm.appendChild(text_rm);
+
+        tag.appendChild(text);
+        tag.appendChild(tag_rm);
+
+        // console.log(pr_element)
+        pr_element.parentElement.appendChild(tag);
+      }
+
+      // var a = ["text", "text3"];
+      // var b = a.filter( function(e){
+      //   return e != 'text';
+      // })
+      // var b = a.splice(2);
+      // console.log(b)
+      // var b = ['1', '4', '2', '5', '6'];
+      // var c = a.concat(b);
+      // var d = c.filter( function(e, index){
+      //   return c.indexOf(e) === index;
+      // });
+      // console.log(d)
+
+
+      // var data = ["a1 first@gmail", "   111@gmail.com", "    after", "after", "after", "tu", 'tu', " 111@gmail.com"];
+      // // Function trả lại giá trị data đã được xoá khoản cách.
+      // var dataTrim = data.map(function(e) {
+      //   return e.trim();
+      // })
+      // // dataTrim.filter với e là từng element được filter còn index là vị trí của từng element
+      // var result = dataTrim.filter( function(e, index) {
+      //   console.log(dataTrim.indexOf(e)); // đổ giá trị của từng element dataTrim vào để xác định vị trí
+      //   console.log(index + ' of index'); // em console.log() để biết rõ hơn
+      //   // sau khi trả về sẽ so sánh với index tương ứng để trả về đúng các element không bị trùng lặp
+      //   return dataTrim.indexOf(e) === index;
+      //   // console.log(dataTrim.indexOf(e));
+      //   // return data[index];
+      // });
+      // console.log(data);   // ["a1 first@gmail", "   111@gmail.com", "    after", "after", "after", "tu", "tu", " 111@gmail.com"]
+      // console.log(result); // ["a1 first@gmail", "111@gmail.com", "after", "tu"]
+    </script>
+  </body>
+</html>

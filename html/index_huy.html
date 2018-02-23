@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Document</title>
+        <style>
+            .container {
+                width: 600px;
+                margin: 0 auto;
+            }
+            .img-responsive {
+                max-width: 100%;
+            }
+            .slider-nav {
+                clear: both;
+                height: 300px;
+                display: block;
+                padding: 0;
+                list-style-type: none;
+                position: relative;
+            }
+            .slider-item {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .ui-dots {
+                clear: both;
+                display: inline-block;
+            }
+            .ui-dots .dot {
+                margin: 0 5px;
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                display: inline-block;
+                background: #ddeeff;
+                cursor: pointer;
+            }
+            .ui-dots .dot.active {
+                background: green;
+            }
+            .arrow {
+                clear: both;
+            }
+
+            .addBed {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div id="myInputGroup">
+                <label for="">Nhập số vào đi nào</label>
+                <input type="text" value="0">
+                <input type="text" value="0">
+            </div>
+            <div>
+                Kết quả = <span id="myResult"></span>
+            </div>
+            <select name="" id="myTest">
+                <option value="0">Car</option>
+                <option value="1">Child</option>
+                <option value="2">Gril</option>
+            </select>
+
+            <button id="myButtonTest">
+                Click Me
+            </button>
+            
+            <div>
+                Tôi Chọn: <span id="myInnerHtml"></span>
+            </div>
+
+            <script type="text/javascript">
+                var myResult = document.getElementById('myResult');
+                var myInputGroup = document.getElementById('myInputGroup');
+                var Input = myInputGroup.querySelectorAll('input');
+                function fnResult() {
+                    var result = 0;
+                    for (var i = 0; i<Input.length; i++) {
+                        var a = Input[i].value;
+                        a = Number(a);
+                        if ( isNaN(a) == true ) {
+                            myResult.innerHTML = 'Loi roi ban' + ' ' + Input[i].value;
+                            return; // 0 phai la so
+                        }
+                        result =  a + result;
+                    }
+                    myResult.innerHTML = result;
+                }
+
+                
+
+                var myButtonTest = document.getElementById('myButtonTest');
+                var myInnerHtml = document.getElementById('myInnerHtml');
+                var myTest = document.getElementById('myTest');
+                myButtonTest.onclick = function(){
+                    // myInnerHtml.innerHTML = myTest.selectedIndex;
+                    myInnerHtml.innerHTML = myTest.options[myTest.selectedIndex].text;
+                    fnResult();
+                }
+            </script>
+
+            <select id="mySelect">
+                <option value="0">0 Phong</option>
+                <option value="1">1 Phong</option>
+                <option value="2">2 Phong</option>
+                <option value="3">3 Phong</option>
+                <option value="4">4 Phong</option>
+            </select>
+            <div id="addBedGroup">
+                <button id="addBedButton">
+                    ThemGiuong
+                </button>
+            </div>
+
+            <script>
+                var getMySelect = document.getElementById('mySelect');
+                var bedButton = document.getElementById('addBedButton');
+                var addBedGroup = document.getElementById('addBedGroup');
+
+                var createTag = document.createElement('p');
+                createTag.setAttribute('class', 'error');
+                var createTextError = document.createTextNode('Chon so luong!');
+                createTag.appendChild(createTextError);
+
+                function addBedInput($pr) {
+                  var bedGroupSelect = document.getElementById('bedGroupSelect');
+                  var createTagInput = document.createElement('input');
+                  createTagInput.setAttribute('type', 'checkbox');
+                  bedGroupSelect.appendChild(createTagInput);
+                  bedGroupSelect.appendChild(document.createTextNode('Phong' + $pr));
+                }
+
+                bedButton.onclick = function () {
+                  var x = mySelect.selectedIndex; // vị trí của select được chọn
+                  var y = mySelect.options; // Vị trí cụ thể của select options
+
+                  var getClassError = document.getElementsByClassName('error');
+                  
+                  var createTag_bedGroupSelect = document.createElement('div');
+                  createTag_bedGroupSelect.setAttribute('id', 'bedGroupSelect');
+                  var bedGroupSelect = document.getElementById('bedGroupSelect');
+                  // Set nhom duoc them vao de select
+                  if (bedGroupSelect != null) {
+                    bedGroupSelect.remove();
+                  }
+                  addBedGroup.appendChild(createTag_bedGroupSelect);
+                  
+                  if (x == 0) {
+                    // getInnerHtml.innerHTML = x;
+                    addBedGroup.appendChild(createTag);
+                  }
+                  
+                  if (x != 0) {
+                    // getInnerHtml.innerHTML = x;
+                    // addBedButton.style.display = 'none';
+                    for (var i = 0; i<getClassError.length; i++) {
+                        getClassError[i].style.display = 'none';
+                    }
+                    for (var i = 0; i<x; i++) {
+                      addBedInput(i + 1);
+                    }
+                  }
+                }
+
+                // console.log demo
+                var getInnerHtml = document.getElementById('innerHtml');
+                // getInnerHtml.innerHTML = y;
+            </script>
+
+
+            <div class="ui-slider">
+                <div class="arrow">
+                    <button class="btn btn-prev">Prev</button>
+                    <button class="btn btn-next">Next</button>
+                </div>
+
+                <ul class="slider-nav">
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/ddd/?text=images+1" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/555/?text=images+2" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/111/?text=images+3" alt="" />
+                        </a>
+                    </li>
+
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/ddd/?text=images+4" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/555/?text=images+5" alt="" />
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- <ul class="ui-dots"> -->
+                    <!-- <li class="dot"></li>
+                    <li class="dot"></li>
+                    <li class="dot"></li>
+                    <li class="dot"></li>
+                    <li class="dot"></li> -->
+                <!-- </ul> -->
+            </div>
+
+            <div class="ui-slider-tuds">
+                <div class="arrow">
+                    <button class="btn btn-prev">Prev</button>
+                    <button class="btn btn-next">Next</button>
+                </div>
+
+                <ul class="slider-nav">
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/ddd/?text=images+1" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/555/?text=images+2" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/111/?text=images+3" alt="" />
+                        </a>
+                    </li>
+
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/ddd/?text=images+4" alt="" />
+                        </a>
+                    </li>
+                    <li class="slider-item">
+                        <a href="#">
+                            <img class="img-responsive" src="//placehold.it/960x310/555/?text=images+5" alt="" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <script type="text/javascript">
+
+                ui_slider('.ui-slider', false);
+                ui_slider('.ui-slider-tuds', false);
+                
+                // console.log(item.length); // 0,1,2 || 3
+                function ui_slider(param_name, auto) {
+                    var n = 1; // default
+                    var ui_slider = document.querySelectorAll(param_name);
+                    var item = document.querySelectorAll(param_name +' .slider-item');
+                    var prev = document.querySelectorAll(param_name +' .btn-prev');
+                    var next = document.querySelectorAll(param_name +' .btn-next');
+                    
+                    // Add UL class="ui-dots"
+                    function ui_dots_list() {
+                        var node_ul = document.createElement("UL");
+                        node_ul.className = 'ui-dots';
+                        for (var i = 0; i<ui_slider.length; i++) {
+                            ui_slider[i].appendChild(node_ul);
+                        }
+                    }
+                    ui_dots_list();
+                    // Add Li class="dot" theo dung number như trên
+                    function add_dots() {
+                        var ui_dots = document.querySelectorAll(param_name +' .ui-dots');
+                        var node_li = document.createElement("LI");
+                        node_li.className = 'dot';
+                        ui_dots[0].appendChild(node_li);
+
+                    }
+                    for (var i = 0; i<item.length; i++) {
+                        add_dots();
+                    }
+                    var dots = document.querySelectorAll(param_name +' .dot');
+                    
+
+                    for (var i = 0; i<next.length; i++) {
+                        next[i].onclick = function() {
+                            n = n + 1;
+                            show_item(n, 1);
+                        }
+                    }
+                    for (var i = 0; i<prev.length; i++) {
+                        prev[i].onclick = function() {
+                            n = n - 1;
+                            show_item(n, 1);
+                        }    
+                    }
+                    // Check max and min number item
+                    function check_max_min_number_item(number) {
+                        if (number > item.length) { // 3
+                            n = 1;
+                        }
+                        if (number < 1) {
+                            n = item.length;
+                        }
+                    }
+
+                    // Auto slider
+                    var timeOut;
+                    function carousel() {
+                        n++;
+                        show_item(n);
+                        timeOut = setTimeout(carousel, 2000); // Change image every 2 seconds
+                    }
+                    
+                    if (auto === true) {
+                        n = 0;
+                        carousel();
+                    }
+                    
+                    // Run default slider
+                    function show_item(pr_item_number, stop) {
+                        check_max_min_number_item(pr_item_number);
+                        item_dots(pr_item_number);
+                        for (var i = 0; i<item.length; i++) {
+                            item[i].style.display = "none";
+                        }
+                        item[n - 1].style.display = "block";
+
+                        // Stop auto play
+                        if (stop === 1) {
+                            clearTimeout(timeOut);
+                        }
+                    }
+                    // Call function default
+                    show_item(n, 0);
+
+                    // Dots funtion
+                    function item_dots(pr_item_dot) {
+                        for (var i = 0; i<dots.length; i++) {
+                            dots[i].className = 'dot';
+                            dots[i].onclick = function(){
+                                for (var i = 0; i<dots.length; i++) {
+                                    if (dots[i] == this) {
+                                        show_item(n = i + 1, 1);
+                                    }
+                                }
+                            };
+                        }
+                        dots[n - 1].className += " active";
+                    }
+                }
+                
+            </script>
+        </div>
+    </body>
+</html>

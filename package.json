@@ -24,9 +24,12 @@
   },
   "homepage": "https://github.com/crazychicken/test#readme",
   "devDependencies": {
+    "bootstrap-datepicker": "^1.7.1",
     "bootstrap-sass": "^3.3.7",
     "browser-sync": "^2.18.12",
     "checkbox-radio": "^1.1.0",
+    "converthtml": "^1.0.7",
+    "croppie": "^2.5.0",
     "dotstail": "^1.1.0",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",

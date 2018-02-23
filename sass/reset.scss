@@ -1,0 +1,1143 @@
+//* RESET FILE *//
+// Version 1.0.0
+// By Author Tu Truong
+// Email: crazychicken@clgt.vn
+
+ 
+// Before you edit or reset default css of html tags, You have to understand speccify browsers default values. 
+
+// HTML BY CATEGORY
+// 1.  Basic html
+// 2.  Formatting
+// 3.  Form and input
+// 4.  Frames
+// 5.  Images
+// 6.  Audio/Video
+// 7.  Link
+// 8.  Lists
+// 9.  Tables
+// 10. Style and sematics
+// 11. Meta Info
+// 12. Programming
+// 13. Graphics
+
+// #####
+// ##### BASIC HTML ######
+// html, head, title, body,
+// h1 ... h6, p, br, hr
+
+// Default css settings
+// html { 
+//     display: block;
+// 	&:focus { 
+// 	    outline: none;
+// 	}
+// }
+
+// Default css settings
+// body { 
+//     display: block;
+//     margin: 8px;
+// 	&:focus { 
+// 	    outline: none;
+// 	}
+// }
+
+// Default css settings
+// title {
+// 	display: none;
+// }
+
+// Default css settings
+// hr { 
+//     display: block;
+//     margin-top: 0.5em;
+//     margin-bottom: 0.5em;
+//     margin-left: auto;
+//     margin-right: auto;
+//     border-style: inset;
+//     border-width: 1px;
+// }
+// ##### ./END BASIC HTML ######
+// #####
+
+
+// #####
+// ##### FORMATTING #####
+// ### ALL TAGS 
+// abbr, addresss
+// bdi, bdo,
+// b, strong,
+// cite, dfn, em, i, var,
+// blockquote, q,         | blockquote > cite + q (couple)
+// code, kbd, samp,
+// del, s,
+// ins, u,
+// pre,
+// small,
+// sub, sup
+
+// Not supported HTML5
+// acronym, big, center, font, strike, tt
+
+// New supported HTML5
+// bdi, mark, meter, progress, time, wbr
+// ruby, rt, rp          | ruby > rp + rt (couple)
+
+// ##### HTML FORMATTING ELEMENTS #####
+// https://www.w3schools.com/html/html_formatting.asp
+// b, strong
+// cite, dfn, em, i, var
+// del, s, strike
+// ins, u,
+// mark, small,
+// sup, sub, ruby, rt, rp,
+// code, kbd, samp,
+
+// ### Bold text, Important text
+// b, strong {
+// 	font-weight: bold;
+// }
+// b       | Defines bold text
+// strong  | Defines important text
+
+// ### Italic text, Emphasized text
+// i, em, cite, dfn, var {
+// 	font-weight: italic;
+// }
+// cite    | Define the title of a work
+// dfn     | The <dfn> tag represents the defining instance of a term in HTML
+// i       | Defines italic text
+// em      | Defines emphasized text (important)
+// var     | Defines a variable
+
+// ### Deleted text
+// del     | A text with a deleted part, and a new, inserted part.
+// s       | The <s> tag specifies text that is no longer correct, accurate or relevant.
+// strike  | Not supported HTML5
+// del, s, strike {
+//  text-decoration: line-through;
+// }
+
+// ### Inserted text
+// ins     | Defines inserted text | it have to using <del> .. <ins>
+// u       | Underline a misspelled word
+// ins, u {
+//  text-decoration: underline;
+// }
+
+// ### Marked text
+// mark    | Defines marked text
+// mark {
+//     background-color: yellow;
+//     color: black;
+// }
+
+// ### Small text
+// small    | Defines small text
+// small {
+// 	font-size: smaller;
+// }
+
+// ### Subscript text
+// sub      | Defines subscripted text
+// sub {
+//     vertical-align: super;
+//     font-size: smaller;
+// }
+
+// ### Superscript text
+// sup      | Defines superscripted text
+// sup {
+//     vertical-align: sub;
+//     font-size: smaller;
+// }
+
+// ## A ruby annotation
+// ruby     | A ruby annotation | HTML5
+// ruby > rt
+
+// ## Format text in a document
+// kbd      | Defines keyboard input
+// samp     | Defines sample output from a computer program
+// code     | Defines a piece of computer code
+// kbd, samp, code {
+//   font-family: monospace;
+// }
+
+// ## Preformatted text
+// pre       | Defines preformatted text
+// pre {
+//   display: block;
+//   font-family: monospace;
+//   white-space: pre;
+//   margin: 1em 0;
+// }
+
+
+// ##### HTML QUOTATION AND CITATION ELEMENTS #####
+// https://www.w3schools.com/html/html_quotation_elements.asp
+// ### ALL TAGS
+// abbr, address,
+// bdo, blockquote, q
+
+// abbr         | Defines an abbreviation or acronym
+// abbr[title],
+// acronym[title] {
+//  text-decoration: underline dotted;
+// }
+
+// address      | Defines contact information for the author/owner of a document
+// address {
+//  font-style: italic;
+//  display: block;
+// }
+
+// bdo          | Defines the text direction 
+// bdo { 
+//     unicode-bidi: bidi-override;
+// }
+
+// blockquote   | Defines a section that is quoted from another source
+// blockquote {
+// 	display: block;
+// 	margin-top: 16px;
+// 	margin-bottom: 16px;
+// 	margin-left: 40px;
+// 	margin-right: 40px;
+// }
+
+// cite        | Defines the title of a work
+// cite {
+// 	font-style: italic;
+// }
+
+// q           | Defines a short inline quotation
+// q {
+// 	display: inline;
+// 	&:before { 
+// 		content: open-quote;
+// 	}
+// 	&:after { 
+// 		content: close-quote;
+// 	}
+// }
+
+// ##### ./END HTML QUOTATION AND CITATION ELEMENTS #####
+// ##### ./END FORMATTING #####
+// #####
+
+
+
+
+// #####
+// ### HTML FORMS ###
+// The <form> element can contain one or more of the following form elements:
+// label, 
+// input,
+// textarea,
+// button,
+// select, option, optgroup     | select > option + optgroup | (couple)
+// fieldset, legend             | fieldset > legend          | (couple)
+
+// New support HTML5 - 2 tags
+// datalist, output
+
+// fieldset | tag is used to group related elements in a form, draws a box around the related elements
+// https://www.w3schools.com/tags/tag_fieldset.asp
+// Default css settings
+// fieldset { 
+//     display: block;
+//     margin-left: 2px;
+//     margin-right: 2px;
+//     padding-top: 0.35em;
+//     padding-bottom: 0.625em;
+//     padding-left: 0.75em;
+//     padding-right: 0.75em;
+//     border: 2px groove (internal value);
+// }
+// CUSTOM Default css
+// fieldset	      | Groups related elements in a form
+// fieldset {
+//   border: 1px solid #c0c0c0;
+//   margin: 0 2px;
+//   padding: 0.35em 0.625em 0.75em;
+// }
+// legend        | The <legend> tag defines a caption for the <fieldset> element
+// Default css settings
+// legend {
+//     display: block;
+//     padding-left: 2px;
+//     padding-right: 2px;
+//     border: none;
+// }
+
+// form          | Tag is used to create an HTML form for user input.
+// Default css settings
+// form {
+//     display: block;
+//     margin-top: 0em;
+// }
+
+// input         | Defines an input control
+// textare       | Defines a multiline input control (text area)
+// button        | Defines a clickable button
+// option        | Defines a group of related options in a drop-down list
+
+// label         | Defines a label for an <input> element
+//               | The <label> tag defines a label for an <input> element.
+//               | Attribute for="id_name" with <input id="id_name">
+// Default css settings
+// label {
+//     cursor: default;
+// }
+
+// select        | The <select> element is used to create a drop-down list.
+// optgroup      | Defines a group of related options in a drop-down list
+// option 	     | Defines an option in a drop-down list
+
+// datalist      | Specifies a list of pre-defined options for input controls
+//               | Not support Safari | datalist > option
+// output        | Defines the result of a calculation
+//               | IE13 | The form attribute of the <output> element is not supported in IE/Edge.
+
+// ##### ./END HTML FORMS #####
+// #####
+
+
+
+// #####
+// ##### FRAMES #####
+// ALL TAGS
+// frame, frameset, noframes | Not support HTML5
+// iframe
+
+// iframe     | Defines an inline frame
+// Default css settings
+// iframe:focus { 
+//     outline: none;
+// }
+// iframe[seamless] { 
+//     display: block;
+// }
+// ##### ./END FRAMES #####
+// #####
+
+
+
+
+// #####
+// ##### IMAGES #####
+// ### ALL TAGS ###
+// img, map, area, canvas, 
+// figcaption, figure,
+// picture
+
+// ### New support HTML5
+// canvas, figcaption, figure, picture
+
+// img        | Defines an image
+// Default css settings
+// img { 
+//     display: inline-block;
+// }
+
+// map        | Defines an image-map | map > area
+// Default css settings
+// map {
+//     display: inline;
+// }
+
+// area       | Defines a clickable area inside an image-map
+// area { 
+//     display: none;
+// }
+
+// figure     | Specifies self-contained content | figure > figcaption (couple)
+//            | Sopported IE9
+// Default css settings
+// figure { 
+//     display: block;
+//     margin-top: 1em;
+//     margin-bottom: 1em;
+//     margin-left: 40px;
+//     margin-right: 40px;
+// }
+// figcaption | Defines a caption for a <figure> element.
+//            | Sopported IE9
+//            | The <figure> tag specifies self-contained content, like illustrations, diagrams, photos, code listings, etc
+
+// picture    | Defines a container for multiple image resources 
+//            | Support IE13, Safari 9.1 ... :( | picture > source + img
+
+// ##### ./END IMAGES #####
+// #####
+
+
+// #####
+// ##### AUDIO & VIDEO #####
+// ALL TAGS - HTML5
+// audio, source, track, video
+
+// video      | Defines a video or movie
+//            | Supported IE9 | video > source + track
+//            | https://www.w3schools.com/tags/tag_video.asp
+
+// audio      | Defines sound content
+//            | Supported IE9 | audio > source + track
+//            | https://www.w3schools.com/tags/tag_audio.asp
+
+// source     | Defines multiple media resources for media elements (<video>, <audio> and <picture>)
+//            | Supported IE9
+
+// track      | Defines text tracks for media elements (<video> and <audio>)
+//            | Supported IE9
+
+// ##### ./END AUDIO & VIDEO #####
+// #####
+
+
+
+// #####
+// ##### HTML LINKS #####
+// ### ALL TAGS
+// a, link, nav
+
+// New support html5
+// nav
+
+// a       | HTML links are hyperlinks
+//         | https://www.w3schools.com/tags/tag_a.asp
+// Default css settings
+// a:link, a:visited { 
+//     color: (internal value);
+//     text-decoration: underline;
+//     cursor: auto;
+// }
+// a:link:active, a:visited:active { 
+//     color: (internal value);
+// }
+
+// link    | Defines the relationship between a document and an external resource (most used to link to style sheets)
+// Default css settings
+// link {
+// 	display: none
+// }
+
+// nav     | Defines a set of navigation links
+// Default css settings
+// nav {
+//     display: block;
+// }
+
+// ##### ./END HTML LINKS #####
+// #####
+
+
+
+// #####
+// ##### HTML LISTS #####
+// ### ALL PAGES
+// ul, li
+// ol, li
+// dl, dt, dd
+// menu, menuitem
+
+// ### New Support HTML5
+// menu, menuitem     | support ONLY Firefox
+
+// dl      | Defines a description list | dl > dt + dd (couple)
+// Default css settings
+// dl {
+//     display: block;
+//     margin-top: 1em;
+//     margin-bottom: 1em;
+//     margin-left: 0;
+//     margin-right: 0;
+// }
+
+// dt      | Defines terms/names
+// Default css settings
+// dt { 
+//     display: block;
+// }
+
+// dd      | Defines describes each term/name
+// Default css settings
+// dd { 
+//     display: block;
+//     margin-left: 40px;
+// }
+
+// Attibute type not support HTML 5
+// ol      | Defines an ordered list | ol > li (couple)
+// ol {
+//     display: block;
+//     list-style-type: decimal; // difficult with ul
+//     margin-top: 1em;
+//     margin-bottom: 1em;
+//     margin-left: 0;
+//     margin-right: 0;
+//     padding-left: 40px;
+// }
+
+// Attibute type not support HTML 5
+// ul      | Defines an unordered (bulleted) list | ul > li
+// Default css settings
+// ul { 
+//     display: block;
+//     list-style-type: disc; // difficult with ol
+//     margin-top: 1em;
+//     margin-bottom: 1em;
+//     margin-left: 0;
+//     margin-right: 0;
+//     padding-left: 40px;
+// }
+
+// li     | Defines a list item
+// Default css settings
+// li {
+//     display: list-item;
+// }
+
+// ### List into HTML5
+// menu     | Support only FireFox
+// menuitem | Support only FireFox
+// menu {
+//     display: block;
+//     list-style-type: disc;
+//     margin-top: 1em;
+//     margin-bottom: 1em;
+//     margin-left: 0;
+//     margin-right: 0;
+//     padding-left: 40px;
+// }
+
+// ##### ./END HTML LISTS #####
+// #####
+
+
+
+
+// #####
+// ##### TABLES #####
+// ### ALL TAGS
+// table, th, tr, td,
+// thead, tbody, tfoot
+// caption, colgroup, col
+
+// table      | Defines a table
+// Default css settings
+// table {
+//     display: table;
+//     border-collapse: separate;
+//     border-spacing: 2px;
+//     border-color: gray;
+// }
+
+// th         | Defines a header cell in a table
+// Default css settings
+// th {
+//     display: table-cell;
+//     vertical-align: inherit;
+//     font-weight: bold;
+//     text-align: center;
+// }
+
+// tr         | Defines a row in a table
+// Default css settings
+// tr {
+//     display: table-row;
+//     vertical-align: inherit;
+//     border-color: inherit;
+// }
+
+// td         | Defines a cell in a table
+// Default css settings
+// td {
+//     display: table-cell;
+//     vertical-align: inherit;
+// }
+
+// caption    | Defines a table caption
+// Default css setting
+// caption { 
+//     display: table-caption;
+//     text-align: center;
+// }
+
+// colgroup   | Specifies a group of one or more columns in a table for formatting
+// Default css settings
+// colgroup { 
+//     display: table-column-group;
+// }
+
+// col        | Specifies column properties for each column within a <colgroup> element
+// Default css settings
+// col { 
+//     display: table-column;
+// }
+
+// thead      | Groups the header content in a table
+// Default css settings
+// thead {
+//     display: table-header-group;
+//     vertical-align: middle;
+//     border-color: inherit;
+// }
+
+// tbody      | Groups the body content in a table
+// Default css setting
+// tbody {
+//     display: table-row-group;
+//     vertical-align: middle;
+//     border-color: inherit;
+// }
+
+// tfoot      | Groups the footer content in a table
+// Default css settings
+// tfoot {
+//     display: table-footer-group;
+//     vertical-align: middle;
+//     border-color: inherit;
+// }
+// ##### ./END TABLES #####
+// #####
+
+
+
+// #####
+// ##### STYLES AND SEMANTICS ######
+// ALL TAGS
+// style, div, span
+
+// New support HTML5
+// header, main, body
+// section, article, aside
+// dialog
+// details, summary
+// data
+
+
+// ##### STYLE #####
+// style      | Defines style information for a document
+// Default css settings
+// style {
+// 	display: none;
+// }
+
+
+// ##### LAYOUT #####
+// https://www.w3schools.com/html/html_layout.asp
+// ALL TAGS
+// div, header, main, footer,
+// section, article, aside
+// All supported IE9
+
+// div        | Defines a section in a document
+// header     | Defines a header for a document or section
+// footer     | Defines a footer for a document or section
+
+// main       | Specifies the main content of a document
+//            | There must not be more than one <main> element in a document.
+//            | The <main> element must NOT be a descendant of an <article>, <aside>, <footer>, <header>, or <nav> element.
+
+// section    | Defines a section in a document
+// article    | Defines an article
+// aside      | Defines content aside from the page content
+// Default css settings
+// {
+// 	display: block;
+// }
+
+
+// ##### CONTENTS #####
+// ALL TAGS
+// span,
+// dialog, details, summary
+// data
+
+// span      | Defines a section in a document
+// Default css settings
+// span {
+// 	display: inline-block;
+// }
+
+// details   | Defines additional details that the user can view or hide
+// summary   | Defines a visible heading for a <details> element
+// Default css settings
+// details, summary {
+// 	display: inline-block;
+// }
+
+// dialog    | Defines a dialog box or window
+//           | Not support IE, FF, Safari, Chorm 37.0
+
+// data      | only support IE + FireFox 22.0
+
+// ##### ./END STYLES AND SEMANTICS ######
+// #####
+
+
+// #####
+// ##### META INFO #####
+// ALL TAGS
+// head, meta, base, basefont
+
+// Not Support HTML5
+// basefont
+
+// head      | Defines information about the document
+// Default css settings
+// head {
+// 	display: none;
+// }
+
+// meta      | Defines metadata about an HTML document
+// base      | Specifies the base URL/target for all relative URLs in a document
+
+// basefont  | Specifies a default color, size, and font for all text in a document
+
+// ##### ./END META INFO #####
+// #####
+
+
+
+// #####
+// ##### PROGRAMMING #####
+// ALL TAGS
+// script, noscript, applet, embed, object, param
+// Not spporeted HTML5
+// applet
+
+// New support HTML5
+// embeb
+
+// script      | Defines a client-side script
+// Default css settings
+// script {
+// 	display: none;
+// }
+// noscript    | Defines an alternate content for users that do not support client-side scripts
+
+// applet      | Not supported in HTML5. Use <embed> or <object> instead. Defines an embedded applet
+
+// embed       | Defines a container for an external (non-HTML) application
+// Default css settings
+// embed:focus { 
+//     outline: none;
+// }
+
+// object      | Defines an embedded object | object > param (couple)
+// Default css settings
+// object:focus {
+//     outline: none;
+// }
+
+// param       | Defines a parameter for an object
+// Default css settings
+// param {
+// 	display: none;
+// }
+
+// ##### ./END PROGRAMMING #####
+// #####
+
+
+// #####
+// ##### HTML GRAPHICS #####
+// ### CANVAS
+// https://www.w3schools.com/graphics/canvas_intro.asp
+// ## Draw a red square, on the fly, and show it inside the <canvas> elemen
+// canvas   | Supported IE9
+// canvas { 
+//     height: 150px;
+//     width: 300px;
+// }
+
+// ### SVG
+// https://www.w3schools.com/graphics/svg_intro.asp
+// Rectangle  | <rect>
+// Circle     | <circle>
+// Ellipse    | <ellipse>
+// Line       | <line>
+// Polyline   | <polyline>
+// Polygon    | <polygon>
+// Path       | <path>
+
+// ### GOOGLE MAPS
+// https://www.w3schools.com/graphics/google_maps_intro.asp
+
+// ##### ./END HTML GRAPHICS #####
+// #####
+
+
+
+
+// #####
+// ##### BLOCK ELEMENTS #####
+// https://www.w3schools.com/html/html_blocks.asp
+// A block-level element always starts on a new line and takes up the full width available (stretches out to the left and right as far as it can)
+
+// ### ALL TAGS
+// div, p, form,
+// h1, h2, h3, h4, h5, h6,
+
+// New support HTML5
+// article, aside, header, main,
+// hgroup, section, nav, figcaption,
+// details, summary
+// datalist
+
+// Default css settings
+// {
+//     display: block;
+// }
+
+// ##### ./END BLOCK #####
+// #####
+
+
+
+// #####
+// ##### DISPLAY NONE ELEMENTS #####
+// ### ALL TAGS
+// head, style, link, script, param
+// head,
+// link,
+// style {
+//     display: none;
+// }
+// ##### ./END DISPLAY NONE ELEMENTS #####
+// #####
+
+
+
+
+// #####
+// ##### INLINE-BLOCK ELEMENTS #####
+// a, span, img
+// ### Default css settings
+// {
+//  display: inline-block;
+// }
+// ##### ./END INLINE-BLOCK ELEMENTS #####
+// #####
+
+
+
+
+// #####
+// ##### NOT SUPPORTED HTML5 #####
+// acronym      | Defines an acronym.
+// applet       | An embedded Java applet
+// basefont     | Specifies a default color, size, and font for all text in a document
+// big          | Make text bigger than normal
+// center       | Center-align text in an HTML page
+// dir          | A directory list
+// font         | Defines font, color, and size for text
+// frame        | Defines a window (a frame) in a frameset
+// frameset     | Defines a set of frames
+// noframes     | Defines an alternate content for users that do not support frames
+// strike       | Strikethrough text can be marked up as follows
+// tt           | Define teletype text
+// ##### ./END NOT SUPPORTED HTML5 #####
+// #####
+
+// #####
+// ##### NEW ELEMENTS IN HTML5 #####
+// https://www.w3schools.com/html/html5_new_elements.asp
+
+// ### LAYOUT - 7 tags
+// header, main, footer, section, article, aside, nav
+
+// ### IMAGES - 2 tags
+// figure       | Supported IE9
+// figcation    | Supported IE9
+
+// ### FORMATTING ELEMENTS OR CONTENTS - 8 tags
+// bdi          | Not supported IE
+// dialog       | Not supported IE, FF, Safari, Chorm 37.0
+// details      | Not supported IE
+// mark         | Supported IE9
+// progress     | Supported IE10
+// ruby, rp, rt | Supported FireFox 38.0
+// summary      | Not supported IE
+// time         | Supported IE9
+// wbr          | Supported IE12
+
+// ### NEW FORM ELEMENTS
+// datalist     | Specifies a list of pre-defined options for input controls
+//              | Not support Safari | datalist > option
+// output       | Defines the result of a calculation
+//              | Supported IE13 | The form attribute of the <output> element is not supported in IE/Edge.
+
+
+// ### NEW SEMANTIC/STRUCTURAL ELEMENTS
+// article      | Defines an article in a document
+// aside        | Defines content aside from the page content
+// bdi          | Isolates a part of text that might be formatted in a different direction from other text outside it
+// details      | Defines additional details that the user can view or hide
+// dialog       | Defines a dialog box or window
+// figcaption   | Defines a caption for a <figure> element
+// figure       | Defines self-contained content
+// footer       | Defines a footer for a document or section
+// header       | Defines a header for a document or section
+// main         | Defines the main content of a document
+// mark         | Defines marked/highlighted text
+// menuitem     | Defines a command/menu item that the user can invoke from a popup menu
+// meter        | Defines a scalar measurement within a known range (a gauge)
+// nav          | Defines navigation links
+// progress     | Represents the progress of a task
+// rp           | Defines what to show in browsers that do not support ruby annotations
+// rt           | Defines an explanation/pronunciation of characters (for East Asian typography)
+// ruby         | Defines a ruby annotation (for East Asian typography)
+// section      | Defines a section in a document | section > h1 ... h6
+// summary      | Defines a visible heading for a <details> element
+// time         | Defines a date/time
+// wbr          | Defines a possible line-break
+
+
+// ### GRAPHICS
+// canvas       | Draw graphics, on the fly, via scripting (usually JavaScript)
+// svg          | Draw scalable vector graphics
+
+// ### MEDIA - VIDEO - AUDIO
+// audio        |  Defines sound content
+// embed        |  Defines a container for an external (non-HTML) application
+// source       |  Defines multiple media resources for media elements (<video> and <audio>)
+// track        |  Defines text tracks for media elements (<video> and <audio>)
+// video        |  Defines video or movie
+
+// ##### NEW ELEMENTS IN HTML5 #####
+// #####
+
+
+// #####
+// ##### HTML5 DISPLAY-ROLE RESET FOR OLDER BROWSERS #####
+// <!--[if lt IE 9]>
+//      <script src="/js/html5shiv.js"></script>
+// <![endif]-->
+// ##### ./END HTML5 DISPLAY-ROLE RESET FOR OLDER BROWSERS #####
+// #####
+
+
+// Set default font family to sans-serif.
+html {
+  font-family: sans-serif;
+}
+
+// Remove default margin.
+body {
+  margin: 0;
+}
+
+// ##### Links #####
+// Remove the gray background color from active links in IE 10.
+// a {
+//   background-color: transparent;
+// }
+
+// ##### Images #####
+// Remove border when inside `a` element in IE 8/9/10.
+// img {
+//   border: 0;
+// }
+
+// Correct overflow not hidden in IE 9/10/11.
+// svg:not(:root) {
+//   overflow: hidden;
+// }
+
+// ##### Basic HTML ####
+// Address differences between Firefox and other browsers.
+hr {
+	border: none;
+	border-bottom: 1px solid #ddd;
+}
+
+
+// Forms
+// ==========================================================================
+
+//
+// Known limitation: by default, Chrome and Safari on OS X allow very limited
+// styling of `select`, unless a `border` property is set.
+//
+
+//
+// 1. Correct color not being inherited.
+//    Known issue: affects color of disabled elements.
+// 2. Correct font properties not being inherited.
+// 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+//
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit; // 1
+  font: inherit; // 2
+  margin: 0; // 3
+}
+
+button,
+html input[type="button"], // 1
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button; // 2
+  cursor: pointer; // 3
+}
+
+//
+// Re-set default cursor for disabled elements.
+//
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+//
+// Remove inner padding and border in Firefox 4+.
+//
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+//
+// Address Firefox 4+ setting `line-height` on `input` using `!important` in
+// the UA stylesheet.
+//
+
+input {
+  line-height: normal;
+}
+
+//
+// It's recommended that you don't attempt to style these elements.
+// Firefox's implementation doesn't respect box-sizing, padding, or width.
+//
+// 1. Address box sizing set to `content-box` in IE 8/9/10.
+// 2. Remove excess padding in IE 8/9/10.
+//
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box; // 1
+  padding: 0; // 2
+}
+
+//
+// Fix the cursor style for Chrome's increment/decrement buttons. For certain
+// `font-size` values of the `input`, it causes the cursor style of the
+// decrement button to change from `default` to `text`.
+//
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+//
+// 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+// 2. Address `box-sizing` set to `border-box` in Safari and Chrome.
+//
+
+input[type="search"] {
+  -webkit-appearance: textfield; // 1
+  box-sizing: content-box; //2
+}
+
+//
+// Remove inner padding and search cancel button in Safari and Chrome on OS X.
+// Safari (but not Chrome) clips the cancel button when the search input has
+// padding (and `textfield` appearance).
+//
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+//
+// Define consistent border, margin, and padding.
+//
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+//
+// 1. Correct `color` not being inherited in IE 8/9/10/11.
+// 2. Remove padding so people aren't caught out if they zero out fieldsets.
+//
+
+legend {
+  border: 0; // 1
+  padding: 0; // 2
+}
+
+//
+// Remove default vertical scrollbar in IE 8/9/10/11.
+//
+
+textarea {
+  overflow: auto;
+}
+
+//
+// Don't inherit the `font-weight` (applied by a rule above).
+// NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+//
+
+optgroup {
+  font-weight: bold;
+}
+
+
+// custom code default tag
+.code {
+  background-color: #F9F2F4;
+  border-radius: 4px;
+  color: #ca4440;
+  font-size: 90%;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+// custom blockquote default tag
+.blockquote {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 16px;
+  border-left: 5px solid #eee;
+}
+.blockquote, q {
+  quotes: none;
+}
+.blockquote:before, .blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+// custom default css
+// img {
+//   border: 0;
+// }
+
+
+
+
+
+
+
+
+

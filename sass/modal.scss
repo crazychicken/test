@@ -1,0 +1,128 @@
+@import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+.fixed {
+	position: absolute;
+	// position: fixed;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	body::before {
+		content: '';
+		top: 0;
+		bottom: 0;
+		height: 100%;
+		width: 100%;
+		position: fixed;
+		display: block;
+		background: rgba(0,0,0,0.75);
+		z-index: 9998;
+	} 
+}
+.tmodal {
+	position: absolute;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	display: none;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	touch-action: manipulation;
+	&-dialog {
+		// top: 60px;
+		// bottom: 60px;
+		// width: 100%;
+		// height: calc(100% - 120px);
+		// overflow-y: scroll;
+		// -webkit-overflow-scrolling: touch;
+		// touch-action: manipulation;
+	}
+	&.show {
+		display: block;
+	}
+	&-dialog {
+		width: 320px;
+		background: #fff;
+		position: relative;
+		margin: 0 auto;
+		padding: 30px;
+		border-radius: 10px;
+	}
+}
+
+.tmodal-fixed {
+	display: none;
+	width: 100%;
+	height: 60px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #333;
+	color: #fff;
+	z-index: 9999999999;
+}
+
+#btn_scroll,
+#touch {
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+#touch {
+	z-index: 9999999999;
+	top: auto;
+	bottom: 300px;
+}
+
+#un_scroll {
+	display: none;
+	position: fixed;
+	background: #ddd;
+	padding: 20px;
+	width: 50%;
+	height: 100%;
+	height: 100vh;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	// transition: all 0.5s;
+	// -webkit-overflow-scrolling: touch;
+	// touch-action: manipulation;
+	// overflow: scroll;
+}
+#scroll {
+	-webkit-overflow-scrolling: touch;
+	touch-action: manipulation;
+	overflow: scroll;
+	height: 200px;
+	width: 100%;
+}
+
+// FIX SCROLL SIDEBAR FULL HEIGHT IOS
+
+// Lỗi scroll đụng với chiều cao của full height, khi navigation xuất hiện sẽ làm giảm chiều cao của màn hình, sau khi mất đi sẽ trả lại chiều cao full màn hình, lúc đó đối tượng full width sẽ lấy lại kích thước, hay nói chính xác hơn là update lại chiều cao, tạo nên 1 lỗi là nó sẽ chớp giật 1 cái để full height so với màn hình.
+
+// Cách fix là không sử dụng height 100%, mà thay bằng 100vh, % là lấy kích thước theo đối tượng cấp cha hiện tại của mình, lưu ý chỉ 1 cấp cha bên ngoài thôi.
+
+// vh là lấy chiều cao của thiết bị theo cấp root tức là html hoặc là full screen của màn hình, không lệ thuộc vào cấp cha của nó mà lệ thuộc vào màn hình thiết bị.
+
+// Cách fix này sẽ không bị giật nhưng sẽ bị thanh navigation che mất nội dung khi nó xuất hiện.
+
+
+// Lưu ý khi đối tượng được scroll là body, ở IOS khi sự kiện scroll chưa kết thúc bạn lại chạm vào màn hình thì nó lại target tiếp tục đối tượng này BODY để thực hiện sự kiện scroll, chứ không chuyển qua đối tượng khác. Theo tôi cảm thấy hướng sử dụng này giống như bị error, và hơi khó cho người sử dụng.
+
+// Trong khi đó đối tượng nằm bên trong body, khi bạn scroll, sự kiện scroll chưa kết thúc, bạn lại có thể scroll được body.
+
+
+// SCROLL WITDH MODAL
+
+
+
+
+
+
+
+
+

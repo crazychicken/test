@@ -2,97 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Document</title>
+  <!-- <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script> -->
   <style>
-    .container {
-      width: 800px;
-      margin: 0 auto;
-      height: 500px;
-      border-radius: 6px;
-      background: #f7f7f7;
-      padding: 15px;
+  * {
+    box-sizing: border-box;
+  }
+    #container {
+    position: relative;
     }
-    #convertext,
-    #settext {
-      float: left;
-      width: 100%;
-      margin: 10px 0;
+    #videocover {
+      position: absolute;
+      z-index: 1;
+      height: 290px; /* Change to size of video container - 25pxish */
+      top: 0;
+      right: 0;
+      bottom: 0;
     }
-    .btn {
+    .nav {
+      list-style: none;
+    }
+    .nav li {
       display: inline-block;
-      border: 1px solid #ddd;
-      padding: 10px 25px;
-      border-radius: 6px;
-      clear: both;
-      float: left;
+      margin: 0 10px;
     }
-    #showText {
-      margin-top: 20px;
-      float: left;
-      background: #eeddff;
+    .nav li a {
+      background: #ffddee;
+      height: 100px;
+      width: 30px;
+      text-decoration: none;
+      color: #fff;
+      display: inline-block;
+    }
+    .nav li.active a {
+      background: green;
+    }
+    .gallery {
+      height: 310px;
+      width: 100%;
+      list-style: none;
+      padding: 0;
+      position: relative;
+    }
+    .gallery li {
+      position: absolute;
+    }
+    .navigation {
+      background: #666;
+      clear: both;
+      display: block;
       height: 50px;
       width: 100%;
-      border-radius: 6px;
     }
-    /*// code */
-    .amp-pre {
-      font-size: 0.85rem;
-      background: #f7f7f9;
-      padding: 10px 15px;
-      line-height: 1.2em;
-    }
-    .amp-tag {
-      color: #2f6f9f;
-      font-weight: bold;
-    }
-    .amp-sel {
-      color: #4f9fcf;
-    }
-    .amp-cn {
-      color: #d44950;
-    }
-    .amp-cm {
-      color: #888888;
+    .button {
+      padding: 10px;
     }
   </style>
 </head>
 <body>
-</pre>
+  
 
   <div class="container">
-    <h1>Cover class, id, text of html code, pre</h1>
-    <textarea name="" id="convertext" cols="100" rows="10"></textarea>
-    <button class="btn" id="submit">
-      Submit
-    </button>
-    
-    <textarea name="" id="settext" cols="100" rows="10"></textarea>
-    <pre id="showText"></pre>
+    <div id="container" hidden>
+      <video id="myvideo" width="400" height="300" controls>
+        <source src="mov_bbb.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dC5vCL3MFxs" frameborder="0" allowfullscreen></iframe> -->
+    </div>
+      <br>
+      <ul class="nav" id="nav_test" hidden>
+        <li class="videocover">
+          <a href="#">1</a>
+        </li>
+        <li class="videocover active">
+          <a href="#">2</a>
+        </li>
+        <li class="videocover">
+          <a href="#">3</a>
+        </li>
+        <li class="videocover">
+          <a href="#">4</a>
+        </li>
+        <li class="videocover">
+          <a href="#">5</a>
+        </li>
+
+        <li class="videocover">
+          <a href="#">6</a>
+        </li>
+        <li class="videocover">
+          <a href="#">7</a>
+        </li>
+        <li class="videocover">
+          <a href="#">8</a>
+        </li>
+        <li class="videocover">
+          <a href="#">9</a>
+        </li>
+        <li class="videocover">
+          <a href="#">10</a>
+        </li>
+      </ul>
+      <div class="count-down-time"></div>
+
+    <div class="slider" hidden>
+      <ul class="gallery">
+        <li class="mySlides">
+          <a href="#">
+            <img src="//placehold.it/960x310/ddd/?text=images+1" alt="" />
+          </a>
+        </li>
+        <li class="mySlides">
+          <a href="#">
+            <img src="//placehold.it/960x310/777/?text=images+2" alt="" />
+          </a>
+        </li>
+        <li class="mySlides">
+          <a href="#">
+            <img src="//placehold.it/960x310/333/?text=images+3" alt="" />
+          </a>
+        </li>
+      </ul>
+      <div class="navigation">
+        <button class="button black button-left">&#10094;</button>
+        <button class="button black button-right">&#10095;</button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var param_call = 0; // 0, 1, 2
+      show_slider(param_call);
+
+      var left = document.getElementsByClassName('button-left');
+      for(var i = 0; i<left.length; i++) {
+        left[i].onclick = function(){
+          console.log(param_call);
+          show_slider(param_call = param_call - 1);
+        }
+      }
+
+      var right = document.getElementsByClassName('button-right');
+      for(var i = 0; i<right.length; i++) {
+        right[i].onclick = function(){
+          show_slider(param_call = param_call + 1);
+        }
+      }
+
+      function show_slider(param_dk) {
+        var item = document.getElementsByClassName('mySlides');
+        if (param_dk < 1) {
+          param_call = item.length; // show_slider(2);
+        }
+        if (param_dk > item.length) { // 3
+          param_call = 1; // lon hon so luong item hien co thi lam gi?
+        }
+        // An tat ca
+        for(var i = 0; i<item.length; i++) {
+          item[i].style.display = 'none';
+        }
+        // hien dung item can hien
+        item[param_call - 1].style.display = 'block';
+      }
+    </script>
   </div>
-  <script type="text/javascript">
-    // Conver type hilte.me change select >> pastie
-    var getText = document.getElementById('convertext');
-    var subMit = document.getElementById('submit');
-    var showText = document.getElementById('showText');
-    var setText = document.getElementById('settext');
-
-    subMit.onclick = function(){
-      var dataText = getText.value;
-      var converText = dataText.replace(/style="color: #bb0066; font-weight: bold"/g, 'class="amp-tag"');
-      // tab <, </, >,
-      converText = converText.replace(/style="color: #336699"/g, 'class="amp-sel"');
-      converText = converText.replace(/style="margin: 0; line-height: 125%"/g, 'class="amp-pre"');
-      // class, id, for, attribute
-      converText = converText.replace(/style="color: #dd2200; background-color: #fff0f0"/g, 'class="amp-cn"'); // class, id
-      converText = converText.replace(/style="color: #888888"/g, 'class="amp-cm"'); // comment
-
-      converText = converText.replace(/<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">/g, ''); // clear
+  <br>
+  <button id="button">Play</button>
+  <!-- <script type="text/javascript">
+    $(".videocover a").click(function() {
+      var t = $(this).text();
+      $("#myvideo").get(0).currentTime=t;
+      $("#myvideo").get(0).play()
+      // console.log($("#myvideo").get(0).currentTime);
+      // console.log(t);
       
-      
-      console.log(converText);
-      setText.value = converText;
-      showText.innerHTML = converText;
-    }
-  </script>
+      // $("#myvideo").get(0).currentTime=5;
+      // var video = $("#myvideo").get(0).play();
+      // video.play();
+      return false;
+    });
+  </script> -->
 </body>
 </html>

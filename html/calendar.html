@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <style type="text/css">
+        .datepicker-switch {
+            text-align: center;
+        }
+        .t_next, .t_prev {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div id="dayTuds"></div>
+            <div class="check-in" hidden>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a href="#">Prev</a>
+                            </th>
+                            <th colspan="5">
+                                Tháng 02 - 2018
+                            </th>
+                            <th>
+                                <a href="#">Next</a>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>T2</th>
+                            <th>T3</th>
+                            <th>T4</th>
+                            <th>T5</th>
+                            <th>T6</th>
+                            <th>T7</th>
+                            <th>CN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>7</td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </div>
+            <div class="check-out"></div>
+        </div>
+    </div>
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../theme/js/bootstrap-datepicker.js"></script> -->
+
+    <script type="text/javascript">
+        function tCalendar() {
+            // var a = new Date();
+            // console.log(a.getDate()) // 1 - 31
+            // console.log(a.getDay()) // so ngay trong 1 tuan 0 - 6
+            // console.log(a.getMonth()) // 0 - 11
+            // console.log(a.getFullYear())
+            // // get Number off day
+            // console.log(Date.UTC(2018,1,23)) // 1519344000000
+            // // return from number to day
+            // console.log(new Date(1519344000000))
+            
+
+
+            // Global variable
+            var aDays = [ 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN' ];
+            var aMonths = [ 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN' ];
+            var d = new Date();
+            var m = d.getMonth();
+            var y = d.getFullYear();
+            var limitEndMonth = Date.UTC(2018,0);
+            var limitStartMonth = Date.UTC(2019,2);
+
+
+            // THEME CALENDAR
+            // Theme Function  set type day of week
+            function setDayOfWeek () {
+                for ( var i = 0; i < aDays.length; i++ ) {
+                    aDays[i] = '<th>'+aDays[i]+'</th>';
+                }
+                aDays = aDays.toString();
+                aDays = aDays.replace(/,/g, '');
+                return aDays;
+            }
+            // Theme Function get HTML table for calendar
+            function createTemplate() {
+                return '<table class="table-condensed">'+
+                '<thead>'+
+                    '<tr>'+
+                        '<th colspan="7" class="t_title"></th>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<th class="t_prev">'+'Prev'+'</th>'+
+                        '<th colspan="5" class="t_month"></th>'+
+                        '<th class="t_next">'+'Next'+'</th>'+
+                    '</tr>'+
+                    '<tr>'+
+                        setDayOfWeek()+
+                    '</tr>'+
+                '</thead>'+
+                '<tbody></tbody>'+
+                '</table>'
+            }
+            dayTuds.innerHTML = createTemplate();
+
+            // Theme Append html follow month tr > td dataDays/7
+            function AppendDaysInMonth(pr_num) {
+                var i = 0;
+                var setTr = '';
+                while ( i < pr_num ) {
+                    setTr = setTr + '<tr>'+
+                        '<td>0</td>'+
+                        '<td>1</td>'+
+                        '<td>2</td>'+
+                        '<td>3</td>'+
+                        '<td>4</td>'+
+                        '<td>5</td>'+
+                        '<td>6</td>'+
+                    '</tr>';
+                    i++;
+                }
+                return setTr;
+            }
+
+            // Global get Element in html
+            var tNext = document.querySelectorAll('#dayTuds .t_next')
+            var tPrev = document.querySelectorAll('#dayTuds .t_prev')
+            var tswitch = document.querySelectorAll('#dayTuds .t_month')
+
+            // Funtion get title Month
+            function getMonth(pr_m) {
+                var newMonth = Date.UTC(d.getFullYear(),pr_m);
+                var s = new Date(newMonth)
+                var num = Number(s.getMonth()) + 1;
+                // console.log(s)
+                return tswitch[0].innerHTML = 'Tháng ' + num + ' ' + s.getFullYear();
+            }
+
+            // EVENT
+            // Next Calendar
+            tNext[0].onclick = function() {
+                if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
+                    m = m + 1;
+                    setDaysInMonth(Date.UTC(d.getFullYear(),m))
+                    getMonth(m)
+                }
+            }
+            // Prev Calendar m 1 <=> tg 02
+            tPrev[0].onclick = function() {
+                if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
+                    m = m - 1;
+                    setDaysInMonth(Date.UTC(d.getFullYear(),m))
+                    getMonth(m)
+                }
+            }
+
+            // Call default function
+            setDaysInMonth(Date.UTC(d.getFullYear(),m))
+
+            // Function get Data day in Month
+            function setDaysInMonth ( pr_data_utc ) {
+                var date = new Date(pr_data_utc)
+                var dataDays = [];
+                // var dataUTCDate = [];
+                var days = [];
+                while ( Date.UTC(date.getFullYear(), date.getMonth()) === pr_data_utc ) {
+                    days.push(date.getDay());      // Day of week 0 - 6
+                    dataDays.push(date.getDate()); // Day of month 1 -31
+                    // dataUTCDate.push(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())) // Number day ex: 1519257600000
+                    date.setDate(date.getDate() + 1); // So sánh số ngày của tháng
+                }
+                // console.log(days)
+                
+                // var days = [
+                //     0,             // 1
+                //     1,2,3,4,5,6,0, // 2
+                //     1,2,3,4,5,6,0, // 2
+                //     1,2,3,4,5,6,0, // 3
+                //     1,2,3,4,5,6,0, // 4
+                //     1,2,3,4,5,6,0, // 5
+                //     1     // 6
+                // ]
+
+                // console.log(days)
+
+                var beforeDay = days[0];
+                if ( beforeDay === 0 ) {
+                    while ( beforeDay < 6 ) {
+                        dataDays.unshift('');
+                        beforeDay++;
+                    }
+                } else {
+                    while ( beforeDay > 1 ) {
+                        dataDays.unshift('');
+                        beforeDay--;
+                    }
+                }
+
+                var afterDay = days[days.length-1];
+                while ( afterDay < 7 ) {
+                    dataDays.push('');
+                    afterDay++;
+                }
+
+                // console.log(days)
+
+                var getTH = document.querySelectorAll('#dayTuds tbody')
+                getTH[0].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
+
+                var getTH = document.querySelectorAll('#dayTuds tbody td')
+                getTH.forEach( function(e, index) {
+                    // e.setAttribute('data-utc', dataUTCDate[index]);
+                    e.innerHTML = dataDays[index];
+                });
+            }
+
+
+
+            function setDaysInMonth1 ( pr_data_utc ) {
+                
+                var date = new Date(y, m, 1);
+                var days = [];
+                while ( date.getMonth() === m ) {
+                    var a = new Date(date);
+                    days.push(a.getDay());      // Day of week 0 - 6
+                    dataDays.push(a.getDate()); // Day of month 1 -31
+                    dataUTCDate.push(Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) // Number day ex: 1519257600000
+                    date.setDate(date.getDate() + 1);
+                }
+
+                // var Data = getDaysInMonth(d.getFullYear(), pr_m, 1) // 1 - thg 04
+                // console.log(Data)
+                // var Data = [
+                //     0,             // 1
+                //     1,2,3,4,5,6,0, // 2
+                //     1,2,3,4,5,6,0, // 3
+                //     1,2,3,4,5,6,0, // 4
+                //     1,2,3,4,5,6,0, // 5
+                //     1              // 6
+                // ]
+                var t = 0;
+                // Get day in month
+                function setDayInCalendar() {
+                    var dayBefore = Data[0];
+                    if ( dayBefore === 0 ) {
+                        while ( dayBefore < 6 ) {
+                            Data.unshift('')
+                            dataDays.unshift('')
+                            dataUTCDate.unshift('')
+                            dayBefore++;
+                            t++;
+                            if(t>100){return;}
+                        }
+                    } else {
+                        while ( dayBefore != 1 ) {
+                            Data.unshift('')
+                            dataDays.unshift('')
+                            dataUTCDate.unshift('')
+                            dayBefore--;
+                            t++;
+                            if(t>100){return;}
+                        }
+                    }
+                    
+                    var dayAfter = Data[Data.length-1];
+                    if ( dayAfter != 0 ) {
+                        while ( dayAfter != 7 ) {
+                            Data.push('')
+                            dataDays.push('')
+                            dataUTCDate.push('')
+                            dayAfter++;
+                            t++;
+                            if(t>100){return;}
+                        }
+                    }
+                    
+                    return Data;
+                }
+                // setDayInCalendar();
+
+                // console.log(Data)
+
+                var getTH = document.querySelectorAll('#dayTuds tbody')
+                getTH[0].innerHTML = AppendDaysInMonth(Math.ceil(dataDays.length/7));
+
+                // console.log(Data)
+
+                var getTH = document.querySelectorAll('#dayTuds tbody td')
+                getTH.forEach( function(e, index) {
+                    e.setAttribute('data-utc', dataUTCDate[index]);
+                    e.innerHTML = dataDays[index];
+                });
+            }
+
+        }
+        tCalendar();
+    </script>
+</body>
+</html>

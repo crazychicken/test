@@ -12,7 +12,10 @@ gulp.task('cp-html', function () {
 });
 
 gulp.task('cp-js', function () {
-	gulp.src(['./theme/js/*.js'])
+	gulp.src([
+		'./theme/js/*.js',
+		'./node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js'
+	])
 	.pipe(gulp.dest('./public/theme/js'))
 	.pipe(browser_sync.stream());
 });
