@@ -9,7 +9,7 @@
         .datepicker-switch {
             text-align: center;
         }
-        .t_next, .t_prev {
+        .t_next, .t_prev, #dayTuds td {
             cursor: pointer;
         }
     </style>
@@ -83,23 +83,25 @@
             var d = new Date();
             var m = d.getMonth();
             var y = d.getFullYear();
-            var limitEndMonth = Date.UTC(2018,0);
-            var limitStartMonth = Date.UTC(2019,2);
+            var limitEndMonth = Date.UTC(2018,0); // 1
+            var limitStartMonth = Date.UTC(2018,4); // 5
 
 
             // THEME CALENDAR
+            function convertArrayToString(pr_array) {
+                pr_array = pr_array.toString();
+                pr_array = pr_array.replace(/,/g, '');
+                return pr_array;
+            }
             // Theme Function  set type day of week
             function setDayOfWeek () {
                 for ( var i = 0; i < aDays.length; i++ ) {
                     aDays[i] = '<th>'+aDays[i]+'</th>';
                 }
-                aDays = aDays.toString();
-                aDays = aDays.replace(/,/g, '');
-                return aDays;
+                return convertArrayToString(aDays)
             }
             // Theme Function get HTML table for calendar
-            function createTemplate() {
-                return '<table class="table-condensed">'+
+            var setTemplate = '<table class="table-condensed">'+
                 '<thead>'+
                     '<tr>'+
                         '<th colspan="7" class="t_title"></th>'+
@@ -115,8 +117,23 @@
                 '</thead>'+
                 '<tbody></tbody>'+
                 '</table>'
+
+
+            // options add theme
+            var setNumCalendar = 2;
+            var dataTheme = [];
+            var setNumTheme = setNumCalendar;
+            while ( setNumTheme > 0 ) {
+                dataTheme.push(setTemplate);
+                setNumTheme--;
             }
-            dayTuds.innerHTML = createTemplate();
+            dayTuds.innerHTML = convertArrayToString(dataTheme);
+            // Reset variable code 0,1,2,3 ...
+            setNumCalendar = setNumCalendar - 1;
+            // console.log(setNumCalendar)
+
+            var limitEndMonth = Date.UTC(2017, 10); // 2
+            var limitStartMonth = Date.UTC(2018, (3 - setNumCalendar)); // 4 set limit in month
 
             // Theme Append html follow month tr > td dataDays/7
             function AppendDaysInMonth(pr_num) {
@@ -143,13 +160,10 @@
             var tswitch = document.querySelectorAll('#dayTuds .t_month')
 
             // Funtion get title Month
-            function getMonth(pr_m) {
-                var newMonth = Date.UTC(d.getFullYear(),pr_m);
-                var s = new Date(newMonth)
-                var num = Number(s.getMonth()) + 1;
-                // console.log(s)
-                return tswitch[0].innerHTML = 'Tháng ' + num + ' ' + s.getFullYear();
-            }
+            // function fnGetTitleMonth(pr_data_utc, pr_num) {
+            //     var num = Number(pr_data_utc.getMonth() + 1);
+            //     tswitch[pr_num].innerHTML = 'Tháng ' + (num+pr_num) + ' ' + pr_data_utc.getFullYear();
+            // }
 
             // EVENT
             // Next Calendar
@@ -157,7 +171,6 @@
                 if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
                     m = m + 1;
                     setDaysInMonth(Date.UTC(d.getFullYear(),m))
-                    getMonth(m)
                 }
             }
             // Prev Calendar m 1 <=> tg 02
@@ -165,148 +178,92 @@
                 if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
                     m = m - 1;
                     setDaysInMonth(Date.UTC(d.getFullYear(),m))
-                    getMonth(m)
                 }
             }
 
             // Call default function
-            setDaysInMonth(Date.UTC(d.getFullYear(),m))
+            setDaysInMonth( Date.UTC(d.getFullYear(), m) ) // 02
+
 
             // Function get Data day in Month
             function setDaysInMonth ( pr_data_utc ) {
-                var date = new Date(pr_data_utc)
-                var dataDays = [];
-                // var dataUTCDate = [];
-                var days = [];
-                while ( Date.UTC(date.getFullYear(), date.getMonth()) === pr_data_utc ) {
-                    days.push(date.getDay());      // Day of week 0 - 6
-                    dataDays.push(date.getDate()); // Day of month 1 -31
-                    // dataUTCDate.push(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())) // Number day ex: 1519257600000
-                    date.setDate(date.getDate() + 1); // So sánh số ngày của tháng
+                if ( setNumCalendar != 0 ) {
+                    for ( var i = 0; i <= setNumCalendar; i++) {
+
+                        // Call title month
+                        var date = new Date(pr_data_utc)
+                        var numMonth = Number(date.getMonth() + 1) + i;
+                        var newYear = new Date(date.getFullYear(), numMonth - 1);
+                        if ( numMonth === 13 ) { numMonth = 1; }
+                        tswitch[i].innerHTML = 'Tháng ' + numMonth + ' ' + newYear.getFullYear();
+                        
+                        // Global data days
+                        var dataDays = [];
+                        var dataUTCDate = [];
+                        var days = [];
+
+                        // Call data Next month follow number calendar
+                        var nextDate = Date.UTC(date.getFullYear(), (date.getMonth() + i));
+                        var date = new Date(nextDate)
+                        while ( Date.UTC(date.getFullYear(), (date.getMonth()) ) === nextDate ) {
+                            days.push(date.getDay());      // Day of week 0 - 6 tìm được cị trí ngày đầu tiên và cuối cùng trong tháng
+                            dataDays.push(date.getDate()); // Day of month 1 -31 tìm được số ngày của 1 tháng
+                            dataUTCDate.push(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())) // Number day ex: 1519257600000
+                            date.setDate(date.getDate() + 1); // So sánh số ngày của tháng
+                        }
+                        // console.log(days)
+                        
+                        // var days = [
+                        //     0,             // 1
+                        //     1,2,3,4,5,6,0, // 2
+                        //     1,2,3,4,5,6,0, // 2
+                        //     1,2,3,4,5,6,0, // 3
+                        //     1,2,3,4,5,6,0, // 4
+                        //     1,2,3,4,5,6,0, // 5
+                        //     1     // 6
+                        // ]
+
+                        // console.log(days)
+                        function getDataDays(pr_days) {
+                            // Set Days before min in month
+                            var beforeDay = pr_days[0];
+                            if ( beforeDay === 0 ) {
+                                while ( beforeDay < 6 ) {
+                                    dataDays.unshift('');
+                                    dataUTCDate.unshift('');
+                                    beforeDay++;
+                                }
+                            } else {
+                                while ( beforeDay > 1 ) {
+                                    dataDays.unshift('');
+                                    dataUTCDate.unshift('');
+                                    beforeDay--;
+                                }
+                            }
+                            // Set Days after max in month
+                            var afterDay = pr_days[pr_days.length-1];
+                            while ( afterDay < 7 ) {
+                                dataDays.push('');
+                                dataUTCDate.push('');
+                                afterDay++;
+                            }
+                        }
+                        getDataDays(days)
+                        setThemeData(dataDays, dataUTCDate, i)
+                    }
                 }
-                // console.log(days)
                 
-                // var days = [
-                //     0,             // 1
-                //     1,2,3,4,5,6,0, // 2
-                //     1,2,3,4,5,6,0, // 2
-                //     1,2,3,4,5,6,0, // 3
-                //     1,2,3,4,5,6,0, // 4
-                //     1,2,3,4,5,6,0, // 5
-                //     1     // 6
-                // ]
-
-                // console.log(days)
-
-                var beforeDay = days[0];
-                if ( beforeDay === 0 ) {
-                    while ( beforeDay < 6 ) {
-                        dataDays.unshift('');
-                        beforeDay++;
-                    }
-                } else {
-                    while ( beforeDay > 1 ) {
-                        dataDays.unshift('');
-                        beforeDay--;
-                    }
-                }
-
-                var afterDay = days[days.length-1];
-                while ( afterDay < 7 ) {
-                    dataDays.push('');
-                    afterDay++;
-                }
-
-                // console.log(days)
-
-                var getTH = document.querySelectorAll('#dayTuds tbody')
-                getTH[0].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
-
-                var getTH = document.querySelectorAll('#dayTuds tbody td')
-                getTH.forEach( function(e, index) {
-                    // e.setAttribute('data-utc', dataUTCDate[index]);
-                    e.innerHTML = dataDays[index];
-                });
             }
 
-
-
-            function setDaysInMonth1 ( pr_data_utc ) {
-                
-                var date = new Date(y, m, 1);
-                var days = [];
-                while ( date.getMonth() === m ) {
-                    var a = new Date(date);
-                    days.push(a.getDay());      // Day of week 0 - 6
-                    dataDays.push(a.getDate()); // Day of month 1 -31
-                    dataUTCDate.push(Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) // Number day ex: 1519257600000
-                    date.setDate(date.getDate() + 1);
-                }
-
-                // var Data = getDaysInMonth(d.getFullYear(), pr_m, 1) // 1 - thg 04
-                // console.log(Data)
-                // var Data = [
-                //     0,             // 1
-                //     1,2,3,4,5,6,0, // 2
-                //     1,2,3,4,5,6,0, // 3
-                //     1,2,3,4,5,6,0, // 4
-                //     1,2,3,4,5,6,0, // 5
-                //     1              // 6
-                // ]
-                var t = 0;
-                // Get day in month
-                function setDayInCalendar() {
-                    var dayBefore = Data[0];
-                    if ( dayBefore === 0 ) {
-                        while ( dayBefore < 6 ) {
-                            Data.unshift('')
-                            dataDays.unshift('')
-                            dataUTCDate.unshift('')
-                            dayBefore++;
-                            t++;
-                            if(t>100){return;}
-                        }
-                    } else {
-                        while ( dayBefore != 1 ) {
-                            Data.unshift('')
-                            dataDays.unshift('')
-                            dataUTCDate.unshift('')
-                            dayBefore--;
-                            t++;
-                            if(t>100){return;}
-                        }
-                    }
-                    
-                    var dayAfter = Data[Data.length-1];
-                    if ( dayAfter != 0 ) {
-                        while ( dayAfter != 7 ) {
-                            Data.push('')
-                            dataDays.push('')
-                            dataUTCDate.push('')
-                            dayAfter++;
-                            t++;
-                            if(t>100){return;}
-                        }
-                    }
-                    
-                    return Data;
-                }
-                // setDayInCalendar();
-
-                // console.log(Data)
-
+            function setThemeData (dataDays, dataUTCDate, pr_num) {
                 var getTH = document.querySelectorAll('#dayTuds tbody')
-                getTH[0].innerHTML = AppendDaysInMonth(Math.ceil(dataDays.length/7));
-
-                // console.log(Data)
-
-                var getTH = document.querySelectorAll('#dayTuds tbody td')
+                getTH[pr_num].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
+                var getTH = getTH[pr_num].querySelectorAll('td')
                 getTH.forEach( function(e, index) {
                     e.setAttribute('data-utc', dataUTCDate[index]);
                     e.innerHTML = dataDays[index];
                 });
             }
-
         }
         tCalendar();
     </script>
