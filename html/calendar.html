@@ -4,13 +4,38 @@
     <meta charset="UTF-8">
     <title>Calendar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <link rel="stylesheet" href="theme/css/style.css">
     <style type="text/css">
         .datepicker-switch {
             text-align: center;
         }
-        .t_next, .t_prev, #dayTuds td {
+        .t_next, .t_prev, .t-datepicker td {
             cursor: pointer;
+        }
+        .t-datepicker {
+            
+        }
+        .check-in,
+        .check-out {
+            padding: 5px;
+            background: #ddd;
+            display: inline-block;
+            position: relative;
+        }
+        .dates {
+            cursor: pointer;
+        }
+        .datepicker {
+            top: 40px;
+            position: absolute;
+            background: #fafafa;
+        }
+        .datepicker-arrow {
+            height: 10px;
+            width: 10px;
+            background: #ddd;
         }
     </style>
 </head>
@@ -18,60 +43,70 @@
 
     <div class="container">
         <div class="row">
-
-            <div class="t-datepicker tuds">
-                <div class="check-in"></div>
-                <div class="check-out"></div>
-            </div>
-
-            <div class="t-datepicker tuds">
+            <div class="t-datepicker">
                 <div class="check-in"></div>
                 <div class="check-out"></div>
             </div>
 
             <!-- <div class="t-datepicker">
-                <div class="check-in"></div>
-                <div class="check-out"></div>
+                <div class="check-in">
+                    <div class="date-check-in">
+                        <div class="date-info-title">Nhận Phòng</div>
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span class="year-check-in">2018</span>
+                        <span class="month-check-in">/ 02</span>
+                        <span class="day-check-in">/ 25</span>
+                    </div>
+                    <div class="datepicker">
+                        <div class="datepicker-title">Ngày Nhận Phòng</div>
+                        <table class="table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="t_prev">
+                                        <i class="glyphicon glyphicon-chevron-left"></i>
+                                    </th>
+                                    <th colspan="5" class="t_month">
+                                        Tháng 02/2018
+                                    </th>
+                                    <th class="t_next">
+                                        <i class="glyphicon glyphicon-chevron-right"></i>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>1</th>
+                                    <th>1</th>
+                                    <th>1</th>
+                                    <th>1</th>
+                                    <th>1</th>
+                                    <th>1</th>
+                                    <th>1</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="check-out">
+                    <div class="date-check-out">
+                        <div class="date-info-title">Trả Phòng</div>
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span class="year-check-in">2018</span>
+                        <span class="month-check-in">/ 02</span>
+                        <span class="day-check-in">/ 25</span>
+                    </div>
+                </div>
             </div> -->
 
-            <div class="check-in" hidden>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <a href="#">Prev</a>
-                            </th>
-                            <th colspan="5">
-                                Tháng 02 - 2018
-                            </th>
-                            <th>
-                                <a href="#">Next</a>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>T2</th>
-                            <th>T3</th>
-                            <th>T4</th>
-                            <th>T5</th>
-                            <th>T6</th>
-                            <th>T7</th>
-                            <th>CN</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>5</td>
-                            <td>6</td>
-                            <td>7</td>
-                        </tr>
-                    </tbody>
-                </table>  
-            </div>
-            <div class="check-out"></div>
         </div>
     </div>
     
@@ -82,7 +117,14 @@
     <script type="text/javascript">
         tdatapicker({
             getElement: '.t-datepicker',
-            setNumCalendar: 1
+            setNumCalendar: 1,
+            setLimitPrevMonth: '2018/1',
+            setLimitNextMonth: '2018/8',
+            setShowMonthDefault: '2018/4',
+            setTitleCheckIn: 'Nhận phòng',
+            setTitleCheckOut: 'Trả phòng',
+            setPickerTitleCheckIn: 'Ngày nhận phòng',
+            setPickerTitleCheckOut: 'Ngày trả phòng'
         });
     </script>
 </body>

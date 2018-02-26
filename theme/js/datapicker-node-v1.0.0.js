@@ -10,5 +10,46 @@
     
 // Options
 
+// Qui định số calendar được hiển thị ra ngoài
 // setNumCalendar: 1
 // Default: 1;
+
+// Giới hạn khi số tháng khi click prev
+// setLimitPrevMonth
+// Default: yy/ mm 
+// Type: 'string' | ex: '2018/02'
+
+//Giới hạn số tháng tiếp theo khi click next
+// setLimitNextMonth
+// Default: yy/ mm  | next 12 month
+// Type: 'string' | ex: '2018/02'
+
+// Qui định số ngày mặc định được hiển thị ra bên ngoài, mặc định là ngày hiện tại của máy tính
+// setShowMonthDefault
+// Default: yy/mm/dd  | next 12 month
+// Type: 'string' | ex: '2018/02/25'
+
+// Qui định title ở bên cạnh ngày
+// setTitleCheckIn
+// default: false
+// style: 'string'
+
+// setTitleCheckOut
+// default: false
+// style: 'string'
+
+// Qui đinh title ở calendar
+// setPickerTitleCheckIn
+// default: 'Ngày nhận phòng'
+// style: 'string'
+
+// setPickerTitleCheckOut
+// default: 'Ngày trả phòng'
+// style: 'string'
+
+
+
+
+
+
+

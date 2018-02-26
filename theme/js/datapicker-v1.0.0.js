@@ -9,14 +9,23 @@ function tdatapicker( options ) {
 
     // Global variable
     var aDays = [ 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN' ];
-    var aMonths = [ 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN' ];
+    // var aMonths = [ 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN' ];
     var d = new Date();
-    var m = d.getMonth();
+    var m = d.getMonth(); // 0 - 11
     var y = d.getFullYear();
-    var toDay = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+    var toDay = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    function getToday() {
+        return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    }
 
-    var limitEndMonth = Date.UTC(2018,0); // 1
-    var limitStartMonth = Date.UTC(2018,4); // 5
+    // Function Global for library
+    function setInfoTitle(pr_title, pr_class) {
+        if ( pr_title != undefined ) {
+            return '<div class="'+pr_class+'">'+pr_title+'</div>'
+        } else {
+            return pr_title = '';
+        }
+    }
 
 
     // THEME CALENDAR
@@ -36,12 +45,9 @@ function tdatapicker( options ) {
     var setTemplate = '<table class="table-condensed">'+
         '<thead>'+
             '<tr>'+
-                '<th colspan="7" class="t_title"></th>'+
-            '</tr>'+
-            '<tr>'+
-                '<th class="t_prev">'+'Prev'+'</th>'+
+                '<th class="t_prev">'+'<i class="glyphicon glyphicon-chevron-left"></i>'+'</th>'+
                 '<th colspan="5" class="t_month"></th>'+
-                '<th class="t_next">'+'Next'+'</th>'+
+                '<th class="t_next">'+'<i class="glyphicon glyphicon-chevron-right"></i>'+'</th>'+
             '</tr>'+
             '<tr>'+
                 setDayOfWeek()+
@@ -66,10 +72,27 @@ function tdatapicker( options ) {
     }
     // Reset variable code 0,1,2,3 ...
     setNumCalendar = setNumCalendar - 1;
-
-    // Limit month in year
-    var limitEndMonth = Date.UTC(2017, 10); // 2
-    var limitStartMonth = Date.UTC(2019, (3 - setNumCalendar)); // 4 set limit in month
+    
+    // Function check limit prev or next month format yy, mm ex: 2018/01
+    function checkLimit(pr_date, pr_name) {
+        pr_date = pr_date.split('\/')
+        var y = Number(pr_date[0].trim())
+        var m = Number(pr_date[1].trim() - 1);
+        if ( pr_name == 'next' ) {
+            m = Number(pr_date[1].trim() - 1) - setNumCalendar;
+        }
+        return Date.UTC(y, m)
+    }
+    // Limit prev month in year
+    var limitEndMonth = Date.UTC(d.getFullYear(), d.getMonth()); // 2
+    if ( options.setLimitPrevMonth != undefined ) {
+        limitEndMonth = checkLimit(options.setLimitPrevMonth, 'prev');
+    }
+    // Limit next month in year
+    var limitStartMonth = Date.UTC(d.getFullYear(), ( 13 - setNumCalendar)); // 2
+    if ( options.setLimitNextMonth != undefined ) {
+        limitStartMonth = checkLimit(options.setLimitNextMonth, 'next');
+    }
 
     // Theme Append html follow month tr > td dataDays/7
     function AppendDaysInMonth(pr_num) {
@@ -100,44 +123,104 @@ function tdatapicker( options ) {
         return pr_el_parent;
     }
 
-    var el = document.querySelectorAll('.t-datepicker')
-    for ( var i = 0; i < el.length ; i++  ) {
-        el[i].innerHTML = convertArrayToString(dataTheme);
+    
+    function setThemeCheckDate(pr_title, pr_class, pr_data_utc) {
+        var date = new Date(pr_data_utc)
+        var newDate = date.getDate();
+        if ( pr_class === 'check-out' ) {
+            var newDate = date.getDate() + 1;
+        }
+        var d = Date.UTC(date.getFullYear(), date.getMonth(), newDate);
+        d = new Date(d);
+        return '<div class="dates date-'+pr_class+'">'+
+            setInfoTitle(pr_title, 'date-info-title')+
+            '<i class="glyphicon glyphicon-calendar"></i>'+
+            '<span class="year-'+pr_class+'"> '+d.getFullYear()+'</span>'+
+            '<span class="month-'+pr_class+'"> '+'/ '+d.getMonth()+'</span>'+
+            '<span class="day-'+pr_class+'"> '+'/ '+ d.getDate() +'</span>'+
+        '</div>'+
+        '<div class="datepicker"></div>'
+    }
+    // 1519603200000
+
+    var checkIn = setThemeCheckDate(options.setTitleCheckIn, 'check-in', getToday())
+    var checkOut = setThemeCheckDate(options.setTitleCheckOut, 'check-out', getToday())
+
+
+    for ( var i = 0; i < tElement.length; i++ ) {
+
+        var tCheckIn = tElement[i].querySelectorAll('.check-in')[0];
+        var tCheckOut = tElement[i].querySelectorAll('.check-out')[0];
+
+        tCheckIn.innerHTML = convertArrayToString(checkIn);
+        tCheckOut.innerHTML = convertArrayToString(checkOut);
+
+        
+        tCheckIn.onclick = function() {
+            var a = document.getElementsByClassName('datepicker');
+            a = [].slice.call(a);
+            if ( a.length != 0 ) {
+                a.forEach(function(e){
+                    e.innerHTML = '';
+                })
+            }
+            // tCheckIn.innerHTML = convertArrayToString(setThemeCheckDate(options.setTitleCheckIn, 'check-in', 1519862400000));
+            this.querySelectorAll('.datepicker')[0].innerHTML = convertArrayToString(dataTheme);
+            setDaysInMonth( Date.UTC(d.getFullYear(), m), this ) // 02
+            // clickEvent();
+        }
+
+        tCheckOut.onclick = function() {
+            var a = document.getElementsByClassName('datepicker');
+            a = [].slice.call(a);
+            if ( a.length != 0 ) {
+                a.forEach(function(e){
+                    e.innerHTML = '';
+                })
+            }
+            this.querySelectorAll('.datepicker')[0].innerHTML = convertArrayToString(dataTheme);
+            setDaysInMonth( Date.UTC(d.getFullYear(), m), this ) // 02
+            // clickEvent();
+        }
+
+        
+
+        // tElement[i].innerHTML = convertArrayToString(dataTheme);
+        // // Call default function
+        // setDaysInMonth( Date.UTC(d.getFullYear(), m), tElement[i] ) // 02
 
         // Global get Element in html
-        var tNext = el[i].querySelectorAll('.t_next')
-        var tPrev = el[i].querySelectorAll('.t_prev')
+        
 
         // EVENT
         // Prev Calendar m 1 <=> tg 02
-        tPrev[0].onclick = function() {
-            if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
-                m = m - 1;
-                setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
+        function clickEvent() {
+            tPrev[0].onclick = function() {
+                if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
+                    m = m - 1;
+                    setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
+                }
+            }
+            // Next Calendar
+            tNext[0].onclick = function() {
+                if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
+                    m = m + 1;
+                    setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
+                }
             }
         }
-        // Next Calendar
-        tNext[0].onclick = function() {
-            if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
-                m = m + 1;
-                setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
-            }
-        }
-
-        // Call default function
-        setDaysInMonth( Date.UTC(d.getFullYear(), m), el[i] ) // 02
 
         // Function get Data day in Month
         function setDaysInMonth ( pr_data_utc, pr_el ) {
+            // pr_el <=> this, define event for each calendar
             var tswitch = pr_el.querySelectorAll('.t_month')
-            
             if ( setNumCalendar >= 0  ) {
-                for ( var i = 0; i <= setNumCalendar; i++) {
+                for ( var i_num = 0; i_num <= setNumCalendar; i_num++) {
 
                     // Call title month
                     var date = new Date(pr_data_utc)
-                    var newDate = new Date(Date.UTC(date.getFullYear(), (date.getMonth() + i)));
-                    tswitch[i].innerHTML = 'Tháng ' + (newDate.getMonth() + 1) + ' ' + newDate.getFullYear();
+                    var newDate = new Date(Date.UTC(date.getFullYear(), (date.getMonth() + i_num)));
+                    tswitch[i_num].innerHTML = 'Tháng ' + (newDate.getMonth() + 1) + ' ' + newDate.getFullYear();
                     
                     // Global data days
                     var dataDays = [];
@@ -145,7 +228,7 @@ function tdatapicker( options ) {
                     var days = [];
 
                     // Call data Next month follow number calendar
-                    var nextDate = Date.UTC(date.getFullYear(), (date.getMonth() + i));
+                    var nextDate = Date.UTC(date.getFullYear(), (date.getMonth() + i_num));
                     var date = new Date(nextDate)
                     while ( Date.UTC(date.getFullYear(), (date.getMonth()) ) === nextDate ) {
                         days.push(date.getDay());      // Day of week 0 - 6 tìm được cị trí ngày đầu tiên và cuối cùng trong tháng
@@ -191,7 +274,7 @@ function tdatapicker( options ) {
                         }
                     }
                     getDataDays(days)
-                    setThemeData(dataDays, dataUTCDate, i, pr_el)
+                    setThemeData(dataDays, dataUTCDate, i_num, pr_el)
                 }
             }
         }
