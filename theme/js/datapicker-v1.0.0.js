@@ -26,6 +26,47 @@ function tdatapicker( options ) {
             return pr_title = '';
         }
     }
+    // Function set default if options = undefined
+    function setDefaultTheme(pr_el, pr_default) {
+        if ( pr_el != undefined ) {
+            return pr_el;
+        } else {
+            return pr_default;
+        }
+    }
+
+    // Function Parents
+    function fnParents(pr_el_parent, pr_el_class) {
+        var i = 0;
+        while ( pr_el_parent.className.match(pr_el_class) === null  ) {
+            if ( pr_el_parent.className === pr_el_class ) {
+                return pr_el_parent;
+            }
+            if ( pr_el_parent.nodeName === 'HTML' ) {
+                return pr_el_parent;
+            }
+            pr_el_parent = pr_el_parent.parentElement;
+            // check stop while
+            i++; if (i>250) {return;}
+            // return pr_el_parent;
+        }
+        return pr_el_parent;
+    }
+    // Function when click body/html hide all calendar
+    window.onclick = function(e) {
+        if ( fnParents(e.target, 't-datepicker').nodeName === 'HTML' ) {
+            fnHideAllCalendar();
+        }
+    }
+
+    // Function hide all calendar when have call
+    function fnHideAllCalendar() {
+        var cl = document.getElementsByClassName('datepicker');
+        cl = [].slice.call(cl);
+        for ( var i = 0; i<cl.length; i++ ) {
+            cl[i].innerHTML = '';
+        }
+    }
 
 
     // THEME CALENDAR
@@ -41,13 +82,14 @@ function tdatapicker( options ) {
         }
         return convertArrayToString(aDays)
     }
+    
     // Theme Function get HTML table for calendar
     var setTemplate = '<table class="table-condensed">'+
         '<thead>'+
             '<tr>'+
-                '<th class="t_prev">'+'<i class="glyphicon glyphicon-chevron-left"></i>'+'</th>'+
+                '<th class="t_prev">'+setDefaultTheme(options.setArrowPrev, 'Prev')+'</th>'+
                 '<th colspan="5" class="t_month"></th>'+
-                '<th class="t_next">'+'<i class="glyphicon glyphicon-chevron-right"></i>'+'</th>'+
+                '<th class="t_next">'+setDefaultTheme(options.setArrowNext, 'Next')+'</th>'+
             '</tr>'+
             '<tr>'+
                 setDayOfWeek()+
@@ -74,7 +116,7 @@ function tdatapicker( options ) {
     setNumCalendar = setNumCalendar - 1;
     
     // Function check limit prev or next month format yy, mm ex: 2018/01
-    function checkLimit(pr_date, pr_name) {
+    function checkDate(pr_date, pr_name) {
         pr_date = pr_date.split('\/')
         var y = Number(pr_date[0].trim())
         var m = Number(pr_date[1].trim() - 1);
@@ -86,12 +128,12 @@ function tdatapicker( options ) {
     // Limit prev month in year
     var limitEndMonth = Date.UTC(d.getFullYear(), d.getMonth()); // 2
     if ( options.setLimitPrevMonth != undefined ) {
-        limitEndMonth = checkLimit(options.setLimitPrevMonth, 'prev');
+        limitEndMonth = checkDate(options.setLimitPrevMonth, 'prev');
     }
     // Limit next month in year
     var limitStartMonth = Date.UTC(d.getFullYear(), ( 13 - setNumCalendar)); // 2
     if ( options.setLimitNextMonth != undefined ) {
-        limitStartMonth = checkLimit(options.setLimitNextMonth, 'next');
+        limitStartMonth = checkDate(options.setLimitNextMonth, 'next');
     }
 
     // Theme Append html follow month tr > td dataDays/7
@@ -100,115 +142,135 @@ function tdatapicker( options ) {
         var setTr = '';
         while ( i < pr_num ) {
             setTr = setTr + '<tr>'+
-                '<td>0</td>'+
                 '<td>1</td>'+
                 '<td>2</td>'+
                 '<td>3</td>'+
                 '<td>4</td>'+
                 '<td>5</td>'+
                 '<td>6</td>'+
+                '<td>0</td>'+
             '</tr>';
             i++;
         }
         return setTr;
     }
 
-    // Function Parents
-    function fnParents(pr_el_parent) {
-        // var i = 0;
-        while ( pr_el_parent.className.includes('t-datepicker') !== true ) {
-            pr_el_parent = pr_el_parent.parentElement;
-            // i++; if (i>50) {return;}
-        }
-        return pr_el_parent;
-    }
-
-    
     function setThemeCheckDate(pr_title, pr_class, pr_data_utc) {
-        var date = new Date(pr_data_utc)
-        var newDate = date.getDate();
-        if ( pr_class === 'check-out' ) {
-            var newDate = date.getDate() + 1;
-        }
-        var d = Date.UTC(date.getFullYear(), date.getMonth(), newDate);
-        d = new Date(d);
+        var d = new Date(pr_data_utc)
         return '<div class="dates date-'+pr_class+'">'+
             setInfoTitle(pr_title, 'date-info-title')+
-            '<i class="glyphicon glyphicon-calendar"></i>'+
+            setDefaultTheme(options.setIconDate, '<i class="glyphicon glyphicon-calendar"></i>')+
             '<span class="year-'+pr_class+'"> '+d.getFullYear()+'</span>'+
-            '<span class="month-'+pr_class+'"> '+'/ '+d.getMonth()+'</span>'+
+            '<span class="month-'+pr_class+'"> '+'/ '+ (d.getMonth() + 1) +'</span>'+
             '<span class="day-'+pr_class+'"> '+'/ '+ d.getDate() +'</span>'+
         '</div>'+
         '<div class="datepicker"></div>'
     }
-    // 1519603200000
 
-    var checkIn = setThemeCheckDate(options.setTitleCheckIn, 'check-in', getToday())
-    var checkOut = setThemeCheckDate(options.setTitleCheckOut, 'check-out', getToday())
+    // fn convert date_utc 2018/02/27 -> 1519689600000
+    function convertDateUTC(pr_utc_date) {
+        var date = new Date(pr_utc_date);
+        var date_utc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+        return date_utc;
+    }
+    var dataCheckIn, dataCheckOut, checkIn, checkOut;
+    function getDateUTC(pr_in, pr_out) {
+        // Nếu không có data, data default sẽ là toDay và nextDays
+        dataCheckIn = setDefaultTheme(pr_in, getToday())
+        // Convert to UTC 1519689600000
+        dataCheckIn = convertDateUTC(dataCheckIn);
+        // Fn get next Day form dataCheckIn
+        function nextDays(pr_utc_date) {
+            var date = new Date(pr_utc_date);
+            var date_utc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+            return date_utc;
+        }
+        dataCheckOut = setDefaultTheme(pr_out, nextDays(dataCheckIn))
+        dataCheckOut = convertDateUTC(dataCheckOut);
 
+        checkIn = setThemeCheckDate(options.setTitleCheckIn, 'check-in', dataCheckIn)
+        checkOut = setThemeCheckDate(options.setTitleCheckOut, 'check-out', dataCheckOut)
 
+        return [dataCheckIn, dataCheckOut];
+    }
+    var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
+    // console.log(dataUTC)
+    
+    // console.log(dataCheckIn)
+    // console.log( new Date( dataCheckIn) )
+    // console.log(dataCheckOut)
+    // console.log( new Date( dataCheckOut) )
+
+    function clickEvent(pr_el) {
+        var tPrev = pr_el.querySelectorAll('.t_prev');
+        var tNext = pr_el.querySelectorAll('.t_next');
+        tPrev[0].onclick = function() {
+            if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
+                m = m - 1;
+                setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(pr_el) )
+            }
+        }
+        // Next Calendar
+        tNext[0].onclick = function() {
+            if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
+                m = m + 1;
+                setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(pr_el) )
+            }
+        }
+    }
+
+    function getTableCalendar(pr_el, pr_date_utc) {
+        var findPicker = pr_el.parentElement.getElementsByClassName('datepicker')[0];
+        var findTable = pr_el.parentElement.getElementsByClassName('table-condensed');
+        if ( findTable.length != 0 ) {
+            findPicker.innerHTML = '';
+        } else {
+            fnHideAllCalendar();
+            findPicker.innerHTML = convertArrayToString(dataTheme);
+            setDaysInMonth( dataUTC[0], findPicker ) // 02
+            clickEvent(findPicker)
+        }
+    }
+    
     for ( var i = 0; i < tElement.length; i++ ) {
 
+        // Include html default days show calendar
         var tCheckIn = tElement[i].querySelectorAll('.check-in')[0];
         var tCheckOut = tElement[i].querySelectorAll('.check-out')[0];
-
         tCheckIn.innerHTML = convertArrayToString(checkIn);
         tCheckOut.innerHTML = convertArrayToString(checkOut);
 
-        
-        tCheckIn.onclick = function() {
-            var a = document.getElementsByClassName('datepicker');
-            a = [].slice.call(a);
-            if ( a.length != 0 ) {
-                a.forEach(function(e){
-                    e.innerHTML = '';
-                })
+        var clickShowDays = tElement[i].querySelectorAll('.dates');
+        clickShowDays.forEach( function (e) {
+            e.onclick = function () {
+                getTableCalendar(e, dataUTC[0]);
             }
-            // tCheckIn.innerHTML = convertArrayToString(setThemeCheckDate(options.setTitleCheckIn, 'check-in', 1519862400000));
-            this.querySelectorAll('.datepicker')[0].innerHTML = convertArrayToString(dataTheme);
-            setDaysInMonth( Date.UTC(d.getFullYear(), m), this ) // 02
-            // clickEvent();
-        }
+        });
 
-        tCheckOut.onclick = function() {
-            var a = document.getElementsByClassName('datepicker');
-            a = [].slice.call(a);
-            if ( a.length != 0 ) {
-                a.forEach(function(e){
-                    e.innerHTML = '';
-                })
-            }
-            this.querySelectorAll('.datepicker')[0].innerHTML = convertArrayToString(dataTheme);
-            setDaysInMonth( Date.UTC(d.getFullYear(), m), this ) // 02
-            // clickEvent();
-        }
-
-        
-
-        // tElement[i].innerHTML = convertArrayToString(dataTheme);
-        // // Call default function
-        // setDaysInMonth( Date.UTC(d.getFullYear(), m), tElement[i] ) // 02
-
-        // Global get Element in html
+        // var ad = tElement[i].querySelectorAll('.datepicker')[0];
+        // ad.onclick = function(e) {
+        //     e.stopPropagation()
+        //     e.preventDefault()
+        // }
         
 
         // EVENT
         // Prev Calendar m 1 <=> tg 02
-        function clickEvent() {
-            tPrev[0].onclick = function() {
-                if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
-                    m = m - 1;
-                    setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
-                }
-            }
-            // Next Calendar
-            tNext[0].onclick = function() {
-                if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
-                    m = m + 1;
-                    setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(this) )
-                }
-            }
-        }
+        // function clickEvent(pr_el) {
+        //     tPrev[0].onclick = function() {
+        //         if ( Date.UTC(d.getFullYear(),m) > limitEndMonth ) {
+        //             m = m - 1;
+        //             setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(pr_el) )
+        //         }
+        //     }
+        //     // Next Calendar
+        //     tNext[0].onclick = function() {
+        //         if ( Date.UTC(d.getFullYear(),m) < limitStartMonth ) {
+        //             m = m + 1;
+        //             setDaysInMonth( Date.UTC(d.getFullYear(),m), fnParents(pr_el) )
+        //         }
+        //     }
+        // }
 
         // Function get Data day in Month
         function setDaysInMonth ( pr_data_utc, pr_el ) {
@@ -303,6 +365,14 @@ function tdatapicker( options ) {
                 // disable Before Day
                 if ( Number(a) < toDay ) {
                     toDayElement[i].style.color = 'red';
+                }
+
+                if ( Number(a) === dataUTC[0] ) {
+                    toDayElement[i].style.backgroundColor = 'green';
+                }
+
+                if ( Number(a) === dataUTC[1] ) {
+                    toDayElement[i].style.backgroundColor = 'green';
                 }
 
                 // toDayElement[i].onclick = function() {

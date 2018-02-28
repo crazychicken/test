@@ -47,6 +47,28 @@
 // default: 'Ngày trả phòng'
 // style: 'string'
 
+// setArrowPrev: 'Ngày nhận phòng',
+// default: 'Prev'
+// style: 'string' <i class="glyphicon glyphicon-chevron-left"></i>
+
+// setArrowNext: 'Ngày trả phòng'
+// default: 'Next'
+// style: 'string' <i class="glyphicon glyphicon-chevron-right"></i>
+
+
+// setDateCheckIn: '2018/02/27'
+// default: '2018/02/27' || toDay()
+// style: 'string'
+
+// setDateCheckOut: '2018/02/28'
+// default: '2018/02/28' || nextDay()
+// style: 'string'
+
+
+
+
+
+
 
 
 
