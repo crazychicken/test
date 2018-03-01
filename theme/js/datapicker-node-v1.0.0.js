@@ -67,6 +67,24 @@
 
 
 
+// Click Check-in | Check-out của theme -> Show calendar của tháng đang được select ngày tháng hiện tại
+
+// Show calendar nếu ở check-in 
+// | -> có thể Next | Prev -> 12 tháng tiếp theo hoặc theo setLimitNextMonth: 3 yy/mm/dd hiện tại
+// | -> if ngày được chọn lớn ngày check-out thì sẽ select ngày check-in -> check-out liền kề
+// | -> if ngày được chọn nhỏ ngày check-in & check-out thì sẽ select ngày check-in & check-out hiện tại
+// | -> chọn ngày trong 12 tháng giới hạn, sau khi chọn ngày và thoả điều kiện chuyển sang check-out với data vừa chọn
+//      đồng thời phải set lại data calendar ở check-in theme ở phía trên
+
+// Show calendar nếu ở check-out 
+// | -> không thể click Prev setLimitPrevMonth
+// | -> không thể chọn ngày lớn hơn check-in
+// | -> không thể chọn ngày lớn hơn 1 tháng (30 ngày)
+
+
+// Không có giá trị [Data]?   -> nhận giá trị toDay -> check-in -> check-out (lớn hơn 1 ngày)
+// Khi nào update lại [Data]? -> khi đã được select vào ngày check-in || check-out lúc đó mới update lại [Date]
+
 
 
 
