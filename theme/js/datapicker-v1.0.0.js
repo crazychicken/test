@@ -82,9 +82,9 @@ function tdatapicker( options ) {
     var setTemplate = '<table class="table-condensed">'+
         '<thead>'+
             '<tr>'+
-                '<th class="t_prev">'+setDefaultTheme(options.setArrowPrev, 'Prev')+'</th>'+
+                '<th class="t_arrow t_prev">'+setDefaultTheme(options.setArrowPrev, 'Prev')+'</th>'+
                 '<th colspan="5" class="t_month"></th>'+
-                '<th class="t_next">'+setDefaultTheme(options.setArrowNext, 'Next')+'</th>'+
+                '<th class="t_arrow t_next">'+setDefaultTheme(options.setArrowNext, 'Next')+'</th>'+
             '</tr>'+
             '<tr>'+
                 setDayOfWeek()+
@@ -109,27 +109,6 @@ function tdatapicker( options ) {
     }
     // Reset variable code 0,1,2,3 ...
     setNumCalendar = setNumCalendar - 1;
-    
-    // Function check limit prev or next month format yy, mm ex: 2018/01
-    // function checkDate(pr_date, pr_name) {
-    //     pr_date = pr_date.split('\/')
-    //     var y = Number(pr_date[0].trim())
-    //     var m = Number(pr_date[1].trim() - 1);
-    //     if ( pr_name == 'next' ) {
-    //         m = Number(pr_date[1].trim() - 1) - setNumCalendar;
-    //     }
-    //     return Date.UTC(y, m)
-    // }
-    // // Limit prev month in year
-    // var limitEndMonth = Date.UTC(d.getFullYear(), d.getMonth()); // 2
-    // if ( options.setLimitPrevMonth != undefined ) {
-    //     limitEndMonth = checkDate(options.setLimitPrevMonth, 'prev');
-    // }
-    // // Limit next month in year
-    // var limitStartMonth = Date.UTC(d.getFullYear(), ( 13 - setNumCalendar)); // 2
-    // if ( options.setLimitNextMonth != undefined ) {
-    //     limitStartMonth = checkDate(options.setLimitNextMonth, 'next');
-    // }
 
     // Theme Append html follow month tr > td dataDays/7
     function AppendDaysInMonth(pr_num) {
@@ -196,37 +175,46 @@ function tdatapicker( options ) {
 
     // console.log(new Date(setLimitPrevMonth))
     // console.log(new Date(setLimitNextMonth))
-
+    var dataToday = '';
     function clickEvent(pr_el, pr_data_utc) {
         var tPrev = pr_el.parentElement.querySelectorAll('.t_prev');
         var tNext = pr_el.parentElement.querySelectorAll('.t_next');
+        var tArrow = pr_el.parentElement.querySelectorAll('.t_arrow');
 
         var newDate = new Date(pr_data_utc)
-        var setLimitPrevMonth = setDefaultTheme(options.setLimitPrevMonth, 1);
-        var setLimitNextMonth = setDefaultTheme(options.setLimitNextMonth, 3);
-        setLimitPrevMonth = Date.UTC(newDate.getFullYear(), (newDate.getMonth() - setLimitPrevMonth));
-        setLimitNextMonth = Date.UTC(newDate.getFullYear(), (newDate.getMonth() + setLimitNextMonth));
+        var dataSelect = pr_el.parentElement.querySelectorAll('.start');
+        if ( dataSelect.length != 0  ) {
+            dataSelect = dataSelect[0].getAttribute('data-date');
+            dataToday = new Date(Number(dataSelect));
+        }
+        var dataDate = dataToday;
 
-        var date = new Date(pr_data_utc)
-        var y = date.getFullYear();
-        var m = date.getMonth();
-        var d = date.getDate();
+        var setLimitPrevMonth = setDefaultTheme(options.setLimitPrevMonth, 2);
+        var setLimitNextMonth = setDefaultTheme(options.setLimitNextMonth, 2);
+        setLimitPrevMonth = Date.UTC(dataDate.getFullYear(), (dataDate.getMonth() - setLimitPrevMonth));
+        setLimitNextMonth = Date.UTC(dataDate.getFullYear(), (dataDate.getMonth() + setLimitNextMonth));
 
-        // tPrev[0].onclick = function() {
-        //     if ( Date.UTC(y, m) > setLimitPrevMonth ) {
-        //         // console.log(fnParents(this, 'datepicker'))
-        //         // m = m - 1;
-        //         // // var newDate = [Date.UTC(y, m), Date.UTC(y, m - 1)]
-        //         // setDaysInMonth( Date.UTC(y, m ), fnParents(this, 'datepicker') )
-        //         // newDate = Date.UTC(y, m);
-        //     }
-        // }
-        // Next Calendar
-        tNext[0].onclick = function(e) {
-            e.stopPropagation()
-            if ( Date.UTC(y, m) < setLimitNextMonth ) {
-                m = m + 1;
-                setDaysInMonth( pr_el, Date.UTC(y, m) )
+        var y = newDate.getFullYear();
+        var m = newDate.getMonth();
+
+        if ( tArrow.length != 0 ) {
+            for ( var i = 1; i < tArrow.length - 1; i++ ) {
+                tArrow[i].innerHTML = '';
+            }
+            tPrev[0].onclick = function(e) {
+                e.stopPropagation()
+                if ( Date.UTC(y, m) > setLimitPrevMonth ) {
+                    m = m - 1;
+                    setDaysInMonth( pr_el, Date.UTC(y, m) )
+                }
+            }
+            // Next Calendar
+            tNext[tNext.length - 1].onclick = function(e) {
+                e.stopPropagation()
+                if ( Date.UTC(y, m) < setLimitNextMonth ) {
+                    m = m + 1;
+                    setDaysInMonth( pr_el, Date.UTC(y, m) )
+                }
             }
         }
     }
@@ -240,12 +228,6 @@ function tdatapicker( options ) {
         if ( findTable.length != 0 ) {
             findPicker.innerHTML = '';
         } else {
-            window.onclick = function(e) {
-                console.log('a')
-                if ( fnParents(e.target, 't-datepicker').nodeName === 'HTML' ) {
-                    fnHideAllCalendar();
-                }
-            }
             fnHideAllCalendar();
             findPicker.innerHTML = convertArrayToString(dataTheme);
             if ( fnParents(pr_el, 'check-out').className.includes('check-out') === true ) {
@@ -254,8 +236,6 @@ function tdatapicker( options ) {
                 setDaysInMonth( pr_el, pr_date_utc[0] )
             }
         }
-        // Call Function click Next | Prev
-        clickEvent( pr_el, pr_date_utc[0] )
         // Function when click body/html hide all calendar
         window.onclick = function(e) {
             if ( fnParents(e.target, 't-datepicker').nodeName === 'HTML' ) {
@@ -263,6 +243,9 @@ function tdatapicker( options ) {
                 // dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
             }
         }
+
+        // // Call Function click Next | Prev
+        // clickEvent( pr_el, pr_date_utc[0] )
     }
 
     function setDaysInMonth ( pr_el, pr_data_utc ) {
@@ -332,7 +315,9 @@ function tdatapicker( options ) {
                 setThemeData(dataDays, dataUTCDate, i_num, pr_el)
             }
         }
-        
+
+        // Call Function click Next | Prev
+        clickEvent( pr_el, pr_data_utc )
     }
 
     function setThemeData (dataDays, dataUTCDate, pr_num, pr_el) {
@@ -354,17 +339,66 @@ function tdatapicker( options ) {
             if ( Number(a) ===  toDay ) {
                 toDayElement[i].style.color = 'blue';
             }
-            // disable Before Day
-            if ( Number(a) < toDay ) {
-                toDayElement[i].style.color = 'red';
-            }
 
             if ( Number(a) === dataUTC[0] ) {
-                toDayElement[i].style.backgroundColor = 'green';
+                toDayElement[i].className = 'start';
             }
 
             if ( Number(a) === dataUTC[1] ) {
-                toDayElement[i].style.backgroundColor = 'green';
+                toDayElement[i].className = 'end';
+            }
+
+            if ( Number(a) > dataUTC[0] && Number(a) < dataUTC[1] ) {
+                toDayElement[i].className = 'range';
+            }
+
+            // disable Before Day
+            if ( Number(a) < dataUTC[0] ) {
+                toDayElement[i].className = 'disabled';
+            }
+
+
+            // Click td
+            toDayElement[i].onclick = function (e) {
+                e.stopPropagation();
+                var cOut;
+                var days = this.getAttribute('data-date');
+                var cOut = this.parentElement.parentElement.getElementsByClassName('end')[0];
+                cOut = Number(cOut.getAttribute('data-date'))
+
+                var tdRemove = this.parentElement.parentElement.querySelectorAll('td');
+                tdRemove.forEach( function(el){
+                    var cIn = Number(el.getAttribute('data-date'));
+
+                    if ( Number( days ) > cIn ) {
+                        el.className = '';
+                        el.className = 'disabled';
+                    }
+
+                    if ( Number( days ) < cIn && cIn < cOut ) {
+                        // el.className = '';
+                        el.className = 'range';
+                        // console.log(el)
+                    }
+                    
+                })
+                this.className = 'start';
+
+                
+                // console.log(this)
+                // console.log(a)
+                // var a = fnParents(this, 't-datepicker')
+                // var adates = a.getElementsByClassName('dates')[0];
+                // console.log(adates)
+                // var tin = this.getAttribute('data-date')
+                // tin = Number(tin)
+                // console.log(tin)
+                // var newDate = new Date(tin)
+                // var tout = Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1);
+                // console.log(tin)
+                // setDaysInMonth( adates, tin )
+                // getTableCalendar(adates, dataUTC);
+                
             }
         }
     }
@@ -373,7 +407,7 @@ function tdatapicker( options ) {
         // Call [Date]
         var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
         // console.log(dataUTC)
-        var findDates = tElement[i].getElementsByClassName('dates');
+        var findDates = document.getElementsByClassName('dates');
         findDates = [].slice.call(findDates)
         findDates.forEach( function(e) {
             e.onclick = function () {
