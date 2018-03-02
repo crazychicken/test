@@ -38,7 +38,7 @@
             background: #ddd;
         }
         .disabled {
-
+            opacity: 0.25;
         }
         .start, .end {
             background: #ddeeff;
@@ -56,6 +56,11 @@
                 <div class="check-in"></div>
                 <div class="check-out"></div>
             </div>
+
+            <!-- <div class="t-datepicker">
+                <div class="check-in"></div>
+                <div class="check-out"></div>
+            </div> -->
 
             <!-- <div class="t-datepicker">
                 <div class="check-in">
@@ -126,16 +131,15 @@
     <script type="text/javascript">
         tdatapicker({
             getElement: '.t-datepicker',
-            setNumCalendar: 1,
+            setNumCalendar: 2,
 
             setTitleCheckIn: 'Nhận phòng',
             setTitleCheckOut: 'Trả phòng',
 
-            // setLimitPrevMonth: 3,
-            // setLimitNextMonth: 3,
+            // setLimitPrevMonth: 2,
+            // setLimitNextMonth: 2,
 
             setDateCheckIn: '2018/03/8',
-
             setDateCheckOut: '2018/03/18',
 
             // setDateCheckIn: '2018/02/28',

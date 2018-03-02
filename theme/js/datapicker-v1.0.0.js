@@ -172,30 +172,29 @@ function tdatapicker( options ) {
 
         return [dataCheckIn, dataCheckOut];
     }
+    var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
 
     // console.log(new Date(setLimitPrevMonth))
     // console.log(new Date(setLimitNextMonth))
-    var dataToday = '';
+    // var dataToday = '';
     function clickEvent(pr_el, pr_data_utc) {
-        var tPrev = pr_el.parentElement.querySelectorAll('.t_prev');
-        var tNext = pr_el.parentElement.querySelectorAll('.t_next');
-        var tArrow = pr_el.parentElement.querySelectorAll('.t_arrow');
 
-        var newDate = new Date(pr_data_utc)
-        var dataSelect = pr_el.parentElement.querySelectorAll('.start');
-        if ( dataSelect.length != 0  ) {
-            dataSelect = dataSelect[0].getAttribute('data-date');
-            dataToday = new Date(Number(dataSelect));
-        }
-        var dataDate = dataToday;
+        // console.log(pr_el)
+        // console.log(pr_data_utc)
+        // console.log(new Date(pr_data_utc[0]) , new Date(pr_data_utc[1]))
 
-        var setLimitPrevMonth = setDefaultTheme(options.setLimitPrevMonth, 2);
-        var setLimitNextMonth = setDefaultTheme(options.setLimitNextMonth, 2);
-        setLimitPrevMonth = Date.UTC(dataDate.getFullYear(), (dataDate.getMonth() - setLimitPrevMonth));
-        setLimitNextMonth = Date.UTC(dataDate.getFullYear(), (dataDate.getMonth() + setLimitNextMonth));
+        var tPrev    = pr_el.parentElement.querySelectorAll('.t_prev');
+        var tNext    = pr_el.parentElement.querySelectorAll('.t_next');
+        var tArrow   = pr_el.parentElement.querySelectorAll('.t_arrow');
+
+        var newDate  = new Date(pr_data_utc[0])
+        var df_toDay = new Date(toDay);
+        var setLimitPrevMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() - setDefaultTheme(options.setLimitPrevMonth, 0) );
+        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 12) );
 
         var y = newDate.getFullYear();
         var m = newDate.getMonth();
+        var d = newDate.getDate();
 
         if ( tArrow.length != 0 ) {
             for ( var i = 1; i < tArrow.length - 1; i++ ) {
@@ -205,7 +204,8 @@ function tdatapicker( options ) {
                 e.stopPropagation()
                 if ( Date.UTC(y, m) > setLimitPrevMonth ) {
                     m = m - 1;
-                    setDaysInMonth( pr_el, Date.UTC(y, m) )
+                    // Nhận vào Elements [dates], date_utc = [1,2]
+                    setDaysInMonth( pr_el, [Date.UTC(y, m), dataUTC[1]] )
                 }
             }
             // Next Calendar
@@ -213,42 +213,39 @@ function tdatapicker( options ) {
                 e.stopPropagation()
                 if ( Date.UTC(y, m) < setLimitNextMonth ) {
                     m = m + 1;
-                    setDaysInMonth( pr_el, Date.UTC(y, m) )
+                    // Nhận vào Elements [dates], date_utc = [1,2]
+                    setDaysInMonth( pr_el, [Date.UTC(y, m), dataUTC[1]] )
                 }
             }
         }
     }
-
     // newDataUTC = getDateUTC(options.setDateCheckIn, 1522454400000);
 
     // Function show || Hide calendar [Date]
     function getTableCalendar(pr_el, pr_date_utc) {
         var findPicker = pr_el.parentElement.getElementsByClassName('datepicker')[0];
         var findTable = pr_el.parentElement.getElementsByClassName('table-condensed');
+        // Nếu bản thân không có == 0, xoá tất cả, sau đó thêm vào chính nó
+        // Nếu bản thân có != 0, xoá chính bản thân
         if ( findTable.length != 0 ) {
             findPicker.innerHTML = '';
         } else {
             fnHideAllCalendar();
             findPicker.innerHTML = convertArrayToString(dataTheme);
-            if ( fnParents(pr_el, 'check-out').className.includes('check-out') === true ) {
-                setDaysInMonth( pr_el, pr_date_utc[1] )
-            } else {
-                setDaysInMonth( pr_el, pr_date_utc[0] )
-            }
+            setDaysInMonth( pr_el, pr_date_utc )
         }
         // Function when click body/html hide all calendar
         window.onclick = function(e) {
+            // Xoá tất cả trừ khi click đúng vào các element t-datepicker
             if ( fnParents(e.target, 't-datepicker').nodeName === 'HTML' ) {
                 fnHideAllCalendar();
-                // dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
             }
         }
-
-        // // Call Function click Next | Prev
-        // clickEvent( pr_el, pr_date_utc[0] )
     }
 
+    // Nhận vào Elements [dates], date_utc = [1,2]
     function setDaysInMonth ( pr_el, pr_data_utc ) {
+        // console.log(pr_data_utc)
         pr_el.parentElement.getElementsByClassName('datepicker')[0].innerHTML = convertArrayToString(dataTheme);
         // pr_el <=> this, define event for each calendar
         var tswitch = pr_el.parentElement.querySelectorAll('.t_month')
@@ -256,7 +253,7 @@ function tdatapicker( options ) {
             for ( var i_num = 0; i_num <= setNumCalendar; i_num++) {
 
                 // Call title month
-                var date = new Date(pr_data_utc)
+                var date = new Date(pr_data_utc[0])
                 var newDate = new Date(Date.UTC(date.getFullYear(), (date.getMonth() + i_num)));
                 tswitch[i_num].innerHTML = 'Tháng ' + (newDate.getMonth() + 1) + ' ' + newDate.getFullYear();
                 
@@ -316,10 +313,15 @@ function tdatapicker( options ) {
             }
         }
 
+        // Nhận vào Elements [dates], date_utc = [1,2]
+        getStyleDays( pr_el, pr_data_utc );
+
         // Call Function click Next | Prev
+        // Nhận vào Elements [dates], date_utc = [1,2]
         clickEvent( pr_el, pr_data_utc )
     }
 
+    // Function setTheme show tablet date follow setNumCalendar 1,2,3 ...
     function setThemeData (dataDays, dataUTCDate, pr_num, pr_el) {
         var getTH = pr_el.parentElement.querySelectorAll('tbody')
         getTH[pr_num].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
@@ -328,93 +330,117 @@ function tdatapicker( options ) {
             e.setAttribute('data-date', dataUTCDate[index]);
             e.innerHTML = dataDays[index];
         });
-        getStyleDays(pr_el);
     }
 
-    function getStyleDays(pr_el) {
-        var toDayElement = pr_el.parentElement.querySelectorAll('td')
-        for ( var i = 0; i < toDayElement.length; i++ ) {
-            var a = toDayElement[i].getAttribute('data-date');
-            // highlighted toDay
-            if ( Number(a) ===  toDay ) {
-                toDayElement[i].style.color = 'blue';
-            }
+    function getStyleDays(pr_el, pr_data_utc) {
+        // Kiểm tra nếu tháng prev hoặc next = với data hiện tại sẽ nhận style
+        if ( new Date(pr_data_utc[0]).getMonth() === new Date(dataUTC[0]).getMonth()
+        || new Date(pr_data_utc[1]).getMonth() === new Date(dataUTC[1]).getMonth() ) {
+            var toDayElement = pr_el.parentElement.querySelectorAll('td')
+            var d = new Date(dataUTC[0]);
+            var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + 31 );
+            // console.log(limitdate)
+            // console.log(new Date(limitdate))
 
-            if ( Number(a) === dataUTC[0] ) {
-                toDayElement[i].className = 'start';
-            }
+            for ( var i = 0; i < toDayElement.length; i++ ) {
+                var dayselect = toDayElement[i].getAttribute('data-date');
 
-            if ( Number(a) === dataUTC[1] ) {
-                toDayElement[i].className = 'end';
-            }
+                var Cn = new Date( Number(dayselect) )
+                Cn = Cn.getDay() 
+                if ( Cn === 0 || Cn === 6 ) {
+                    toDayElement[i].style.color = 'blue';
+                }
 
-            if ( Number(a) > dataUTC[0] && Number(a) < dataUTC[1] ) {
-                toDayElement[i].className = 'range';
-            }
+                // disabled all days before toDay
+                if ( Number(dayselect) < toDay ) {
+                    toDayElement[i].className = 'disabled';
+                }
 
-            // disable Before Day
-            if ( Number(a) < dataUTC[0] ) {
-                toDayElement[i].className = 'disabled';
-            }
+                // highlighted toDay
+                if ( Number(dayselect) ===  toDay ) {
+                    toDayElement[i].style.color = 'red';
+                }
 
+                // In - Ative check-in
+                if ( Number(dayselect) === dataUTC[0] ) {
+                    toDayElement[i].className = 'start';
+                }
 
-            // Click td
-            toDayElement[i].onclick = function (e) {
-                e.stopPropagation();
-                var cOut;
-                var days = this.getAttribute('data-date');
-                var cOut = this.parentElement.parentElement.getElementsByClassName('end')[0];
-                cOut = Number(cOut.getAttribute('data-date'))
+                // Out - Active Check-out
+                if ( Number(dayselect) === dataUTC[1] ) {
+                    toDayElement[i].className = 'end';
+                }
 
-                var tdRemove = this.parentElement.parentElement.querySelectorAll('td');
-                tdRemove.forEach( function(el){
-                    var cIn = Number(el.getAttribute('data-date'));
+                
 
-                    if ( Number( days ) > cIn ) {
-                        el.className = '';
-                        el.className = 'disabled';
+                // disable Before Day position Check-out
+                if ( pr_el.className.includes('check-out') ) {
+                    if ( Number(dayselect) < dataUTC[0] ) {
+                        toDayElement[i].className = 'disabled';
+                    }
+                    if ( Number(dayselect) > dataUTC[1] ) {
+                        toDayElement[i].className = 'disabled';
                     }
 
-                    if ( Number( days ) < cIn && cIn < cOut ) {
-                        // el.className = '';
-                        el.className = 'range';
-                        // console.log(el)
+                    if ( Number(dayselect) != 0
+                        && Number(dayselect) > dataUTC[0] && Number(dayselect) < limitdate 
+                        && Number(dayselect) != dataUTC[1] ) {
+                        toDayElement[i].className = '';
                     }
                     
-                })
-                this.className = 'start';
+                }
 
-                
-                // console.log(this)
-                // console.log(a)
-                // var a = fnParents(this, 't-datepicker')
-                // var adates = a.getElementsByClassName('dates')[0];
-                // console.log(adates)
-                // var tin = this.getAttribute('data-date')
-                // tin = Number(tin)
-                // console.log(tin)
-                // var newDate = new Date(tin)
-                // var tout = Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1);
-                // console.log(tin)
-                // setDaysInMonth( adates, tin )
-                // getTableCalendar(adates, dataUTC);
-                
+                // Range In --- Out
+                if ( Number(dayselect) > dataUTC[0] && Number(dayselect) < dataUTC[1] ) {
+                    toDayElement[i].className = 'range';
+                }
+
+                // Click td event when td has been value
+                toDayElement[i].onclick = function (e) {
+                    e.stopPropagation();
+                    if ( this.className != 'disabled' ) {
+                        var get_utc = this.getAttribute('data-date')
+                        // Check-in
+                        if ( get_utc != '' ) {
+                            var datepicker = fnParents(this, 't-datepicker');
+                            // console.log(datepicker)
+                            get_utc = Number( get_utc )
+                            var utc_out = dataUTC[1];
+                            if ( get_utc > dataUTC[1] ) {
+                                var newD = new Date( get_utc )
+                                utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
+                            }
+                            dataUTC = getDateUTC( get_utc, utc_out )
+                            callEventClick( datepicker, dataUTC)
+                        }
+                    }
+                }
             }
         }
     }
-    
-    for ( var i = 0; i < tElement.length; i++ ) {
-        // Call [Date]
-        var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
-        // console.log(dataUTC)
+    var pr_callback = '';
+    // var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
+    function callEventClick(pr_callback, pr_date_utc) {
+
         var findDates = document.getElementsByClassName('dates');
-        findDates = [].slice.call(findDates)
-        findDates.forEach( function(e) {
+
+        var eachDates = [].slice.call(findDates)
+        eachDates.forEach( function(e) {
             e.onclick = function () {
-                getTableCalendar(this, dataUTC)
+                getTableCalendar(this, pr_date_utc)
             }
         });
+
+        // getTableCalendar(findDates[1], pr_date_utc)
+
+        if ( pr_callback != '' ) {
+            findDates = pr_callback.getElementsByClassName('dates')
+            getTableCalendar(findDates[1], pr_date_utc)
+        }
+        
     }
+    var findDates = document.getElementsByClassName('dates');
+    callEventClick(pr_callback, dataUTC)
 }
 
 
