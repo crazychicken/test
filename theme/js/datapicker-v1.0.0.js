@@ -149,6 +149,10 @@ function tdatapicker( options ) {
     }
     // Function get && show default theme for website include (2018/02/27 || 1519689600000)
     function getDateUTC(pr_in, pr_out) {
+        // Check pr_in không thể lớn hơn pr_out mặc định
+        // if ( pr_in < pr_out ) {
+        //     return console.log("'Thank you for using tdatapicker. Please, check property for element:'%c " + options.setDateCheckIn + ' > ' + options.setDateCheckOut + ' ', 'background: #f16d99; color: #fff');
+        // }
         // Nếu không có data, data default sẽ là toDay và nextDays
         var dataCheckIn = setDefaultTheme(pr_in, getToday())
         // Convert to UTC 1519689600000
@@ -190,7 +194,7 @@ function tdatapicker( options ) {
         var newDate  = new Date(pr_data_utc[0])
         var df_toDay = new Date(toDay);
         var setLimitPrevMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() - setDefaultTheme(options.setLimitPrevMonth, 0) );
-        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 12) );
+        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 11) + 1 );
 
         var y = newDate.getFullYear();
         var m = newDate.getMonth();
@@ -315,10 +319,6 @@ function tdatapicker( options ) {
 
         // Nhận vào Elements [dates], date_utc = [1,2]
         getStyleDays( pr_el, pr_data_utc );
-
-        // Call Function click Next | Prev
-        // Nhận vào Elements [dates], date_utc = [1,2]
-        clickEvent( pr_el, pr_data_utc )
     }
 
     // Function setTheme show tablet date follow setNumCalendar 1,2,3 ...
@@ -333,23 +333,25 @@ function tdatapicker( options ) {
     }
 
     function getStyleDays(pr_el, pr_data_utc) {
+        
         // Kiểm tra nếu tháng prev hoặc next = với data hiện tại sẽ nhận style
         if ( new Date(pr_data_utc[0]).getMonth() === new Date(dataUTC[0]).getMonth()
         || new Date(pr_data_utc[1]).getMonth() === new Date(dataUTC[1]).getMonth() ) {
             var toDayElement = pr_el.parentElement.querySelectorAll('td')
+
             var d = new Date(dataUTC[0]);
-            var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + 31 );
-            // console.log(limitdate)
-            // console.log(new Date(limitdate))
+            var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + setDefaultTheme(options.setLimitDays, 31) );
 
             for ( var i = 0; i < toDayElement.length; i++ ) {
                 var dayselect = toDayElement[i].getAttribute('data-date');
 
+                // Select stype for day in calendar
                 var Cn = new Date( Number(dayselect) )
                 Cn = Cn.getDay() 
                 if ( Cn === 0 || Cn === 6 ) {
                     toDayElement[i].style.color = 'blue';
                 }
+                
 
                 // disabled all days before toDay
                 if ( Number(dayselect) < toDay ) {
@@ -370,7 +372,6 @@ function tdatapicker( options ) {
                 if ( Number(dayselect) === dataUTC[1] ) {
                     toDayElement[i].className = 'end';
                 }
-
                 
 
                 // disable Before Day position Check-out
@@ -387,7 +388,6 @@ function tdatapicker( options ) {
                         && Number(dayselect) != dataUTC[1] ) {
                         toDayElement[i].className = '';
                     }
-                    
                 }
 
                 // Range In --- Out
@@ -398,24 +398,55 @@ function tdatapicker( options ) {
                 // Click td event when td has been value
                 toDayElement[i].onclick = function (e) {
                     e.stopPropagation();
-                    if ( this.className != 'disabled' ) {
-                        var get_utc = this.getAttribute('data-date')
-                        // Check-in
-                        if ( get_utc != '' ) {
-                            var datepicker = fnParents(this, 't-datepicker');
-                            // console.log(datepicker)
-                            get_utc = Number( get_utc )
-                            var utc_out = dataUTC[1];
-                            if ( get_utc > dataUTC[1] ) {
-                                var newD = new Date( get_utc )
-                                utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
-                            }
-                            dataUTC = getDateUTC( get_utc, utc_out )
-                            callEventClick( datepicker, dataUTC)
+                    // Check nếu làm disabled không làm gì cả
+                    if ( this.className === 'disabled' ) {
+                        return;
+                    }
+                    
+                    var data_utc_in, data_utc_out;
+                    var get_utc = this.getAttribute('data-date')
+                    var datepicker = fnParents(this, 't-datepicker');
+
+                    // get data UTC date
+                    get_utc = Number( get_utc )
+                    if ( fnParents(this, 'check-in').className === 'check-in' ) {
+                        var d = new Date(dataUTC[1]);
+                        var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() - setDefaultTheme(options.setLimitDays, 31) );
+                        
+                        data_utc_in = get_utc;
+                        data_utc_out = dataUTC[1];
+                        if ( get_utc > dataUTC[1] || get_utc === dataUTC[1] || get_utc < limitdate ) {
+                            var newD = new Date( get_utc )
+                            data_utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
                         }
                     }
+                    if ( fnParents(this, 'check-out').className === 'check-out' ) {
+                        if ( this.className === 'start' ) { return; }
+                        data_utc_in = dataUTC[0];
+                        data_utc_out = get_utc;
+                    }
+
+
+                    dataUTC = getDateUTC( data_utc_in, data_utc_out )
+                    callEventClick( datepicker, dataUTC)
+                    
+
                 }
             }
+
+            // Call Function click Next | Prev
+            // Nhận vào Elements [dates], date_utc = [1,2]
+            clickEvent( pr_el, pr_data_utc )
+
+            // if ( pr_el.className.includes('check-out') ) {
+            //     var Arroa = pr_el.parentElement.querySelectorAll('.t_arrow');
+            //     Arroa = [].slice.call(Arroa)
+            //     Arroa.forEach( function(e, index) {
+            //         // var cl = e.getAttribute('class')
+            //         // e.className = cl + ' disabled'
+            //         e.className = 'disabled'
+            //     })
+            // }
         }
     }
     var pr_callback = '';
@@ -431,17 +462,43 @@ function tdatapicker( options ) {
             }
         });
 
-        // getTableCalendar(findDates[1], pr_date_utc)
+        getTableCalendar(findDates[0], pr_date_utc)
 
         if ( pr_callback != '' ) {
             findDates = pr_callback.getElementsByClassName('dates')
-            getTableCalendar(findDates[1], pr_date_utc)
+            getTableCalendar(findDates[1], pr_date_utc);
+        }
+
+        function CallBack() {
+            options.fnCallBack(pr_date_utc)
+        }
+        if ( options.fnCallBack != undefined ) {
+            CallBack();
         }
         
     }
     var findDates = document.getElementsByClassName('dates');
     callEventClick(pr_callback, dataUTC)
 }
+
+
+// function tuds(a) {
+//     var test = 'abc'
+//     function callBack() {
+//         a.fn(test);
+//         return test;
+//     }
+//     if ( a.fn != undefined ) {
+//         callBack();
+//     }
+// }
+// tuds({
+//     name: 'ten string',
+//     fn: function getDate(days) {
+//         console.log(days)
+//     }
+// })
+
 
 
 // var ad = tElement[i].querySelectorAll('.datepicker')[0];

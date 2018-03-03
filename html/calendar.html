@@ -129,27 +129,32 @@
 
     <script type="text/javascript" src="./theme/js/datapicker-v1.0.0.js"></script>
     <script type="text/javascript">
+
         tdatapicker({
             getElement: '.t-datepicker',
-            setNumCalendar: 2,
+            setNumCalendar: 1,
 
             setTitleCheckIn: 'Nhận phòng',
             setTitleCheckOut: 'Trả phòng',
 
             // setLimitPrevMonth: 2,
-            // setLimitNextMonth: 2,
+            setLimitNextMonth: 1,
+            // default 31 date
+            // setLimitDays: 10, 
 
-            setDateCheckIn: '2018/03/8',
-            setDateCheckOut: '2018/03/18',
-
-            // setDateCheckIn: '2018/02/28',
-            // setDateCheckOut: '2018/04/04',
+            setDateCheckIn: '2018/02/28',
+            setDateCheckOut: '2018/04/10',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',
             setIconDate: '<i class="glyphicon glyphicon-calendar"></i>',
             setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
-            setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>'
+            setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
+            fnCallBack: function(getData) {
+                console.log(getData)
+                console.log(new Date(getData[0]))
+                console.log(new Date(getData[1]))
+            }
         });
     </script>
 </body>
