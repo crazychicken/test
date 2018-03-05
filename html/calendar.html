@@ -8,14 +8,16 @@
 
     <link rel="stylesheet" href="theme/css/style.css">
     <style type="text/css">
-        .datepicker-switch {
+        .t-datepicker tr > th {
+            /*padding: 10px;*/
+        }
+        .t_month {
             text-align: center;
         }
-        .t_next, .t_prev, .t-datepicker td {
+        .t_next, .t_prev, .t-table-condensed td, .t-table-condensed th {
             cursor: pointer;
-        }
-        .t-datepicker {
-            
+            text-align: center;
+            padding: 10px;
         }
         .check-in,
         .check-out {
@@ -37,14 +39,28 @@
             width: 10px;
             background: #ddd;
         }
-        .disabled {
+        .disabled,
+        .check-in .end_limit {
             opacity: 0.25;
         }
-        .start, .end {
-            background: #ddeeff;
+        .special-days {
+            position: relative;
+        }
+        .special-days:before {
+            content: '';
+            position: absolute;
+            background: #e91e63;
+            height: 5px;
+            width: 5px;
+            right: 0;
+            top: 0;
         }
         .range {
-            background: #ddffee;
+            background: #e7e8e9;
+        }
+        .start, .end {
+            color: #fff;
+            background: #00adef;
         }
     </style>
 </head>
@@ -160,15 +176,15 @@
             setTitleCheckOut: 'Trả phòng',
 
             // setLimitPrevMonth: 2,
-            // setLimitNextMonth: 24,
+            setLimitNextMonth: 1,
             // default 31 date
             // setLimitDays: 10, 
 
             // setDateCheckIn: c_out,
             // setDateCheckOut: c_in,
 
-            // setDateCheckIn: '2018/04/8',
-            // setDateCheckOut: '2018/03/10',
+            setDateCheckIn: '2018/03/8',
+            setDateCheckOut: '2018/03/11',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',
