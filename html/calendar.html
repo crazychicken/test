@@ -130,30 +130,75 @@
     <script type="text/javascript" src="./theme/js/datapicker-v1.0.0.js"></script>
     <script type="text/javascript">
 
+        // var c_in = '2018/04/8';
+        // var c_out =  '2018/03/10';
+        var dateEvent = {
+            t1  : { '1'  : 'Tết Dương Lịch'},
+            t2  : { '14' : 'Lễ Tình Yêu'},
+            t3  : { '8'  : 'Quốc Tế Phụ nữ',
+                    '14' : 'Trăng Non',
+                    '15' : 'Ngày Rầm'
+            },
+            t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
+            t5  : { '1'  : 'Quốc Tế Lao Động' },
+            t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
+            t7  : { '15' : 'Rầm Tháng 07',
+                    '27' : 'Thương Binh Liệt Sĩ'
+            },
+            t8  : { '14' : 'Trăng Non' },
+            t9  : { '14' : 'Trăng Non' },
+            t10 : { '14' : 'Trăng Non' },
+            t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
+            t12 : { '24' : 'Không Biết' }
+        }
+
         tdatapicker({
             getElement: '.t-datepicker',
-            setNumCalendar: 1,
+            setNumCalendar: 2,
 
             setTitleCheckIn: 'Nhận phòng',
             setTitleCheckOut: 'Trả phòng',
 
             // setLimitPrevMonth: 2,
-            setLimitNextMonth: 1,
+            // setLimitNextMonth: 24,
             // default 31 date
             // setLimitDays: 10, 
 
-            setDateCheckIn: '2018/02/28',
-            setDateCheckOut: '2018/04/10',
+            // setDateCheckIn: c_out,
+            // setDateCheckOut: c_in,
+
+            // setDateCheckIn: '2018/04/8',
+            // setDateCheckOut: '2018/03/10',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',
             setIconDate: '<i class="glyphicon glyphicon-calendar"></i>',
             setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
             setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
+            // fnDataEvent: {
+            //     t1  : { '1'  : 'Tết Dương Lịch'},
+            //     t2  : { '14' : 'Lễ Tình Yêu'},
+            //     t3  : { '8'  : 'Quốc Tế Phụ nữ',
+            //             '14' : 'Trăng Non',
+            //             '15' : 'Ngày Rầm'
+            //     },
+            //     t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
+            //     t5  : { '1'  : 'Quốc Tế Lao Động' },
+            //     t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
+            //     t7  : { '15' : 'Rầm Tháng 07',
+            //             '27' : 'Thương Binh Liệt Sĩ'
+            //     },
+            //     t8  : { '14' : 'Trăng Non' },
+            //     t9  : { '14' : 'Trăng Non' },
+            //     t10 : { '14' : 'Trăng Non' },
+            //     t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
+            //     t12 : { '24' : 'Không Biết' }
+            // },
+            fnDataEvent: dateEvent,
             fnCallBack: function(getData) {
-                console.log(getData)
-                console.log(new Date(getData[0]))
-                console.log(new Date(getData[1]))
+                // console.log(getData)
+                // console.log(new Date(getData[0]))
+                // console.log(new Date(getData[1]))
             }
         });
     </script>

@@ -150,9 +150,9 @@ function tdatapicker( options ) {
     // Function get && show default theme for website include (2018/02/27 || 1519689600000)
     function getDateUTC(pr_in, pr_out) {
         // Check pr_in không thể lớn hơn pr_out mặc định
-        // if ( pr_in < pr_out ) {
-        //     return console.log("'Thank you for using tdatapicker. Please, check property for element:'%c " + options.setDateCheckIn + ' > ' + options.setDateCheckOut + ' ', 'background: #f16d99; color: #fff');
-        // }
+        if ( pr_in > pr_out ) {
+            return console.log("'Thank you for using tdatapicker. Please, check property for element:'%c " + options.setDateCheckIn + ' > ' + options.setDateCheckOut + ' ', 'background: #f16d99; color: #fff');
+        }
         // Nếu không có data, data default sẽ là toDay và nextDays
         var dataCheckIn = setDefaultTheme(pr_in, getToday())
         // Convert to UTC 1519689600000
@@ -194,7 +194,7 @@ function tdatapicker( options ) {
         var newDate  = new Date(pr_data_utc[0])
         var df_toDay = new Date(toDay);
         var setLimitPrevMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() - setDefaultTheme(options.setLimitPrevMonth, 0) );
-        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 11) + 1 );
+        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 12));
 
         var y = newDate.getFullYear();
         var m = newDate.getMonth();
@@ -332,6 +332,30 @@ function tdatapicker( options ) {
         });
     }
 
+    var DataEvent = {
+        t1  : { '1'  : 'Tết Dương Lịch'},
+        t2  : { '14' : 'Lễ Tình Yêu'},
+        t3  : { '8'  : 'Quốc Tế Phụ nữ',
+                '14' : 'Trăng Non'
+        },
+        t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
+        t5  : { '1'  : 'Quốc Tế Lao Động' },
+        t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
+        t7  : { '15' : 'Rầm Tháng 07',
+                '27' : 'Thương Binh Liệt Sĩ'
+        },
+        t8  : { '14' : 'Trăng Non' },
+        t9  : { '14' : 'Trăng Non' },
+        t10 : { '14' : 'Trăng Non' },
+        t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
+        t12 : { '24' : 'Không Biết' }
+    }
+
+    if ( options.fnDataEvent != undefined ) {
+        var DataEvent = setDefaultTheme(options.fnDataEvent, DataEvent)
+    }
+    
+
     function getStyleDays(pr_el, pr_data_utc) {
         
         // Kiểm tra nếu tháng prev hoặc next = với data hiện tại sẽ nhận style
@@ -341,6 +365,30 @@ function tdatapicker( options ) {
 
             var d = new Date(dataUTC[0]);
             var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + setDefaultTheme(options.setLimitDays, 31) );
+
+            // Find number limit month options.setNumCalendar 1,2,3 ...
+            for ( var cl = 0; cl < options.setNumCalendar; cl++ ) {
+                var t = new Date(pr_data_utc[0]).getMonth();
+                var m = t + 1 + cl;
+                var gMonth = 't'+m;
+
+                for ( var i = 0; i < toDayElement.length; i++ ) {
+                    // Số ngày của tháng
+                    var getNum = Number(toDayElement[i].textContent)
+                    // Số ngày của tháng cần so sánh
+                    var getDays = Number(toDayElement[i].getAttribute('data-date'));
+                    var getMonths = new Date(getDays).getMonth() + 1;
+
+                    if ( DataEvent[gMonth][getNum] != undefined && getMonths === m ) {
+                        toDayElement[i].style.backgroundColor = '#888';
+                        toDayElement[i].style.color = '#fff';
+                        // console.log(new Date(getDays).getMonth() + 1)
+                        // console.log(getNum)
+                        toDayElement[i].setAttribute('date-title', getNum + ' Tháng ' + (new Date(getDays).getMonth() + 1) + ' ' + DataEvent[gMonth][getNum])
+                    }
+                }
+
+            }
 
             for ( var i = 0; i < toDayElement.length; i++ ) {
                 var dayselect = toDayElement[i].getAttribute('data-date');
@@ -481,23 +529,6 @@ function tdatapicker( options ) {
     callEventClick(pr_callback, dataUTC)
 }
 
-
-// function tuds(a) {
-//     var test = 'abc'
-//     function callBack() {
-//         a.fn(test);
-//         return test;
-//     }
-//     if ( a.fn != undefined ) {
-//         callBack();
-//     }
-// }
-// tuds({
-//     name: 'ten string',
-//     fn: function getDate(days) {
-//         console.log(days)
-//     }
-// })
 
 
 
