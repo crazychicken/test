@@ -8,8 +8,8 @@
 
     <link rel="stylesheet" href="theme/css/style.css">
     <style type="text/css">
-        .t-datepicker tr > th {
-            /*padding: 10px;*/
+        .t-datepicker {
+            display: inline-block;
         }
         .t_month {
             text-align: center;
@@ -31,17 +31,23 @@
         }
         .datepicker {
             top: 40px;
+            left: 0;
             position: absolute;
             background: #fafafa;
+            padding: 10px;
+            width: 640px;
+            
+        }
+        .t-table-condensed {
+            display: inline-block;
+            float: left;
+            margin: 0 5px;
+            width: 300px;
         }
         .datepicker-arrow {
             height: 10px;
             width: 10px;
             background: #ddd;
-        }
-        .disabled,
-        .check-in .end_limit {
-            opacity: 0.25;
         }
         .special-days {
             position: relative;
@@ -58,9 +64,18 @@
         .range {
             background: #e7e8e9;
         }
-        .start, .end {
+        .start, .end, .end_limit {
             color: #fff;
             background: #00adef;
+        }
+        .disabled,
+        .check-in .end_limit {
+            opacity: 0.25;
+        }
+        .date-title {
+            text-align: center;
+            padding: 5px 0;
+            color: #e91e63;
         }
     </style>
 </head>
@@ -170,21 +185,23 @@
 
         tdatapicker({
             getElement: '.t-datepicker',
-            setNumCalendar: 2,
+            // setNumCalendar: 2,
+            // setNumCalendar: 1,
 
             setTitleCheckIn: 'Nhận phòng',
             setTitleCheckOut: 'Trả phòng',
 
+            // setLimitPrevMonth: 2, // Số tháng được next trong phạm vi show ra của calendar tính từ ngày toDay
             // setLimitPrevMonth: 2,
-            setLimitNextMonth: 1,
+            // setLimitNextMonth: 2,
             // default 31 date
-            // setLimitDays: 10, 
+            // setLimitDays: 3,  // Số ngày giới hạn của check-in -> check-out để thê hiện chuỗi .range
 
             // setDateCheckIn: c_out,
             // setDateCheckOut: c_in,
 
-            setDateCheckIn: '2018/03/8',
-            setDateCheckOut: '2018/03/11',
+            // setDateCheckIn: '2018/03/8',
+            // setDateCheckOut: '2018/03/11',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',

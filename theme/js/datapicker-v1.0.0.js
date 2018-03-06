@@ -95,7 +95,7 @@ function tdatapicker( options ) {
 
 
     // options add theme
-    var setNumCalendar = 1;
+    var setNumCalendar = setDefaultTheme(options.setNumCalendar, 2);
     if ( options.setNumCalendar != undefined 
         && options.setNumCalendar > 1
         && !isNaN(options.setNumCalendar )) {
@@ -186,14 +186,10 @@ function tdatapicker( options ) {
         // console.log(pr_el)
         // console.log(pr_data_utc)
         // console.log(new Date(pr_data_utc[0]) , new Date(pr_data_utc[1]))
-
-        // var tPrev    = pr_el.parentElement.querySelectorAll('.t_prev');
-        // var tNext    = pr_el.parentElement.querySelectorAll('.t_next');
         var tArrow   = pr_el.parentElement.querySelectorAll('.t_arrow');
-
         var df_toDay = new Date(toDay);
         var setLimitPrevMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() - setDefaultTheme(options.setLimitPrevMonth, 0) );
-        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setDefaultTheme(options.setLimitNextMonth, 12) );
+        var setLimitNextMonth = Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setNumCalendar + setDefaultTheme(options.setLimitNextMonth, 2));
 
         var newDate  = new Date(pr_data_utc[0])
         var y = newDate.getFullYear();
@@ -205,9 +201,6 @@ function tdatapicker( options ) {
                 tArrow[i].innerHTML = '';
             }
             tArrow[0].onclick = function(e) {
-                // if ( this.className.includes('disabled') ) {
-                //     return;
-                // }
                 e.stopPropagation()
                 if ( Date.UTC(y, m) > setLimitPrevMonth ) {
                     m = m - 1;
@@ -217,18 +210,22 @@ function tdatapicker( options ) {
             }
             // Next Calendar
             tArrow[tArrow.length - 1].onclick = function(e) {
-                // if ( this.className.includes('disabled') ) {
-                //     return;
-                // }
                 e.stopPropagation()
-                if ( Date.UTC(y, m) < setLimitNextMonth ) {
+                if ( Date.UTC(y, m+setNumCalendar) < setLimitNextMonth ) {
                     m = m + 1;
                     // Nhận vào Elements [dates], date_utc = [1,2]
                     setDaysInMonth( pr_el, [Date.UTC(y, m), dataUTC[1]] )
                 }
             }
         }
-        return setLimitNextMonth;
+
+        // disable button Arrow when check-in limit month
+        if ( Date.UTC(y, m+setNumCalendar) === setLimitNextMonth ) {
+            var Arrow_2 = pr_el.parentElement.querySelectorAll('.t_arrow');
+            Arrow_2[Arrow_2.length-1].className = 'disabled'
+        }
+
+        return Date.UTC(df_toDay.getFullYear(), df_toDay.getMonth() + setNumCalendar + setDefaultTheme(options.setLimitNextMonth, 2), df_toDay.getDate());
     }
     // newDataUTC = getDateUTC(options.setDateCheckIn, 1522454400000);
 
@@ -364,7 +361,8 @@ function tdatapicker( options ) {
     function getStyleDays(pr_el, pr_data_utc) {
         // Call Function click Next | Prev
         // Nhận vào Elements [dates], date_utc = [1,2]
-        var c = clickEvent( pr_el, pr_data_utc )
+        var limitdateN = clickEvent( pr_el, pr_data_utc )
+        // dataUTC[0] chính là date ở click next || prev, ngày cuối cùng của tháng cuối cùng
         
         // Kiểm tra nếu tháng prev hoặc next = với data hiện tại sẽ nhận style
         if ( new Date(pr_data_utc[0]).getMonth() === new Date(dataUTC[0]).getMonth()
@@ -372,9 +370,11 @@ function tdatapicker( options ) {
             var toDayElement = pr_el.parentElement.querySelectorAll('td')
 
             var d = new Date(dataUTC[0]);
-            var d2 = new Date(toDay);
-            var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + setDefaultTheme(options.setLimitDays, 31) );
-            var limitdate2 = Date.UTC(d2.getFullYear(), (d2.getMonth()+1+options.setLimitNextMonth), d2.getDate());
+            var limitRange = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() + setDefaultTheme(options.setLimitDays, 31) );
+            var end_limit = Date.UTC(new Date(limitdateN).getFullYear(), (new Date(limitdateN).getMonth()), new Date(limitdateN).getDate()+1);
+
+            // console.log(limitRange)
+            // console.log(new Date(limitRange))
 
             for ( var i = 0; i < toDayElement.length; i++ ) {
                 var dayselect = toDayElement[i].getAttribute('data-date');
@@ -405,42 +405,50 @@ function tdatapicker( options ) {
                         toDayElement[i].className = 'disabled';
                     }
 
+                    // Setlimit Range khi ở check-out còn click được 31 ngày default hoặc có thể set setLimitDays
                     if ( Number(dayselect) != 0
-                        && Number(dayselect) > dataUTC[0] && Number(dayselect) < limitdate 
+                        && Number(dayselect) > dataUTC[0] && Number(dayselect) < limitRange 
                         && Number(dayselect) != dataUTC[1] ) {
                         toDayElement[i].className = '';
                     }
+
+                    // disable button Arrow
+                    var Arrow = pr_el.parentElement.querySelectorAll('.t_arrow');
+                    Arrow = [].slice.call(Arrow)
+                    Arrow.forEach( function(e, index) {
+                        e.className = 'disabled'
+                        e.onclick = function() {
+                            return;    
+                        }
+                    });
                 }
 
                 // Range In --- Out
                 if ( Number(dayselect) > dataUTC[0] && Number(dayselect) < dataUTC[1] ) {
-                    // var cln = toDayElement[i].className;
-                    // cln = cln.replace('disabled', '');
                     toDayElement[i].className = 'range';
                 }
 
-                // console.log(new Date(limitdate2))
-                if ( Number(dayselect) > limitdate2 ) {
+                // Limit Day disable for check-in 1,2,3 .. months
+                if ( Number(dayselect) > limitdateN ) {
                     toDayElement[i].className = 'disabled';
                 }
 
                 // In - Ative check-in
                 if ( Number(dayselect) === dataUTC[0] ) {
-                    // var cln = toDayElement[i].className;
-                    // cln = cln.replace('disabled', '');
-                    // toDayElement[i].className = cln + ' start';
                     toDayElement[i].className = 'start';
                 }
                 // Out - Active Check-out
                 if ( Number(dayselect) === dataUTC[1] ) {
-                    // var cln = toDayElement[i].className;
-                    // cln = cln.replace('disabled', '');
-                    // toDayElement[i].className = cln + ' end';
                     toDayElement[i].className = 'end';
                 }
-                // if ( dataUTC[1] === limitdate2 ) {
-                //     toDayElement[i].className = 'end_limit';
-                // }
+
+                
+                // Check disable Arrow Next and next Day limit
+                if ( pr_el.className.includes('check-in') ) {
+                    if ( Number(dayselect) === dataUTC[1] && Number(dayselect) === end_limit ) {
+                        toDayElement[i].className = 'end_limit';
+                    }
+                }
                 
 
                 // Click td event when td has been value
@@ -457,7 +465,7 @@ function tdatapicker( options ) {
                     get_utc = Number( get_utc )
                     if ( fnParents(this, 'check-in').className === 'check-in' ) {
                         // Check số ngày lớn hơn 12 tháng hoặc limitNextMonth không cho click
-                        if ( Number(this.getAttribute('data-date')) > limitdate2) { return; }
+                        if ( Number(this.getAttribute('data-date')) > limitdateN) { return; }
                         var d = new Date(dataUTC[1]);
                         var limitdate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() - setDefaultTheme(options.setLimitDays, 31) );                        
                         data_utc_in = get_utc;
@@ -466,8 +474,6 @@ function tdatapicker( options ) {
                             var newD = new Date( get_utc )
                             data_utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
                         }
-
-                        // if ( this.className === 'end' && data_utc_out === Number(this.getAttribute('data-date')) ) { return; }
                     }
                     if ( fnParents(this, 'check-out').className === 'check-out' ) {
                         if ( this.className.includes('start') === true ) { return; }
@@ -477,15 +483,32 @@ function tdatapicker( options ) {
 
                     dataUTC = getDateUTC( data_utc_in, data_utc_out )
                     callEventClick( datepicker, dataUTC)
-                    
+                }
 
+                toDayElement[i].onmouseover = function() {
+                    if ( this.className.includes('special-days') === true ) {
+                        if ( fnParents(this, 'datepicker').length != 0 ) {
+                            var node = document.createElement("DIV");
+                            node.className = 'date-title'
+                            var textnode = document.createTextNode(this.getAttribute('date-title'));
+                            node.appendChild(textnode); 
+                            var calendar = fnParents(this, 'datepicker');
+                            calendar.appendChild(node)
+                        }
+                    }
+                    this.onmouseout = function() {
+                        if ( fnParents(this, 'datepicker').getElementsByClassName('date-title').length != 0 ) {
+                            var elem = fnParents(this, 'datepicker').getElementsByClassName('date-title')[0];
+                            elem.parentElement.removeChild(elem);
+                        }
+                    }
                 }
             }
 
             // set DataEvent follow Days
             if ( options.fnDataEvent != undefined ) {
                 // Find number limit month options.setNumCalendar 1,2,3 ...
-                for ( var cl = 0; cl < options.setNumCalendar; cl++ ) {
+                for ( var cl = 0; cl < setNumCalendar; cl++ ) {
                     var t = new Date(pr_data_utc[0]).getMonth();
                     var m = t + 1 + cl;
                     var gMonth = 't'+m;
@@ -503,27 +526,11 @@ function tdatapicker( options ) {
                             toDayElement[i].className = cln + ' special-days';
                             // console.log(new Date(getDays).getMonth() + 1)
                             // console.log(getNum)
-                            toDayElement[i].setAttribute('date-title', getNum + ' Tháng ' + (new Date(getDays).getMonth() + 1) + ' ' + DataEvent[gMonth][getNum])
+                            toDayElement[i].setAttribute('date-title', getNum + ' Tháng ' + (new Date(getDays).getMonth() + 1) + ' - ' + DataEvent[gMonth][getNum])
                         }
                     }
                 }
             }
-
-            // // Call Function click Next | Prev
-            // // Nhận vào Elements [dates], date_utc = [1,2]
-            // var c = clickEvent( pr_el, pr_data_utc )
-            // console.log(new Date(c))
-
-            
-
-            // if ( pr_el.className.includes('check-out') ) {
-            //     var Arroa = pr_el.parentElement.querySelectorAll('.t_arrow');
-            //     Arroa = [].slice.call(Arroa)
-            //     Arroa.forEach( function(e, index) {
-            //         e.className = 'disabled'
-            //         return;
-            //     })
-            // }
         }
     }
     var pr_callback = '';
@@ -539,8 +546,8 @@ function tdatapicker( options ) {
             }
         });
 
-        // getTableCalendar(findDates[1], pr_date_utc)
         getTableCalendar(findDates[0], pr_date_utc)
+        // getTableCalendar(findDates[1], pr_date_utc)
 
         if ( pr_callback != '' ) {
             findDates = pr_callback.getElementsByClassName('dates')
