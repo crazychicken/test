@@ -6,78 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="theme/css/style.css">
-    <style type="text/css">
-        .t-datepicker {
-            display: inline-block;
-        }
-        .t_month {
-            text-align: center;
-        }
-        .t_next, .t_prev, .t-table-condensed td, .t-table-condensed th {
-            cursor: pointer;
-            text-align: center;
-            padding: 10px;
-        }
-        .check-in,
-        .check-out {
-            padding: 5px;
-            background: #ddd;
-            display: inline-block;
-            position: relative;
-        }
-        .dates {
-            cursor: pointer;
-        }
-        .datepicker {
-            top: 40px;
-            left: 0;
-            position: absolute;
-            background: #fafafa;
-            padding: 10px;
-            width: 640px;
-            
-        }
-        .t-table-condensed {
-            display: inline-block;
-            float: left;
-            margin: 0 5px;
-            width: 300px;
-        }
-        .datepicker-arrow {
-            height: 10px;
-            width: 10px;
-            background: #ddd;
-        }
-        .special-days {
-            position: relative;
-        }
-        .special-days:before {
-            content: '';
-            position: absolute;
-            background: #e91e63;
-            height: 5px;
-            width: 5px;
-            right: 0;
-            top: 0;
-        }
-        .range {
-            background: #e7e8e9;
-        }
-        .start, .end, .end_limit {
-            color: #fff;
-            background: #00adef;
-        }
-        .disabled,
-        .check-in .end_limit {
-            opacity: 0.25;
-        }
-        .date-title {
-            text-align: center;
-            padding: 5px 0;
-            color: #e91e63;
-        }
-    </style>
+    <link rel="stylesheet" href="theme/css/datapicker-v1.0.0.css">
 </head>
 <body>
 
@@ -168,7 +97,8 @@
             t2  : { '14' : 'Lễ Tình Yêu'},
             t3  : { '8'  : 'Quốc Tế Phụ nữ',
                     '14' : 'Trăng Non',
-                    '15' : 'Ngày Rầm'
+                    '15' : 'Ngày Rầm',
+                    '31' : 'Ngày Rầm'
             },
             t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
             t5  : { '1'  : 'Quốc Tế Lao Động' },
@@ -177,7 +107,7 @@
                     '27' : 'Thương Binh Liệt Sĩ'
             },
             t8  : { '14' : 'Trăng Non' },
-            t9  : { '14' : 'Trăng Non' },
+            t9  : { '2' : 'Quốc Khánh' ,'14' : 'Trăng Non' },
             t10 : { '14' : 'Trăng Non' },
             t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
             t12 : { '24' : 'Không Biết' }
@@ -193,40 +123,21 @@
 
             // setLimitPrevMonth: 2, // Số tháng được next trong phạm vi show ra của calendar tính từ ngày toDay
             // setLimitPrevMonth: 2,
-            // setLimitNextMonth: 2,
+            setLimitNextMonth: 2,
             // default 31 date
             // setLimitDays: 3,  // Số ngày giới hạn của check-in -> check-out để thê hiện chuỗi .range
 
             // setDateCheckIn: c_out,
             // setDateCheckOut: c_in,
 
-            // setDateCheckIn: '2018/03/8',
-            // setDateCheckOut: '2018/03/11',
+            setDateCheckIn: '2018/03/7',
+            setDateCheckOut: '2018/03/11',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',
             setIconDate: '<i class="glyphicon glyphicon-calendar"></i>',
             setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
             setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
-            // fnDataEvent: {
-            //     t1  : { '1'  : 'Tết Dương Lịch'},
-            //     t2  : { '14' : 'Lễ Tình Yêu'},
-            //     t3  : { '8'  : 'Quốc Tế Phụ nữ',
-            //             '14' : 'Trăng Non',
-            //             '15' : 'Ngày Rầm'
-            //     },
-            //     t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
-            //     t5  : { '1'  : 'Quốc Tế Lao Động' },
-            //     t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
-            //     t7  : { '15' : 'Rầm Tháng 07',
-            //             '27' : 'Thương Binh Liệt Sĩ'
-            //     },
-            //     t8  : { '14' : 'Trăng Non' },
-            //     t9  : { '14' : 'Trăng Non' },
-            //     t10 : { '14' : 'Trăng Non' },
-            //     t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
-            //     t12 : { '24' : 'Không Biết' }
-            // },
             fnDataEvent: dateEvent,
             fnCallBack: function(getData) {
                 // console.log(getData)
