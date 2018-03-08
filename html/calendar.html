@@ -17,6 +17,8 @@
                 <div class="check-out"></div>
             </div>
 
+            <button class="btn btn-primary btn-lg" id="submit">Submit</button>
+
             <!-- <div class="t-datepicker">
                 <div class="check-in"></div>
                 <div class="check-out"></div>
@@ -97,13 +99,13 @@
             t2  : { '14' : 'Lễ Tình Yêu'},
             t3  : { '8'  : 'Quốc Tế Phụ nữ',
                     '14' : 'Trăng Non',
-                    '15' : 'Ngày Rầm',
-                    '31' : 'Ngày Rầm'
+                    '15' : 'Ngày Rằm',
+                    '31' : 'Ngày Rằm'
             },
             t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
             t5  : { '1'  : 'Quốc Tế Lao Động' },
             t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
-            t7  : { '15' : 'Rầm Tháng 07',
+            t7  : { '15' : 'Rằm Tháng 07',
                     '27' : 'Thương Binh Liệt Sĩ'
             },
             t8  : { '14' : 'Trăng Non' },
@@ -111,6 +113,10 @@
             t10 : { '14' : 'Trăng Non' },
             t11 : { '20' : 'Ngày Nhà Giáo Việt Nam' },
             t12 : { '24' : 'Không Biết' }
+        }
+
+        function huy(pr) {
+            console.log(pr)
         }
 
         tdatapicker({
@@ -130,8 +136,8 @@
             // setDateCheckIn: c_out,
             // setDateCheckOut: c_in,
 
-            setDateCheckIn: '2018/03/7',
-            setDateCheckOut: '2018/03/11',
+            setDateCheckIn: '2018/03/20',
+            setDateCheckOut: '2018/04/21',
 
             setPickerTitleCheckIn: 'Ngày nhận phòng',
             setPickerTitleCheckOut: 'Ngày trả phòng',
@@ -139,12 +145,47 @@
             setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
             setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
             fnDataEvent: dateEvent,
-            fnCallBack: function(getData) {
+            fnEventClickDay: function(getData) {
                 // console.log(getData)
                 // console.log(new Date(getData[0]))
                 // console.log(new Date(getData[1]))
+                // huy('Huy dep troia')
+                // checkSubmit()
+            },
+            fnAfterCheckOut: function(getData) {
+                // sau khi chọn ngày checkOut thì làm gì tiếp theo
+                // console.log('Huy dep troia')
+                // huy(getData)
             }
         });
+
+
+        // function fnAppendInfoError() {
+        //     var cNode = document.createElement('DIV')
+        //     cNode.className = 'infoerror'
+        //     var textnode = document.createTextNode('Loi roi cha noi');
+        //     cNode.appendChild(textnode);
+        //     return cNode;
+        // }
+
+
+        // var a = fnAppendInfoError();
+        // console.log(a)
+        // function checkSubmit() {
+        //     var a = document.getElementsByClassName('check-out')[0].getElementsByClassName('year-check-out');
+        //     var cln = submit.className;
+        //     if ( a.length != 1 ) {
+        //         submit.className = cln + ' disabled'
+        //         if ( document.getElementsByClassName('datepicker')[0].length != 0 ) {
+        //             document.getElementsByClassName('check-out')[0].appendChild(fnAppendInfoError())
+        //         }
+        //     } else {
+        //         submit.className = 'btn btn-primary btn-lg';
+        //         if ( document.getElementsByClassName('datepicker')[0].length != 0 ) {
+        //             document.getElementsByClassName('infoerror')[0].remove();
+        //         }
+        //     }
+        // }
     </script>
 </body>
 </html>

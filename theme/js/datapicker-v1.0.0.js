@@ -64,6 +64,19 @@ function tdatapicker( options ) {
             }
         }
     }
+    // Function Append for toDay, hover day show num night
+    function appendSpan(pr_el, pr_class, pr_class_span, pr_text_node) {
+        pr_el.className = pr_el.className + ' ' + pr_class;
+        var node = document.createElement("span");
+        node.className = pr_class_span;
+        var textnode = document.createTextNode(pr_text_node);
+        node.appendChild(textnode); 
+        pr_el.appendChild(node)
+    }
+    // this là đôi tượng cần append
+    // pr_class_replace Class cần repalce nếu cần
+    // pr_add_class Class cần thêm vào nếu cần 
+    // pr_text_node Nội dung cần khởi tạo
 
 
     // THEME CALENDAR
@@ -168,12 +181,24 @@ function tdatapicker( options ) {
         var dataCheckOut = setDefaultTheme(pr_out, nextDays(dataCheckIn))
         dataCheckOut = convertDateUTC(dataCheckOut);
 
+        
+
         for ( var i = 0; i < tElement.length; i++ ) {
             var checkIn = setThemeCheckDate(options.setTitleCheckIn, 'check-in', dataCheckIn)
             var checkOut = setThemeCheckDate(options.setTitleCheckOut, 'check-out', dataCheckOut)
             // Include html default days show calendar
             tElement[i].querySelectorAll('.check-in')[0].innerHTML = convertArrayToString(checkIn);
             tElement[i].querySelectorAll('.check-out')[0].innerHTML = convertArrayToString(checkOut);
+            if ( dataCheckIn === dataCheckOut ) {
+                // tElement[i].querySelectorAll('.date-check-out')[0].innerHTML = '';
+                // tElement[i].querySelectorAll('.year-check-out')[0].innerHTML = '';
+                // tElement[i].querySelectorAll('.month-check-out')[0].innerHTML = '';
+                // tElement[i].querySelectorAll('.day-check-out')[0].innerHTML = '';
+
+                tElement[i].querySelectorAll('.year-check-out')[0].remove();
+                tElement[i].querySelectorAll('.month-check-out')[0].remove();
+                tElement[i].querySelectorAll('.day-check-out')[0].remove();
+            }
         }
 
         return [dataCheckIn, dataCheckOut];
@@ -361,7 +386,7 @@ function tdatapicker( options ) {
         t4  : { '30' : 'Giải phóng Miền Nam Việt Nam'},
         t5  : { '1'  : 'Quốc Tế Lao Động' },
         t6  : { '1'  : 'Quốc Tế Thiếu Nhi' },
-        t7  : { '15' : 'Rầm Tháng 07',
+        t7  : { '15' : 'Rằm Tháng 07',
                 '27' : 'Thương Binh Liệt Sĩ'
         },
         t8  : { '14' : 'Trăng Non' },
@@ -401,6 +426,7 @@ function tdatapicker( options ) {
 
                 // disable Before Day position Check-out
                 if ( pr_el.className.includes('check-out') ) {
+
                     if ( Number(dayselect) < dataUTC[0] ) {
                         toDayElement[i].className = 't-disabled';
                     }
@@ -412,7 +438,7 @@ function tdatapicker( options ) {
                     if ( Number(dayselect) != 0
                         && Number(dayselect) > dataUTC[0] && Number(dayselect) < limitRange 
                         && Number(dayselect) != dataUTC[1] ) {
-                        toDayElement[i].className = '';
+                        toDayElement[i].className = 'day';
                     }
 
                     // disable button Arrow
@@ -452,11 +478,12 @@ function tdatapicker( options ) {
                         toDayElement[i].className = 'end_limit';
                     }
                 }
-                
+
                 // highlighted toDay
                 if ( Number(dayselect) ===  toDay ) {
-                    var cln = toDayElement[i].className;
                     // cln = cln.replace('special-day', '');
+                    appendSpan(toDayElement[i], 'hover_day', 'hover_day_content', 'Hôm nay')
+                    var cln = toDayElement[i].className;
                     toDayElement[i].className = cln + ' today';
                 }
                 // Select stype for day in calendar
@@ -488,14 +515,22 @@ function tdatapicker( options ) {
                         data_utc_in = get_utc;
                         data_utc_out = dataUTC[1];
                         if ( get_utc > dataUTC[1] || get_utc === dataUTC[1] || get_utc < limitdate ) {
-                            var newD = new Date( get_utc )
-                            data_utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
+                            // var newD = new Date( get_utc )
+                            // data_utc_out = Date.UTC(newD.getFullYear(), newD.getMonth(), (newD.getDate() + 1))
+
+                            // Không hiện ngày check-out liền kề
+                            data_utc_out = get_utc;
                         }
                     }
                     if ( fnParents(this, 'check-out').className === 'check-out' ) {
                         if ( this.className.includes('start') === true ) { return; }
                         data_utc_in = dataUTC[0];
                         data_utc_out = get_utc;
+
+                        // Get data sau khi chọn ngày ở check-out
+                        if ( options.fnAfterCheckOut != undefined ) {
+                            options.fnAfterCheckOut( getDateUTC( data_utc_in, data_utc_out ) )
+                        }
                     }
 
                     dataUTC = getDateUTC( data_utc_in, data_utc_out )
@@ -504,27 +539,65 @@ function tdatapicker( options ) {
 
                 // Function khi hover vào ngày đặc biệt
                 toDayElement[i].onmouseover = function() {
+
+                    // Append special day
                     if ( this.className.includes('special-day') === true ) {
                         if ( fnParents(this, 'datepicker').length != 0 ) {
-                            var node = document.createElement("DIV");
-                            node.className = 'date-title'
-                            var textnode = document.createTextNode(this.getAttribute('date-title'));
-                            node.appendChild(textnode); 
-                            var calendar = fnParents(this, 'datepicker');
-                            calendar.appendChild(node)
+                            // fn Global
+                            appendSpan(fnParents(this, 'datepicker'), '', 'date-title', this.getAttribute('date-title'));
                         }
                     }
+
+                    function checkNumNight(pr_el, pr_date_utc) {
+                        var nd = new Date(pr_date_utc[0]);
+                        var nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate());
+                        var done = Number(pr_el.getAttribute('data-date'));
+                        var numDay = 0;
+                        while ( nd_1 != done ) {
+                            nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() + numDay);
+                            numDay++;
+                            
+                            // if ( Number(nd_1) > pr_date_utc[0] && Number(nd_1) < done ) {
+                            //     document.querySelectorAll('[data-date="' + nd_1 + '"]')[0].style.color = 'red'
+                            // }
+                            
+                            if(numDay>5000) {return;}
+                        }
+                        // console.log(numDay)
+                        return numDay;
+                    }
+                    // Hover khi ở check-in và khi ở check-out
+                    if ( fnParents(this, 'check-in').className.includes('check-in')) {
+                        var numDay = checkNumNight(this, dataUTC)
+                    }
+                    if ( numDay > 0 ) {
+                        // fn Global
+                        appendSpan(this, 'hover_day', 'hover_day_content', (numDay - 1 + ' đêm') )
+                    }
+
+
                     this.onmouseout = function() {
+                        // Xoá tất cả các class hover_day trừ ngày toDay ra.
+                        if ( this.getElementsByClassName('hover_day_content').length != 0
+                            && this.className.includes('today') === false ) {
+                            this.getElementsByClassName('hover_day_content')[0].remove();
+                            this.className = this.className.replace(' hover_day', '');
+                        }
+                        // out hover hide special days
                         if ( fnParents(this, 'datepicker').getElementsByClassName('date-title').length != 0 ) {
-                            var elem = fnParents(this, 'datepicker').getElementsByClassName('date-title')[0];
-                            elem.parentElement.removeChild(elem);
+                            var elem = fnParents(this, 'datepicker').getElementsByClassName('date-title');
+                            elem = [].slice.call(elem)
+                            for ( var i = 0; i<elem.length; i++ ) {
+                                elem[i].remove();
+                            }
                         }
                     }
+
                 }
             }
 
-            // set DataEvent follow Days
-            if ( DataEvent != undefined ) {
+            // set DataEvent follow Days phai co setdate mới chạy
+            if ( options.fnDataEvent != undefined ) {
                 // return;
                 // Find number limit month options.setNumCalendar 1,2,3 ...
                 for ( var cl = 0; cl < setDefaultTheme(options.setNumCalendar, 2); cl++ ) {
@@ -536,12 +609,16 @@ function tdatapicker( options ) {
                     for ( var i = 0; i < toDayElement.length; i++ ) {
                         // Số ngày của tháng
                         var getNum = Number(toDayElement[i].textContent)
+                        // Kiểm tra ngày hiện tại với ngày đặc biệt để lấy ngày today
+                        if ( isNaN(getNum) ) {
+                            getNum = new Date(toDay).getDate();
+                        }
                         // Số ngày của tháng cần so sánh
                         var getDays = Number(toDayElement[i].getAttribute('data-date'));
                         var getMonths = new Date(getDays).getMonth() + 1;
 
                         // toDayElement[i].className.includes('today') === false check ngayf toDay
-                        if ( DataEvent[gMonth][getNum] != undefined && getMonths === m  && toDayElement[i].className.includes('today') === false ) {
+                        if ( DataEvent[gMonth][getNum] != undefined && getMonths === m ) {
                             var cln = toDayElement[i].className;
                             // cln = cln.replace('t-disabled', '');
                             toDayElement[i].className = cln + ' special-day';
@@ -575,16 +652,13 @@ function tdatapicker( options ) {
             getTableCalendar(findDates[1], pr_date_utc);
         }
 
-        function CallBack() {
-            options.fnCallBack(pr_date_utc)
-        }
-        if ( options.fnCallBack != undefined ) {
-            CallBack();
+        if ( options.fnEventClickDay != undefined ) {
+            options.fnEventClickDay(pr_date_utc)
         }
         
     }
     var findDates = document.getElementsByClassName('dates');
     callEventClick(pr_callback, dataUTC)
-}
 
+}
 
