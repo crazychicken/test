@@ -85,16 +85,33 @@
             border-right-color: #e91e63;
         }
     }
+
     .start, .end, .end_limit {
         color: #fff;
         background: #00adef;
     }
+
     .range {
         color: inherit;
         background: #e7e8e9;
     }
+    .range_limit {
+        color: #59caf5;
+        background: #f2fbfe;
+        &.start,
+        &.end {
+            color: #fff;
+            background: #a3e1f9;
+        }
+    }
 
-    
+    .check-in .end,
+    .check-out .start,
+    .check-out tr ~ .end {
+        color: #fff;
+        background: #00adef;
+    }
+
     .hover_day {
         color: #fff;
         background: #59caf5;
@@ -135,6 +152,15 @@
         &::after {
             border-top-color: #999;
         }
+        &:hover {
+            background: #59caf5;
+            .hover_day_content {
+                background: #59caf5;
+            }
+            &::after {
+                border-top-color: #59caf5;
+            }
+        }
     }
     // Color Start important more toDay when position today
     .start.today {
@@ -152,7 +178,5 @@
     .check-in .end_limit {
         opacity: 0.25;
     }
-    .tuds {
-        background: #222;
-    }
+
 }

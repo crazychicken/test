@@ -57,16 +57,17 @@ function tdatapicker( options ) {
         if ( cl.length != 0 ) {
             cl = [].slice.call(cl);
             for ( var i = 0; i<cl.length; i++ ) {
-                // cl[i].innerHTML = '';
-                // var findPicker = pr_el.parentElement.getElementsByClassName('datepicker')[0];
-                // cl[i].parentElement.removeChild(cl[i]);
                 cl[i].parentElement.removeChild(cl[i]);
             }
         }
     }
     // Function Append for toDay, hover day show num night
     function appendSpan(pr_el, pr_class, pr_class_span, pr_text_node) {
-        pr_el.className = pr_el.className + ' ' + pr_class;
+        if ( pr_class != '' ) {
+            pr_el.className = pr_el.className + ' ' + pr_class;
+        } else {
+            pr_el.className = pr_el.className + pr_class;
+        }
         var node = document.createElement("span");
         node.className = pr_class_span;
         var textnode = document.createTextNode(pr_text_node);
@@ -483,16 +484,13 @@ function tdatapicker( options ) {
                 if ( Number(dayselect) ===  toDay ) {
                     // cln = cln.replace('special-day', '');
                     appendSpan(toDayElement[i], 'hover_day', 'hover_day_content', 'Hôm nay')
-                    var cln = toDayElement[i].className;
-                    toDayElement[i].className = cln + ' today';
+                    toDayElement[i].className = toDayElement[i].className.replace(' today', '') + ' today';
                 }
                 // Select stype for day in calendar
                 var Cn = new Date( Number(dayselect) )
                 Cn = Cn.getDay() 
                 if ( Cn === 0 || Cn === 6 ) {
-                    var cln = toDayElement[i].className;
-                    toDayElement[i].className = cln + ' highlighted';
-                    // toDayElement[i].style.color = 'blue';
+                    toDayElement[i].className = toDayElement[i].className.replace(' highlighted', '') + ' highlighted';
                 }
 
                 // Click td event when td has been value
@@ -507,7 +505,7 @@ function tdatapicker( options ) {
 
                     // get data UTC date
                     get_utc = Number( get_utc )
-                    if ( fnParents(this, 'check-in').className === 'check-in' ) {
+                    if ( fnParents(this, 'check-in').className.includes('check-in') ) {
                         // Check số ngày lớn hơn 12 tháng hoặc limitNextMonth không cho click
                         if ( Number(this.getAttribute('data-date')) > limitdateN) { return; }
                         var d = new Date(dataUTC[1]);
@@ -522,8 +520,11 @@ function tdatapicker( options ) {
                             data_utc_out = get_utc;
                         }
                     }
-                    if ( fnParents(this, 'check-out').className === 'check-out' ) {
+                    if ( fnParents(this, 'check-out').className.includes('check-out') ) {
                         if ( this.className.includes('start') === true ) { return; }
+                        // ngăn không cho click ngày check-in khi đang ở check-out và không có ngày check-out
+                        // if ( get_utc === dataUTC[1]  ) {
+                        // }
                         data_utc_in = dataUTC[0];
                         data_utc_out = get_utc;
 
@@ -534,11 +535,11 @@ function tdatapicker( options ) {
                     }
 
                     dataUTC = getDateUTC( data_utc_in, data_utc_out )
-                    callEventClick( datepicker, dataUTC)
+                    callEventClick( datepicker, dataUTC )
                 }
 
                 // Function khi hover vào ngày đặc biệt
-                toDayElement[i].onmouseover = function() {
+                toDayElement[i].onmouseover = function(e) {
 
                     // Append special day
                     if ( this.className.includes('special-day') === true ) {
@@ -549,39 +550,75 @@ function tdatapicker( options ) {
                     }
 
                     function checkNumNight(pr_el, pr_date_utc) {
-                        var nd = new Date(pr_date_utc[0]);
-                        var nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate());
-                        var done = Number(pr_el.getAttribute('data-date'));
+                        var el_hover = Number(pr_el.getAttribute('data-date'));
                         var numDay = 0;
-                        while ( nd_1 != done ) {
-                            nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() + numDay);
-                            numDay++;
-                            
-                            // if ( Number(nd_1) > pr_date_utc[0] && Number(nd_1) < done ) {
-                            //     document.querySelectorAll('[data-date="' + nd_1 + '"]')[0].style.color = 'red'
-                            // }
-                            
-                            if(numDay>5000) {return;}
+
+                        if ( e.target.className.includes('hover_day_content') || e.target.className.includes('t-disabled') ) {
+                            return;
                         }
-                        // console.log(numDay)
+
+                        if ( fnParents(pr_el, 'check-in').className.includes('check-in') ) {
+                            var nd = new Date(pr_date_utc[1]);
+                            var nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate());
+                            var limitday = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() - setDefaultTheme(options.setNumCalendar, 31));
+
+                            // Ở check-in nhỏ hơn hoặc = 30 tính từ ngày check-out nếu đã có check-out
+                            if ( el_hover <= limitday ) { return; }
+
+                            while ( el_hover < nd_1 ) {
+                                nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() - numDay);
+                                var t_this = fnParents(pr_el, 'check-in').querySelectorAll('[data-date="' + nd_1 + '"]')[0];
+                                    t_this.className = t_this.className.replace(' range_limit', '') + ' range_limit';
+
+                                numDay++;
+                                // console.log(numDay)
+                                if(numDay>1000) {return;}
+                            }
+                        }
+
+                        if ( fnParents(pr_el, 'check-out').className.includes('check-out') ) {
+                            var nd = new Date(pr_date_utc[0]);
+                            var nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate());
+                            var limitday = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() + setDefaultTheme(options.setNumCalendar, 31));
+                            // Ở check-out lớn hơn hoặc = 31 ngày tiếp theo stop
+                            while ( el_hover != nd_1  ) {
+                                nd_1 = Date.UTC( nd.getFullYear(), nd.getMonth(), nd.getDate() + numDay);
+                                var t_this = fnParents(pr_el, 'check-out').querySelectorAll('[data-date="' + nd_1 + '"]')[0];
+                                    t_this.className = t_this.className.replace(' range_limit', '') + ' range_limit';
+                                numDay++;
+                                // console.log(numDay)
+                                if(numDay>5000) {return;}
+                            }
+                            // console.log(numDay)
+                        }
+
                         return numDay;
                     }
-                    // Hover khi ở check-in và khi ở check-out
-                    if ( fnParents(this, 'check-in').className.includes('check-in')) {
-                        var numDay = checkNumNight(this, dataUTC)
-                    }
+
+                    var numDay = checkNumNight(this, dataUTC)
                     if ( numDay > 0 ) {
-                        // fn Global
+                        // fn Global - Hover khi ở check-in và khi ở check-out
                         appendSpan(this, 'hover_day', 'hover_day_content', (numDay - 1 + ' đêm') )
                     }
 
 
                     this.onmouseout = function() {
                         // Xoá tất cả các class hover_day trừ ngày toDay ra.
-                        if ( this.getElementsByClassName('hover_day_content').length != 0
-                            && this.className.includes('today') === false ) {
+                        if ( this.getElementsByClassName('hover_day_content').length != 0 ) {
                             this.getElementsByClassName('hover_day_content')[0].remove();
                             this.className = this.className.replace(' hover_day', '');
+                        }
+                        if ( document.getElementsByClassName('range_limit').length != 0 ) {
+                            var a = document.getElementsByClassName('range_limit');
+                            a = [].slice.call(a)
+                            for ( var i = 0; i<a.length; i ++ ) {
+                                a[i].className = a[i].className.replace(' range_limit', '');
+                            }
+                        }
+                        // Care conflict today vs num night
+                        if ( this.className.includes('today') ) {
+                            appendSpan(this, 'hover_day', 'hover_day_content', 'Hôm nay')
+                            this.className = this.className.replace(' today', '') + ' today';
                         }
                         // out hover hide special days
                         if ( fnParents(this, 'datepicker').getElementsByClassName('date-title').length != 0 ) {
@@ -621,7 +658,7 @@ function tdatapicker( options ) {
                         if ( DataEvent[gMonth][getNum] != undefined && getMonths === m ) {
                             var cln = toDayElement[i].className;
                             // cln = cln.replace('t-disabled', '');
-                            toDayElement[i].className = cln + ' special-day';
+                            toDayElement[i].className = toDayElement[i].className.replace(' special-day', '') + ' special-day';
                             // console.log(new Date(getDays).getMonth() + 1)
                             // console.log(getNum)
                             toDayElement[i].setAttribute('date-title', getNum + ' Tháng ' + (new Date(getDays).getMonth() + 1) + ' - ' + DataEvent[gMonth][getNum])
