@@ -109,8 +109,50 @@
 
     removeIOSRubberEffect( document.querySelector( ".scrollable" ) );
 
+    var myArray = [
+        "14/4 - Ngày Trăng Tròn",
+        "22/4 - Ngày Lorem",
+        "23/4 - Ngày Lorem",
+        "25/4 - Ngày Lorem ipsum",
+        "26/4 - Ngày Lorem ipsum",
+        "27/4 - Ngày Lorem ipsum",
+        "30/4 - Giải phóng Miền Nam Việt Nam"
+    ]
 
+    // Lấy giá trị bỏ ngày phía trước
+    var mapArray = myArray.map( function(e) {
+        return e.slice(e.indexOf('-'));
+    })
+    // console.log(mapArray)
+    var newIndex = []     // Xác định giá trị ngày không trung nhau trong data
+    var newLastIndex = [] // Xác định giá ngày trùng nhau
+    // indexOf nhận được 2 loại giá trị element
+    mapArray.forEach(function( e, index ){
+        if ( mapArray.lastIndexOf(e) === index ) {
+            // Xác định last index của myArray
+            newIndex.push(myArray[index])
+        } else {
+            if ( mapArray.indexOf(e) === index ) {
+                // Xác định index của myArray
+                newLastIndex.push(myArray[index])
+            }
+        }
+    })
+    // console.log(newIndex)
+    newIndex = newIndex.map(function(el) {
+        newLastIndex.filter( function(e) {
+            if ( el.slice(el.indexOf('-')) ===  e.slice(e.indexOf('-')) ) {
+                el = e.slice(0, e.indexOf('/')) + '-' + el;
+            }
+        })
+        return el;
+    })
+    // console.log(newIndex)
 </script>
 
 </body>
 </html>
+
+
+
+

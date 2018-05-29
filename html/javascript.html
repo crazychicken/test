@@ -5,11 +5,71 @@
     <title>JavaScript</title>
   </head>
   <body>
+    <button id="tuds">click me</button>
+    <div id="add"></div>
     <div class="validation">
       <input type="text" class="input" value="text,    text,    text3">
     </div>
     <h1>Hello</h1>
-    <script>
+    <div class="abc">123</div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  
+
+    <script type="text/javascript">
+      // (function($){
+      //   'use strict';
+      // }( jQuery ))
+      (function(){
+        'use strict';
+        var foo = function( pr_l ) {
+          if ( !(this instanceof foo ) ) {
+            return new foo(pr_l);
+          }
+          // store an argument for this example
+          // this.myArg = pr_l;
+        }
+        // foo.fn = foo.prototype = {
+        //   init: function(){ console.log('tuds') }
+        // }
+        // Đưa ra ngoài để sử dụng, fn anonymouse
+        window.name_s = foo;
+      }())
+
+      // console.log(name)
+      // name_s()
+      var ha = function (pr_l) {
+        this.name = pr_l
+      }
+      console.log(ha())
+      // tuds.teo = tuds.prototype = '123'
+      
+      // tuds.prototype.age = 12;
+
+      // console.log(tuds.teo.init.tuds)
+
+      // var t = new tuds();
+
+      
+      // console.log(tuds)
+      // console.log(t.age)
+
+      // console.log(tu.tuds)
+      // tu.tuds;
+      // tu('.abc').style.color = 'red';
+
+      // name_s.fn.myPlugin = function () {
+      //   console.log(this)
+      //   // this.style.color = 'red';
+      //   return this; // return `this` for chainability
+      // };
+
+      // foo(".abc").myPlugin(); // alerts "bar"
+
+    </script>
+
+
+    <!-- <script>
       
       function getId(pr_id) {
         return document.getElementById(pr_id);
@@ -150,6 +210,6 @@
       // });
       // console.log(data);   // ["a1 first@gmail", "   111@gmail.com", "    after", "after", "after", "tu", "tu", " 111@gmail.com"]
       // console.log(result); // ["a1 first@gmail", "111@gmail.com", "after", "tu"]
-    </script>
+    </script> -->
   </body>
 </html>

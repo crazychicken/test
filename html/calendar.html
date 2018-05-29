@@ -11,6 +11,8 @@
 <body>
 
     <div class="container">
+        <div class="row" id="test"></div>
+        <div class="row" id="test2"></div>
         <div class="row">
             <div class="t-datepicker">
                 <div class="check-in"></div>
@@ -116,51 +118,54 @@
             t12 : { '24' : 'Không Biết' }
         }
 
-        function huy(pr) {
-            console.log(pr)
-        }
-
         tdatapicker({
-            getElement: '.t-datepicker',
-            // setNumCalendar: 2,
-            // setNumCalendar: 1,
+            getElement: '.t-datepicker'
+        })
 
-            setTitleCheckIn: 'Nhận phòng',
-            setTitleCheckOut: 'Trả phòng',
+        // function huy(pr) {
+        //     console.log(pr)
+        // }
+        // tdatapicker({
+        //     getElement: '.t-datepicker',
+        //     // setNumCalendar: 2,
+        //     // setNumCalendar: 1,
 
-            // setLimitPrevMonth: 2, // Số tháng được next trong phạm vi show ra của calendar tính từ ngày toDay
-            // setLimitPrevMonth: 2,
-            setLimitNextMonth: 2,
-            // default 31 date
-            // setLimitDays: 3,  // Số ngày giới hạn của check-in -> check-out để thê hiện chuỗi .range
+        //     setTitleCheckIn: 'Nhận phòng',
+        //     setTitleCheckOut: 'Trả phòng',
 
-            // setDateCheckIn: c_out,
-            // setDateCheckOut: c_in,
+        //     // setLimitPrevMonth: 2, // Số tháng được next trong phạm vi show ra của calendar tính từ ngày toDay
+        //     // setLimitPrevMonth: 2,
+        //     setLimitNextMonth: 2,
+        //     // default 31 date
+        //     // setLimitDays: 3,  // Số ngày giới hạn của check-in -> check-out để thê hiện chuỗi .range
 
-            // setDateCheckIn: '2018/03/20',
-            // setDateCheckOut: '2018/04/5',
+        //     // setDateCheckIn: c_out,
+        //     // setDateCheckOut: c_in,
 
-            setPickerTitleCheckIn: 'Ngày nhận phòng',
-            setPickerTitleCheckOut: 'Ngày trả phòng',
-            setIconDate: '<i class="glyphicon glyphicon-calendar"></i>',
-            setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
-            setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
-            fnDataEvent: dateEvent,
-            fnEventClickDay: function(getData) {
-                // console.log(getData)
-                // console.log(new Date(getData[0]))
-                // console.log(new Date(getData[1]))
-                // huy('Huy dep troia')
-                // checkSubmit()
-            },
-            fnAfterCheckOut: function(getData) {
-                // sau khi chọn ngày checkOut thì làm gì tiếp theo
-                // console.log('Huy dep troia')
-                // huy(getData)
-                // console.log(new Date(getData[0]))
-                // console.log(new Date(getData[1]))
-            }
-        });
+        //     // setDateCheckIn: '2018/03/20',
+        //     // setDateCheckOut: '2018/04/5',
+
+        //     setPickerTitleCheckIn: 'Ngày nhận phòng',
+        //     setPickerTitleCheckOut: 'Ngày trả phòng',
+        //     setIconDate: '<i class="glyphicon glyphicon-calendar"></i>',
+        //     setArrowPrev: '<i class="glyphicon glyphicon-chevron-left"></i>',
+        //     setArrowNext: '<i class="glyphicon glyphicon-chevron-right"></i>',
+        //     fnDataEvent: dateEvent,
+        //     fnEventClickDay: function(getData) {
+        //         // console.log(getData)
+        //         // console.log(new Date(getData[0]))
+        //         // console.log(new Date(getData[1]))
+        //         // huy('Huy dep troia')
+        //         // checkSubmit()
+        //     },
+        //     fnAfterCheckOut: function(getData) {
+        //         // sau khi chọn ngày checkOut thì làm gì tiếp theo
+        //         // console.log('Huy dep troia')
+        //         // huy(getData)
+        //         // console.log(new Date(getData[0]))
+        //         // console.log(new Date(getData[1]))
+        //     }
+        // });
 
 
         // function fnAppendInfoError() {
@@ -189,6 +194,16 @@
         //         }
         //     }
         // }
+        // const removeDuplicateItems = arr => [...new Set(arr)];
+        // var removeDuplicateItems = function(arr) {
+        //     return [...new Set(arr)];
+        // }
+        // console.log(removeDuplicateItems([42, 'foo', 42, 'foo', true, true]))
+
+        const csvFileLine = '1997,John Doe,US,john@doe.com,New York';
+        const { 2: country, 4: state } = csvFileLine.split(',');
+
+        console.log(state)
     </script>
 </body>
 </html>

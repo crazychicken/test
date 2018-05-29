@@ -1,7 +1,7 @@
 'use strict';
 function tdatapicker( options ) {
-	// Get Element and check select element
-	var tElement = document.querySelectorAll(options.getElement);
+    // Get Element and check select element
+    var tElement = document.querySelectorAll(options.getElement);
     tElement = [].slice.call(tElement);
     if ( tElement.length === 0 ) {
         return console.log("'Thank you for using tdatapicker. Please, check property for element:'%c " + options.getElement + ' ', 'background: #f16d99; color: #fff');
@@ -93,7 +93,7 @@ function tdatapicker( options ) {
         }
         return convertArrayToString(aDays)
     }
-    
+
     // Theme Function get HTML table for calendar
     var setTemplate = '<table class="t-table-condensed">'+
         '<thead>'+
@@ -284,17 +284,25 @@ function tdatapicker( options ) {
             pr_el.parentElement.appendChild(node_calendar);
             setDaysInMonth( pr_el, pr_date_utc )
         }
+        // Kiểm tra trên window hay IOS
+        var touchEvent;
+        if ( 'ontouchstart' in window ) {
+            touchEvent = 'touchstart'
+        } else {
+            touchEvent = 'click'
+        }
+        // var touchEvent = 'ontouchstart' in window ? 'touchstart' : 'click';
         // Function when click body/html hide all calendar
-        window.onclick = function(e) {
+        window.addEventListener(touchEvent, function(e){
             // Xoá tất cả trừ khi click đúng vào các element t-datepicker
             if ( fnParents(e.target, 't-datepicker').nodeName === 'HTML' ) {
                 fnHideAllCalendar();
-            }
-        }
+            }   
+        });
     }
 
     // Nhận vào Elements [dates], date_utc = [1,2]
-    function setDaysInMonth ( pr_el, pr_data_utc ) {
+    function setDaysInMonth( pr_el, pr_data_utc ) {
         // pr_el.parentElement.getElementsByClassName('datepicker')[0].innerHTML = convertArrayToString(dataTheme);
         // pr_el <=> this, define event for each calendar
         var tswitch = pr_el.parentElement.querySelectorAll('.t_month')
@@ -333,31 +341,27 @@ function tdatapicker( options ) {
                 // ]
 
                 // console.log(days)
-                function getDataDays(pr_days) {
-                    // Set Days before min in month
-                    var beforeDay = pr_days[0];
-                    if ( beforeDay === 0 ) {
-                        while ( beforeDay < 6 ) {
-                            dataDays.unshift('');
-                            dataUTCDate.unshift('');
-                            beforeDay++;
-                        }
-                    } else {
-                        while ( beforeDay > 1 ) {
-                            dataDays.unshift('');
-                            dataUTCDate.unshift('');
-                            beforeDay--;
-                        }
+                var beforeDay = days[0];
+                if ( beforeDay === 0 ) {
+                    while ( beforeDay < 6 ) {
+                        dataDays.unshift('');
+                        dataUTCDate.unshift('');
+                        beforeDay++;
                     }
-                    // Set Days after max in month
-                    var afterDay = pr_days[pr_days.length-1];
-                    while ( afterDay < 7 ) {
-                        dataDays.push('');
-                        dataUTCDate.push('');
-                        afterDay++;
+                } else {
+                    while ( beforeDay > 1 ) {
+                        dataDays.unshift('');
+                        dataUTCDate.unshift('');
+                        beforeDay--;
                     }
                 }
-                getDataDays(days)
+                // Set Days after max in month
+                var afterDay = days[days.length-1];
+                while ( afterDay < 7 ) {
+                    dataDays.push('');
+                    dataUTCDate.push('');
+                    afterDay++;
+                }
                 setThemeData(dataDays, dataUTCDate, i_num, pr_el)
             }
         }
@@ -370,12 +374,14 @@ function tdatapicker( options ) {
     function setThemeData (dataDays, dataUTCDate, pr_num, pr_el) {
         var getTH = pr_el.parentElement.querySelectorAll('tbody')
         getTH[pr_num].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
-        var getTH = getTH[pr_num].querySelectorAll('td')
-        getTH.forEach( function(e, index) {
-            e.setAttribute('data-date', dataUTCDate[index]);
-            e.innerHTML = dataDays[index];
-        });
+        var getTD = getTH[pr_num].querySelectorAll('td')
+        for ( var td = 0; td < getTD.length; td++ ) {
+            getTD[td].setAttribute('data-date', dataUTCDate[td]);
+            getTD[td].innerHTML = dataDays[td];
+        }
     }
+
+    // document.getElementById('test2').innerHTML = getTH;
 
     // set DataEvent follow Days
     var DataEvent = {
@@ -668,6 +674,7 @@ function tdatapicker( options ) {
             }
         }
     }
+
     var pr_callback = '';
     // var dataUTC = getDateUTC(options.setDateCheckIn, options.setDateCheckOut);
     function callEventClick(pr_callback, pr_date_utc) {
@@ -675,11 +682,11 @@ function tdatapicker( options ) {
         var findDates = document.getElementsByClassName('dates');
 
         var eachDates = [].slice.call(findDates)
-        eachDates.forEach( function(e) {
-            e.onclick = function () {
+        for ( var i = 0; i < eachDates.length; i++ ) {
+            eachDates[i].onclick = function () {
                 getTableCalendar(this, pr_date_utc)
             }
-        });
+        }
 
         getTableCalendar(findDates[0], pr_date_utc)
         // getTableCalendar(findDates[1], pr_date_utc)
@@ -698,4 +705,3 @@ function tdatapicker( options ) {
     callEventClick(pr_callback, dataUTC)
 
 }
-
