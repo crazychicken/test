@@ -1,13 +1,20 @@
 node_modules
 sass/theme
+sass/layout
+sass/layout-theme
 theme/*
 images
 *.css
 *.html
 *.js
 !/public/theme/css/themes/*.css
+!/public/theme/css/t-datepicker.min.css
+!/public/theme/js/t-datepicker.min.js
+
 !/public/theme/css/t-scroll.min.css
 !/public/theme/js/t-scroll.min.js
+
+!/sass/t-datepicker-v1.0.0.scss
 **.DS_Store
 .DS_Store?
 

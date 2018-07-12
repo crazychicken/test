@@ -1,6 +1,7 @@
 node_modules
 sass/theme
 
+package-lock.json
 public/**/*.css
 public/**/*.js
 public/**/*.html
