@@ -103,80 +103,76 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    <script type="text/javascript" src="./theme/js/create-modules-jquery.js"></script>
-    <script type="text/javascript" src="./theme/js/datapicker-v1.0.1.js"></script>
+    <script type="text/javascript" src="./theme/js/create-modules-jquery-test.js"></script>
+    <!-- <script type="text/javascript" src="./theme/js/create-modules-jquery.js"></script> -->
+    <!-- <script type="text/javascript" src="./theme/js/datapicker-v1.0.1.js"></script> -->
     <script type="text/javascript">
         var dateEvent = {
-            '2018-01-01' : 'Tết Dương Lịch',
-            '2018-02-14' : 'Lễ Tình Yêu',
-            '2018-03-08' : 'Quốc Tế Phụ Nữ',
-            '2018-04-30' : 'Giải phóng Miền Nam Việt Nam',
-            '2018-05-01' : 'Quốc Tế Lao Động',
-            '2018-05-15' : 'Quốc Tế Lao Động',
-            '2018-06-01' : 'Quốc Tế Thiếu Nhi',
-            '2018-07-15' : 'Rằm Tháng 07',
-            '2018-07-27' : 'Thương Binh Liệt Sĩ',
-            '2018-08-14' : 'Trăng Non',
-            '2018-09-02' : 'Quốc Khánh',
-            '2018-09-14' : 'Trăng Non',
-            '2018-10-14' : 'Trăng Non',
-            '2018-11-20' : 'Ngày Nhà Giáo Việt Nam',
-            '2018-12-24' : 'Noel',
-            '2019-01-01' : 'Tết Dương Lịch',
-            '2019-02-14' : 'Lễ Tình Yêu',
-            '2019-03-08' : 'Quốc Tế Phụ Nữ',
-            '2019-04-30' : 'Giải phóng Miền Nam Việt Nam',
-            '2019-05-01' : 'Quốc Tế Lao Động',
-            '2019-05-15' : 'Quốc Tế Lao Động',
-            '2019-06-01' : 'Quốc Tế Thiếu Nhi',
-            '2019-07-15' : 'Rằm Tháng 07',
-            '2019-07-27' : 'Thương Binh Liệt Sĩ',
-            '2019-08-14' : 'Trăng Non',
-            '2019-09-02' : 'Quốc Khánh',
-            '2019-09-14' : 'Trăng Non',
-            '2019-10-14' : 'Trăng Non',
-            '2019-11-20' : 'Ngày Nhà Giáo Việt Nam',
-            '2019-12-24' : 'Noel',
+        //     '2018-01-01' : 'Tết Dương Lịch',
+        //     '2018-02-14' : 'Lễ Tình Yêu',
+        //     '2018-03-08' : 'Quốc Tế Phụ Nữ',
+        //     '2018-04-30' : 'Giải phóng Miền Nam Việt Nam',
+        //     '2018-05-01' : 'Quốc Tế Lao Động',
+        //     '2018-05-15' : 'Quốc Tế Lao Động',
+        //     '2018-06-01' : 'Quốc Tế Thiếu Nhi',
+        //     '2018-07-15' : 'Rằm Tháng 07',
+        //     '2018-07-27' : 'Thương Binh Liệt Sĩ',
+        //     '2018-08-14' : 'Trăng Non',
+        //     '2018-09-02' : 'Quốc Khánh',
+        //     '2018-09-14' : 'Trăng Non',
+        //     '2018-10-14' : 'Trăng Non',
+        //     '2018-11-20' : 'Ngày Nhà Giáo Việt Nam',
+        //     '2018-12-24' : 'Noel',
+        //     '2019-01-01' : 'Tết Dương Lịch',
+        //     '2019-02-14' : 'Lễ Tình Yêu',
+        //     '2019-03-08' : 'Quốc Tế Phụ Nữ',
+        //     '2019-04-30' : 'Giải phóng Miền Nam Việt Nam',
+        //     '2019-05-01' : 'Quốc Tế Lao Động',
+        //     '2019-05-15' : 'Quốc Tế Lao Động',
+        //     '2019-06-01' : 'Quốc Tế Thiếu Nhi',
+        //     '2019-07-15' : 'Rằm Tháng 07',
+        //     '2019-07-27' : 'Thương Binh Liệt Sĩ',
+        //     '2019-08-14' : 'Trăng Non',
+        //     '2019-09-02' : 'Quốc Khánh',
+        //     '2019-09-14' : 'Trăng Non',
+        //     '2019-10-14' : 'Trăng Non',
+        //     '2019-11-20' : 'Ngày Nhà Giáo Việt Nam',
+        //     '2019-12-24' : 'Noel',
         };
-        var a = $('.tuds').tdatapicker({
-            // setDateCheckIn: '25/06/2018',  // DD/MM/YY
-            // setDateCheckOut: '29/06/2018', // DD/MM/YY
-            // setNumCalendar: 2,
-            setIconDate: 'L',
-            setArrowPrev: 'Prev',
-            setArrowNext: 'Next',
+        var a = $('.tuds').tdatapicker()
+        // var a = $('.tuds').tdatapicker({
+            // setDateCheckIn: '09/09/2018',  // DD/MM/YY
+            // setDateCheckOut: '29/09/2018', // DD/MM/YY
+            // // setNumCalendar: 2,
+            // setIconDate: 'L',
+            // setArrowPrev: 'Prev',
+            // setArrowNext: 'Next',
             // setLimitPrevMonth: 0,
             // setLimitNextMonth: 4,
             // fnDataEvent: dateEvent,
             // default 31 date
             // setLimitDays: 3,
-        });
-        a.on('beforeShowDay', function() {
-            // console.log('beforeShowDay do somethink')
-        }).on('afterShowDay', function(){
-            // console.log('afterShowDay')
-            // alert('afterShowDay')
-        }).on('afterCheckOut', function(){
-            // console.log('afterCheckOut do somethink')
-            // setTimeout( function(){
-            //     if ( $('.datepicker').length !== 0 ) {
-            //         $('.datepicker').remove()
-            //     }
-            // }, 10 )
-        }).on('eventClickDay', function() {
-            // console.log('eventClickDay do somethink')
-        })
+        // });
+        // a.on('beforeShowDay', function() {
+        //     // console.log('beforeShowDay do somethink')
+        // })
+        // .on('afterShowDay', function(){
+        //     // console.log('afterShowDay')
+        //     // alert('afterShowDay')
+        // }).on('afterCheckOut', function(){
+        //     // console.log('afterCheckOut do somethink')
+        //     // setTimeout( function(){
+        //     //     if ( $('.datepicker').length !== 0 ) {
+        //     //         $('.datepicker').remove()
+        //     //     }
+        //     // }, 10 )
+        // }).on('eventClickDay', function() {
+        //     // console.log('eventClickDay do somethink')
+        // })
 
-        ;(function($){
-            $.fn.myFn = function(){
-                this.css('color', 'white')
-                $.fn.myFn_doSomethink = function(){
-                    this.css('background', 'green')
-                }
-                return this;
-            }
-        }(jQuery))
-        $('.haha').myFn().myFn_doSomethink()
+        // $('html').on('click', function(e) {
+        //     alert('tuds')
+        // });
     </script>
 </body>
 </html>

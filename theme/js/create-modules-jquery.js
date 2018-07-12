@@ -1,10 +1,11 @@
 ;(function($) {
-
+    // $('body').append("<p>TUDS</p>")
+    "use strict";
     var my_plugin = function(link, opts) {
 
         var $this = this, img, o={};
 
-        defaults = {
+        var defaults = {
             color: 'rgb(255, 0, 0)'
         };
 

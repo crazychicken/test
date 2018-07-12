@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript</title>
+  </head>
+  <h1>Hello plugin</h1>
+  <h2 class="change-color btn-green">Hello plugin</h2>
+  <h3 class="change-color btn-yellow">Hello tuds</h3>
+  <body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script type="text/javascript">
+    // function anonymous
+    ;(function($){
+      // console.log('tuds')
+      var Default = {
+        color: '#555',
+        bgColor: '#ddd'
+      }
+      var update_options;
+      $.fn.ChangeColor = function( options, fn ) {
+        // console.log(options)
+        // console.log(fn)
+        update_options = options;
+        if ( fn !== undefined ) {
+          if ( options === 'ud_Color' ) {
+            Default.color = fn;
+          }
+          if ( options === 'ud_bgColor' ) {
+            Default.bgColor = fn;
+          }
+        }
+
+        // merge Object {}
+        // var settings = $.extend({}, Default, options )
+        var settings = $.extend({}, Default, update_options )
+        // console.log(options)
+        // console.log(settings)
+        this.css({
+          'color': settings.color,
+          'background-color': settings.bgColor
+          // do something
+        })
+        var d = 'data muon lay'
+        this.on('click', function(e){
+          $(this).trigger( 'click_event' );
+        })
+        $.fn.new_method = function() {
+          // console.log('huy dep trai')
+          return this;
+        }
+        return this;
+      }
+    }( jQuery ))
+
+
+    // var call_pl = $('.change-color');
+    // call_pl.ChangeColor({
+    //   color: 'yellow',
+    //   bgColor: 'green'
+    // })
+    // call_pl.on('click_event', function(){
+    //   console.log(this)
+    // })
+
+    $('.change-color').ChangeColor({
+      color: '#333',
+      bgColor: '#ddd'
+    }).on('click_event', function(){
+      console.log(this)
+    }).new_method()
+
+    $('.btn-green').ChangeColor('ud_Color', 'red')
+    $('.btn-yellow').ChangeColor('ud_bgColor', 'pink')
+    // Options : {color:'value, bgColor:'value'}
+    // Events  : plugin.on('name', fn())
+    // Methods : plugin.method_name('name', fn())
+    // Methods : plugin.method_name('update', 'value')
+
+    // console.log(window)
+
+
+
+      // ;(function($){
+      //   'use strict';
+      //   var init = {
+      //     color  : '#333',
+      //     bgColor:  'green',
+      //     height:  30+'px'
+      //   }
+      //   var update_options;
+      //   $.fn.changeColor = function( pr_el, options ) {
+      //     // update_options = options;
+      //     // console.log(pr_el)
+      //     // console.log(this)
+      //     if ( options === undefined ) {
+      //         update_options = pr_el;
+      //     }
+
+      //     if ( options !== undefined ) {
+      //       if ( pr_el === 'updatebgColor' ) {
+      //           update_options.bgColor = options;
+      //       }
+      //       if ( pr_el === 'updateColor' ) {
+      //           update_options.color = options;
+      //       }
+      //       if ( pr_el === 'updateHeight' ) {
+      //           update_options.height = options;
+      //       }
+      //     }
+
+      //     // console.log(update_options)
+      //     var settings = $.extend({}, init, update_options);
+      //     // console.log(settings)
+      //     this.css({
+      //       'color': settings.color,
+      //       'background': settings.bgColor
+      //     })
+      //     var data = 'date'
+
+      //     $.fn.changeColorToggle = function(event, fn) {
+      //       if ( fn === undefined ) {
+      //         fn.call(this)
+      //       } else {
+      //         if ( event === 'click-t' || event === 'touchstart' ) {
+      //           fn.call(this)
+      //         }
+      //       }
+      //       return this;
+      //     }
+      //     // options luôn luôn === undefined trừ khi có update method và khi đó nó sẽ không được gọi lại nữa
+      //     // console.log(options)
+      //     if ( options === undefined ) { // pr, options khi khi không gọi method update chỉ chạy đúng 1 lần
+      //       this.on('click', function(e){
+      //         $(e.target).trigger('tuds', data)
+      //       })
+      //     }
+
+      //     $.fn.Tuds = function() {
+      //       // console.log('Tuds')
+      //       return this;
+      //     }
+      //     $.fn.TEO = function() {
+      //       // console.log('teo')
+      //       return this;
+      //     }
+          
+      //     return this;
+      //   }
+      // }(jQuery))
+      // // console.log(window)
+      // var i = 1;
+
+      // $('.global').changeColor({
+      //   color: 'rgb(238, 255, 221)',
+      //   bgColor: 'green'
+      // })
+      // .changeColorToggle( 'click-t', function() {
+      //   // console.log(this)
+      // }).Tuds().TEO()
+      // .on('tuds', function(e, data){
+      //   // console.log($(this).css('color'))
+      //   console.log(data)
+      //   if ( $(this).css('color') === 'rgb(238, 255, 221)') {
+      //     $(this).css('color', 'red')
+      //   } else {
+      //     $(this).css('color', 'rgb(238, 255, 221)')
+      //   }
+      // })
+
+      // $('.hehe').changeColor( 'updatebgColor', '#ddd' )
+      
+      // $('.hoho').changeColor({
+      //   color: 'rgb(238, 255, 221)',
+      //   bgColor: '#888'
+      // }).on('tuds', function(e, data){
+      //   if ( $(this).css('color') === 'rgb(238, 255, 221)') {
+      //     $(this).css('color', 'red')
+      //   } else {
+      //     $(this).css('color', 'rgb(238, 255, 221)')
+      //   }
+      // })
+    </script>
+  </body>
+</html>

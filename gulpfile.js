@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var gulp_sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var browser_sync = require('browser-sync').create();
+var fontmin = require('gulp-fontmin');
 
 gulp.task('cp-html', function () {
 	gulp.src(['./html/*.html'])
@@ -35,6 +36,16 @@ gulp.task('sass', function () {
 	.pipe(gulp.dest('./public/theme/css'))
 	.pipe(browser_sync.stream());
 });
+
+// gulp.task('cp-fonts', function () {
+// 	gulp.src([
+// 		'./theme/fonts/*.ttf'
+// 	])
+// 	.pipe(fontmin(
+// 		{text: '天地玄黄 宇宙洪荒'}
+// 	))
+// 	.pipe(gulp.dest('./public/theme/fonts'))
+// });
 
 
 gulp.task('server', ['cp-html', 'sass', 'cp-js'], function() {

@@ -6,8 +6,8 @@
 * Licensed under: LICENSE
 * Version: v1.0.1
 */
-
-(function($){
+$('body').append("<p>TUDS</p>")
+;(function($){
     // Init - Default options
     var Defaults = {
         // Số tháng được hiển thị - mặc định 2 tháng
@@ -58,7 +58,7 @@
     // })
 
     $.fn.tdatapicker = function( options ) {
-        const this_el = this;
+        var this_el = this;
         // Call and Set options default
         var settings = $.extend({}, Defaults, options);
         
@@ -217,7 +217,7 @@
             }
             
             var Array_In_Out = ['check-in', 'check-out'];
-            Array_In_Out.forEach( function(e) {
+            for ( var i = 0; i< Array_In_Out.length; i++  ) {
                 var label_title = settings.setTitleCheckIn;
                 var getDay = pr_in;
                 var Input = 'start'
@@ -225,7 +225,7 @@
                 if ( pr_in !== null ) {
                     label_title = '';
                 }
-                if ( e === 'check-out' ) {
+                if ( Array_In_Out[i] === 'check-out' ) {
                     label_title = settings.setTitleCheckOut;
                     getDay = pr_out;
                     // Giá trị CI lớn hơn 30 day giới hạn, lớn hơn ngày CO nếu đã có CO -> CO sẽ không có chọn ngày ở dates
@@ -240,8 +240,33 @@
                 var formatDate = showValueInput(getDay);
                 // console.log(getDay)
                 getDay = convertDateUTC(getDay);
-                this_el.find('.'+e).html(setThemeCheckDate( label_title , e, getDay, Input, formatDate ))
-            })
+                this_el.find('.'+Array_In_Out[i]).html(setThemeCheckDate( label_title , Array_In_Out[i], getDay, Input, formatDate ))
+            }
+            // Array_In_Out.forEach( function(e) {
+            //     var label_title = settings.setTitleCheckIn;
+            //     var getDay = pr_in;
+            //     var Input = 'start'
+            //     // Check CI có giá trị ngày thì remove label Nhận Phòng
+            //     if ( pr_in !== null ) {
+            //         label_title = '';
+            //     }
+            //     if ( e === 'check-out' ) {
+            //         label_title = settings.setTitleCheckOut;
+            //         getDay = pr_out;
+            //         // Giá trị CI lớn hơn 30 day giới hạn, lớn hơn ngày CO nếu đã có CO -> CO sẽ không có chọn ngày ở dates
+            //         // Null không có add dates và Dom
+            //         if ( pr_in === pr_out ) {
+            //             getDay = null;
+            //         }
+            //         Input = 'end'
+            //     }
+            //     // console.log(getDay)
+            //     getDay = convertFormatDf(getDay)
+            //     var formatDate = showValueInput(getDay);
+            //     // console.log(getDay)
+            //     getDay = convertDateUTC(getDay);
+            //     this_el.find('.'+e).html(setThemeCheckDate( label_title , e, getDay, Input, formatDate ))
+            // })
             // Đổi qua dạng yy/mm/dd thì fn lib mới hoạt động okay
             function convertFormatDf(pr_date) {
                 if ( typeof(pr_date) === 'string' ) {
@@ -362,6 +387,10 @@
 
         // Function setTheme show tablet date follow setNumCalendar 1,2,3 ...
         function setThemeData (dataDays, dataUTCDate, pr_num, pr_el) {
+            var checkdataDays = dataDays.slice(-7)[0]
+            if ( checkdataDays === '' ) {
+                dataDays = dataDays.slice(0, -7)
+            }
             var getTH = pr_el.find('tbody')
             getTH[pr_num].innerHTML = AppendDaysInMonth(Math.round(dataDays.length/7));
             var getTD = getTH[pr_num].querySelectorAll('td')

@@ -22,10 +22,15 @@
     <button type="button" class="btn btn-primary btn-lg" data-toggle="tmodal" data-target="#tModal">
       TModal
     </button>
+
+    <p id="tuds_test">
+      <em>123456</em>
+      <!-- Lorem ipsum dolor sit amet,<em> consectetur adipisicing elit. Corporis, aperiam laborum, quibusdam non </em>vel at consectetur reprehenderit <em>vero, dolorem rem odit! Voluptates perspiciatis labore totam quibusdam aliquid quisquam eveniet qui.</em> -->
+    </p>
     
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, aperiam laborum, quibusdam non vel at consectetur reprehenderit vero, dolorem rem odit! Voluptates perspiciatis labore totam quibusdam aliquid quisquam eveniet qui.
-    </p> 
+    </p>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, aperiam laborum, quibusdam non vel at consectetur reprehenderit vero, dolorem rem odit! Voluptates perspiciatis labore totam quibusdam aliquid quisquam eveniet qui.
     </p>
@@ -335,6 +340,9 @@
           var windowScrollTop = $(window).scrollTop();
           console.log(windowScrollTop);
         })
+        var a = $('#tuds_test').text()
+        a = a.trim()
+        console.log(a.length)
       })
 
     </script>

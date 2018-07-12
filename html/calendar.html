@@ -7,8 +7,77 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <link rel="stylesheet" href="theme/css/datapicker-v1.0.0.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#sandbox-container .input-daterange').datepicker({
+                autoclose: true,
+                // startDate: "06/20/2018",
+                // startDate: "06/28/2018"
+            });
+            // $('.datepicker').datepicker('setDate', '06/20/2018');
+            // $('#sandbox-container input').datepicker('setStartDate');
+            // $('#sandbox-container input').datepicker('show');
+            
+            
+            // $('#sandbox-container input').datepicker('show');
+            $('.tuds').datepicker('setStartDate', '06/23/2018');
+            $('.tuds').datepicker('setEndDate', '06/20/2018');
+            $('.tuds').datepicker('show');
+
+            $('#click').on('click', function(){
+                // var a = $('.tuds').datepicker('setEndDate', '06/25/2018');
+                // var a = $('.tuds').datepicker('setDate', '06/20/2018');
+                var b;
+                $('.form-control').each(function(){
+                    b = $(this).datepicker('getUTCDates');
+                })
+                console.log(b)
+                // var b = $('#sandbox-container input').datepicker('setDate', '06/20/2018');
+                // var a = $('.tuds').datepicker('getDate');
+                // var b = $('.tuds').datepicker('getDates');
+
+                // var c = $('.tuds').datepicker('getUTCDate');
+                // var d = $('.tuds').datepicker('getUTCDates');
+                // $('.tuds').datepicker('clearDates');
+                // console.log(a)
+                // console.log(b)
+                // console.log(c)
+                // console.log(d)
+
+                // $('#sandbox-container input').datepicker('show');
+                // $(this).datepicker('show');
+                // $('#sandbox-container input').datepicker('show');
+            });
+
+            // console.log(new Date('06/20/2018'))
+        })
+    </script>
 </head>
 <body>
+
+    <!-- <div id="sandbox-container">
+        <input type="text" class="form-control tuds">
+    </div> -->
+    <div id="sandbox-container">
+        <div class="input-daterange input-group">
+            <input type="text" class="input-sm form-control tuds" name="start" />
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control" name="end" />
+        </div>
+
+        <div class="input-daterange input-group">
+            <input type="text" class="input-sm form-control tuds" name="start" />
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control" name="end" />
+        </div>
+    </div>
+
+    <button id="click">
+        click
+    </button>
 
     <div class="container">
         <div class="row" id="test"></div>
@@ -91,7 +160,7 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../theme/js/bootstrap-datepicker.js"></script> -->
 
-    <script type="text/javascript" src="./theme/js/datapicker-v1.0.0.js"></script>
+    <!-- <script type="text/javascript" src="./theme/js/datapicker-v1.0.0.js"></script> -->
     <script type="text/javascript">
 
         // var c_in = '2018/04/8';
@@ -118,9 +187,9 @@
             t12 : { '24' : 'Không Biết' }
         }
 
-        tdatapicker({
-            getElement: '.t-datepicker'
-        })
+        // tdatapicker({
+        //     getElement: '.t-datepicker'
+        // })
 
         // function huy(pr) {
         //     console.log(pr)
@@ -205,5 +274,7 @@
 
         console.log(state)
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 </body>
 </html>
